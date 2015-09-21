@@ -19,12 +19,26 @@ h3.ui-accordion-header{color:#ff8000;font-size:1.1em;}
 .ui-state-active{border-width:0px;border-bottom:2px solid #cdcdcd;}
 .ui-dialog-buttonpane{background-color:#d1d1d1;}
 
+/* header bar and menu */
+#header{margin:0px;padding:10px;
+        background: #293260 url(images/header_bg.jpg) no-repeat center;
+        color:#ffffff;font-size:1.8em;font-variant:small-caps;
+        font-family:Arial,sans-serif;font-weight:normal;
+        text-align:center
+}
+#header a, #header a.visited {color:#ffffff;text-decoration:none}
+#menubar{margin:0px;padding:0px;margin-top:-25px;font-size:100%;font-weight:normal;color:#ffffff;}
+#menubar a, #menubar a.visited {color:#ffffff;text-decoration:none}
+
+
 iframe{border-width:0px;margin:5px;width:504px;height:504px}
-/* Standard Image styled as a clickable */
+.calcframe{width:650px;height:70px;border:1px solid #999999}
+/* standard image styled as a clickable */
 .bt{cursor:pointer;margin-bottom:-4px}
 /* info - popups */
 .info{display:none;border:1px solid #aaaaaa; background-color: #F5F6CE;
-	padding:5px;font-weight:normal;font-family:Verdana,Arial,sans-serif;font-size:110%;}
+	padding:15px;font-weight:normal;font-family:Verdana,Arial,sans-serif;
+	font-size:110%;line-height:1.3em;}
 #plotcontrol{text-align:left;margin-top:5px;margin-bottom:25px;}
 /* Options in a Dialog */
 #dialog{border:2px solid #555555; }
@@ -74,38 +88,20 @@ hr{margin:2px 0px;padding:0px}
 
 #QRcode{margin:15px;margin-left:35px;}
 
-#menubar{margin:0px;padding:0px;}
-#plotpage{margin:0px;padding-left:20px;padding-right:20px;max-width:1000px;margin-left:auto;margin-right:auto;background-color:#ffffff;}
-#plotpage{
-	padding:5px;
-/*	border: 5px solid #999999;
-	-webkit-border-radius: 25px;
-	-moz-border-radius: 25px;
-	-ms-border-radius: 25px;
-	border-radius: 25px;*/
-}
+#plotpage{margin:0px;padding:5px;max-width:1000px;margin-left:auto;margin-right:auto;background-color:#ffffff;}
 .calcpage {width:650px;height:50px;margin:0px;padding:0px;background-color:#ffffff;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;}
 #calculate{text-align:center;max-width:917px;margin-left:auto;margin-right:auto;}
-#header{margin:0px;padding:10px;
-        background: #293260 url(images/header_bg.jpg) no-repeat center;
-        color:#ffffff;font-size:1.8em;font-variant:small-caps;
-        font-family:Arial,sans-serif;font-weight:normal;
-        text-align:center
-}
-#header a,
-#header a.visited {
-	color:#ffffff;text-decoration:none
-}
+
 fieldset{border:2px solid #dddddd;padding:5px;}
 label{margin-left:20px;}
 
 /* ---------- Manual/example page -------- */
 a.uplink{display:block;font-size:80%;padding-left:20px;margin-top:20px;text-align:left;background: #ffffff url(images/carat-u-black.png) no-repeat left;}
-#manualbody{margin:10%;margin-top:5px;font-size:10px;font-size:1em; text-align:justify;line-height:1.3em;}
+.examplediv{display:inline-block;margin:10px;vertical-align:top;max-width:500px;}
+#manualbody{margin:10%;margin-top:5px;font-size:1em; text-align:justify;line-height:1.3em;}
 #manualbody p {font-size:100%;}
 #manualbody table{margin-bottom:25px;}
 #manualbody td{font-size:100%;padding:3px;padding-left:30px;padding-right:10px;
                margin-left:30px;border-bottom:1px solid #dddddd;}
 #manualbody a{font-weight:normal;text-decoration:none;}
 #manualbody a:hover{font-weight:normal;text-decoration:underline;}
-.examplediv{display:inline-block;margin:10px;vertical-align:top;max-width:500px;}
