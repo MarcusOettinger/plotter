@@ -19,3 +19,6 @@ clean:
 
 realclean: clean
 	$(RM) $(TARBALL)
+
+love:
+	echo "Not war?"

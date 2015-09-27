@@ -8,6 +8,8 @@
  *  - use TTF font set in config.inc for text output
  *  - added the ability to draw up to 10 additional points on the plot
  *  - reworked the code to allow for smoother color handling
+ *  - added a workaround for gdlib packages w/o imageantialias (debian, ubuntu
+ *    maybe others?)
  *
  * ---------------------------------------------------------------------------------
 /* (openPlaG: Original source: http://rechneronline.de/function-graphs/
@@ -260,7 +262,7 @@ for($i=0;$i<3;$i++) { //constants as from-to range and +C
 // create an empty image and define colors
 //
 $img=imagecreatetruecolor($width,$height);
-imageantialias($img,$anti);
+if (function_exists(imageantialias)) imageantialias($img,$anti);
 
 // color[0 - 3] - function 1 - 3
 $color[0]=imagecolorallocate($img,hexdec(substr($selfcol0,0,2)),hexdec(substr($selfcol0,2,2)),hexdec(substr($selfcol0,4,2)));//self-defined color 1

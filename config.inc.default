@@ -3,10 +3,12 @@
 // Copy this one to config.inc in your plotter installations root directory
 // to configure your plotter.
 //
-// M. Oettinger 06/2015
+// M. Oettinger 09/2015
 // -------------------------------------------------------------------------
 //
-$fqdn = "http://theplotterthingie.example.com";
+// location (URL) of your plotter installation. Setting this value is
+// mandatory.
+$fqdn = "http://theplotterthingie.example.com/goplotting";
 
 // This is the value prepended to the URL of the generated function plot
 // (set this to the location of graph.php). Probably there's no need to change
@@ -18,6 +20,48 @@ $srv = "$fqdn/graph.php?";
 // found).
 // 
 $defaultTTFont = "FreeSans.ttf";
+
+//
+// Licensing information (shown on the manual page)
+//
+$licensetext = "<p>Licensing: GPL V.2</p>";
+$plotterinfo = true;
+
+//
+// Poor man's help: text snippets displayed in info toggles.
+// Set in this config file because this way the infomation can be changed
+// w/o touching the main page.
+//
+$infotext = array(
+  // info - what is this?
+  "info1" => "<p>... is a simple tool to draw curves of functions
+        (rsp. their derivatives or integrals) in cartesian coordinates. It is able to plot
+        many common mathematical functions or expressions on a jpeg, png or gif image.</p>
+        <p>Use the lower tab to calculate tables of function values (in csv or text
+        format) and get a hyperlink to reproduce an image on the fly (using an URL or QRcode).</p>",
+  // info: points to display in the plot
+  "info2" => "<p>Define named points to be displayed in the graph:<br>add or remove points
+       with +/-. </p>",
+  // info: calculating values
+  "info3" => "<p>Enter some variable values and a formula to be calculated, 
+       functions plotted above can be used by the buttons labeled f(x), g(x) and h(x).
+       Variables will usually be simple numbers, separate multiple input values (x)
+       by spaces.</p>
+       <p>Select one of the checkboxes to chose a format for the results:</p>
+       <ul style='text-align:left;'><li>results - a string of function values, separated by spaces</li>
+         <li>table - a simple html table including variable values</li>
+         <li>csv - colon separated values including variable values</li>
+         <li>latex - code to layout a table including variable values in laTeX</li>
+       </ul>",
+  // info: load (sort of...)
+  "info4" => "<p> Every image drawn by plotter can be reproduced by a call to plotter's image
+       creating part (graph.php). All the information needed is passed by a query
+       string appended to its URL, the result is a direct image stream in one of the
+       supported formats. The URL (including the querystring) can be used like every
+       other image created.</p><p>Of course, the information in the query string can be used
+       to load an existing plot, e.g. to modify some of its settings - that is what the button
+       labeled <i>Load graph</i> is for.</p>"
+);
 
 // --------------------------------------------------------------------------------
 // enable URL shortening - use a Service like tinyurl to get a short
@@ -36,3 +80,7 @@ $defaultTTFont = "FreeSans.ttf";
 // $shorten = "http://example.com/yourls-api.php?action=shorturl&signature=".$secret."&url=";
 // $short_msg = "Alternatively, use the short link provided below";
 
+// -----------------------------------------------------------------------------
+// Read plotter version
+$va = explode("=", file_get_contents("VERSION"));
+$plotter_version = $va[1];
