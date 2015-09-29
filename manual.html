@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Plotter Manual/documentation
+plotter Manual/documentation
 
 Copyright (C) 2015 Marcus Oettinger
 
@@ -19,12 +19,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 -->
-<?php include("config.inc"); ?>
 <head>
 <title>Plotter - manual</title>
 <meta name="robots" content="index,follow" />
 <meta name="content-language" content="en" />
-<meta http-equiv="content-type" content="text/html; charset=iso-UTF-8" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="plotstyle.css" type="text/css" />
 <script src="http://lib.familie-oettinger.net/min/?g=jquery" type="text/javascript"></script>
 <script src="js/jquery.smartmenus.min.js" type="text/javascript"></script>
@@ -51,33 +50,38 @@ is a tool to draw function graphs or calculate function
 values at some given points. It is quite useful to create
 images showing up to three curves of given functions and/or
 ten points of interest in a cartesian coordinate system.</p>
-<p>Quick-n-dirty usage: define one to three functions by
-mathematical expressions in the Input fields on the left
+<p>Quick-n-dirty usage: declare one ore more functions by
+mathematical expressions in the input fields on the right
 and gently press the button labeled 'Draw' to see the
-corresponding curves in the image on the right side.</p>
-<a id="0"></a><h2>Syntax</h2>
+corresponding curves in an image on the left side.</p>
 <p>The main functions <b>f(x), g(x), h(x)</b> and some
-special expressions can be defined in text inputs on the left
-hand side.
-Next to the function terms, the <b>color</b> of the curves
-(in hex notation) and some display options can be set.
-The function term can be displayed in a legend on the plot,
-calculated points creating the curve can be displayed as
+specials can be defined in text inputs on the right
+hand side, the <b>color</b> of each curve (in hex notation)
+and some display options can be set.
+The function term can be shown in a simple legend on the plot,
+points creating the curve can be drawn as single
 dots or interconnected and the inside or outside of each 
 function graph can be filled with the selected color.</p>
 <br />
-<p>The special options settable on the left are</p>
+
+<p>The special options settable on the right are</p>
 <table>
-<tr><td><b>Hull</b></td><td> is an outer function using f(x), g(x) and h(x) as variable Y or inner function. 
-  This is similar to a substitution, e.g. <b>sin(Y)</b> will display the sine of each defined function.
-Consider using <b>2*exp(-.5*Y)</b> as hull, sin(x) as f(x) and sin2(x) as g(x) - this will give a simple model for damped harmonic oscillations.</td></tr></td></tr>
-<tr><td><b>Derivative</b></td><td> shows the derivated graph. In the legend, this will be displayed as <b>f'(x)=[...]'</b>.</td></tr>
-<tr><td><b>Integral</b></td><td> shows the cumulative function in the displayed interval (integrate over ...). The calculated function values are cumulated one after another. In the legend, the integrated term will be named <b>F(x)=S[...]</b>. A constant C which will be added to the integral can be set</td></tr>
-<tr><td><b>From ... to</b></td><td> allows to set a domain for a function (this allows piecewise defined functions). If empty, the domain will cover the whole range in x. Constants like <b>pi</b> are allowed.</td></tr>
-</table>
-<p>For all functions etc. use mathematical expressions which
-may contain function names, constant names and combinations
-of the following symbols:</p>
+<tr><td><b>hull</b></td><td> this is an outer function using  f(x), g(x) and h(x) as a variable Y or inner function. 
+  This is similar to a substitution, e.g. <b>sin(Y)</b> will plot the sine of each defined function.
+  Consider using <b>2*exp(-.5*Y)</b> as hull, x as f(x) and x^2 as g(x) - you will get <a href="graph.php?a0=2&a1=x&a2=x%5E2&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=2%2Aexp%28-.5%2AY%29&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">this plot</a>.
+</td></tr>
+<tr><td><b>Q</b></td><td>Substitution mechanism. An expression
+  can be defined and used as a substitute for the special variable Q
+  in function terms. A function value will be calculated <i> after
+  </i> calculation of Q, so <b>f(x) = 2 - Q</b> with <b>Q = 1+x</b> really means <b>f(x) = 2 - (1+x)</b>.
+</td></tr>
+<tr><td><b>df/dx (derivative)</b></td><td> shows the derivated graph. In the legend, this will be displayed as <b>f'(x)=[...]'</b>.</td></tr>
+<tr><td><b>&int;f(x)dx (integral)</b></td><td> shows the cumulative function in the plotted interval (integrate over ...). Calculated function values are cumulated one after another and the constant value C is added (if set). The integrated term will be named <b>F(x)=S[...]</b>.
+</td></tr></table>
+
+<a id="0"></a><h2>Syntax</h2>
+<p>For all functions  and numbers use mathematical expressions which
+may contain function names, constant names and combinations of the following symbols:</p>
 <br /><table><tr><td>
 <b>x</b></td><td> is treated as variable x in functions</td></tr>
 <tr><td><b>0-9</b></td><td>Numbers like <b>123.45</b>, input values
@@ -94,12 +98,8 @@ of the following symbols:</p>
 <tr><td><b>( ) [ ] { } < ></b></td><td>Brackets, e.g. <b>{[(1+x)/(2-x)+1]*3}/(2*x^2)</b>. As common in mathematics, the type of brackets used does not matter.</td></tr>
 <tr><td><b>#</b></td><td> is used as separator for functions with multiple input values, e.g. <b>scir(x#2)</b></td></tr>
 <tr><td><b>asy</b></td><td>define a vertical asymptote at a fixed value x, e.g. <b>asy(1)</b> or <b>asy(e)</b></td></tr>
-<tr><td><b>Q</b></td><td>Substitution mechanism. An expression
-can be defined and used as a substitute for the special variable Q
-in function terms. A function value will be calculated <i> after
-</i> calculation of Q, so <b>f(x) = 2 - Q</b> with <b>Q = 1+x</b> really means <b>f(x) = 2 - (1+x)</b>.
-</td></tr>
 </table>
+
 <a href="#top" class="uplink">top</a><br /><br />
 
 <a id="1"></a><h3>Constants</h3>
@@ -120,8 +120,8 @@ setting the plotting range from <b>-pi</b> to <b>pi</b>.</p>
 
 <a id="2"></a><h3>predefined Functions</h3>
 <p>Plotter knows many interesting functions, nested
-ones like <b>sin(pow(x#2/3))</b> or polynomials like
-<b>2*x^3-4*x^2+x+1</b> should work without problems.
+ones like <b><a href="graph.php?a0=2&a1=sin%28pow%28x%232%2F3%29%29+&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-1&b5=2&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">sin(pow(x#2/3))</a></b> or polynomials like
+<b><a href="graph.php?a0=2&a1=2%2Ax%5E3-4%2Ax%5E2%2Bx%2B1&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-1&b3=3&b4=-1&b5=2&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">2*x^3-4*x^2+x+1</a></b> should work without problems.
 The order of arguments in functions with multiple variables
 (e.g. <b>norm</b>) does not matter, the standard position is
 shown in the examples.</p>
@@ -195,7 +195,7 @@ shown in the examples.</p>
 <tr><td><b>%</b></td><td> Modulo division, whole-numbered remainder, e.g. <b>10%x</b></td></tr>
 <tr><td><b>fmod</b></td><td> Modulo division, floating point remainder, e.g. <b>fmod(x#1)</b> displays only the position after the decimal point of the input value.</td></tr>
 <tr><td><b>R</b></td><td> Round, e.g. <b>R(x#2)</b> rounds two decimal places, <b>R(x)</b> rounds to an integer.</td></tr>
-<tr><td><b>R0</b></td><td>> Floor (rounding down), e.g. <b>R0(x)</b></td></tr>
+<tr><td><b>R0</b></td><td> Floor (rounding down), e.g. <b>R0(x)</b></td></tr>
 <tr><td><b>R1</b></td><td> Ceil (rounding up), e.g. <b>R1(x)</b></td></tr>
 <tr><td><b>dist</b></td><td> Distance function, e.g. <b>dist(x)</b> gives the distance to the nearest integer.</td></tr>
 <tr><td><b>prime</b></td><td> Prime number function, e.g. <b>prime(x)</b> This returns the next lower prime number (or x itself, if prime) for all x&ge;2 and x&le;100000. At all four prime functions, non-integers are rounded.</td></tr>
@@ -346,12 +346,12 @@ shown in the examples.</p>
 <tr><td><b>y</b></td><td> Previous function value, e.g. for <b>y(0)+0.01</b> is 0 the initial value for y, the next value is the last result of the input value x and so on.</td></tr>
 <tr><td><b>y2</b></td><td> Pre-previous function value, e.g. <b>y2(1)+0.001</b></td></tr>
 <tr><td><b>step</b></td><td> Number of the iteration steps done, divided by the parameter value, e.g. <b>step(100)</b> counts up to five (at 500 px width).</td></tr>
-<tr><td><b>mean</b></td><td> Iterated arithmetic mean, e.g. <b>mean(sin(x))</b> gives the arithmetic mean of the y-values returned to the so far reached x-values.</td></tr>
+<tr><td><b>mean</b></td><td> Iterated arithmetic mean, e.g. <b>mean(sin(x))</b> gives the arithmetic mean of function values calculated from the leftmost up to the current value in x.</td></tr>
 <tr><td><b>man</b></td><td> Mandelbrot function, e.g. <b>man(0#-1.9)</b> for y(0)*y(0)-1.9.</td></tr>
 </table>
 <h4>- Fractals</h4>
 <table>
-<tr><td><b>rsf</b></td><td>> Random singular function (a kind of devil's staircase), e.g. <b>rsf(0#2)</b> for y(a)+0.008*rand(0#1)*rand(0#1)*(b-a), from a (first value) to b (second value) at 500px width. The first value is the start point on the y-axis, the second is the average end value.</td></tr>
+<tr><td><b>rsf</b></td><td>Random singular function (a kind of devil's staircase), e.g. <b>rsf(0#2)</b> for y(a)+0.008*rand(0#1)*rand(0#1)*(b-a), from a (first value) to b (second value) at 500px width. The first value is the start point on the y-axis, the second is the average end value.</td></tr>
 <tr><td><b>wf</b></td><td> Weierstrass function, e.g. <b>wf(x#0.5#17#10)</b> The second value is a parameter between 0 and 1, the third value is a positive, odd integer. The second multiplied with the third must be larger than 1+3/2*pi. The fourth value is the number of steps done. In theory this is infinite, but here the maximum is 100.</td></tr>
 <tr><td><b>blanc</b></td><td> Blancmange curve, e.g. <b>blanc(x#10)</b> The second value is the number of steps done, maximum is 1000.</td></tr>
 <tr><td><b>tak</b></td><td> Takagi-Landsberg curve, e.g. <b>tak(x#0.7#10)</b> The second value is a parameter, which should be between 0 and 1. The third is the number of steps done, maximum is 1000.</td></tr>
@@ -372,9 +372,11 @@ Derivatives within a function are written like this:<br />
 Derivative of fourth order over a whole function can be generated by using D3 together with selecting 'Derivative' in the display or by writing e.g. <b>D(D3(sin(x)))</b> (not D(D(...))). The maximum for reasonable results is seventh order, eg D(D3(D03(...))).
 <br /><br />
 Integrals within a function are written like this:<br />
+<table border="0" cellspacing="0" cellpadding="2"><tr><td>
 <b>S</b> or <b>S1</b> First integral, e.g. <b>S(x*x)</b><br />
 <b>S2</b> Second integral, e.g. <b>S2(x)</b><br />
 <b>S3</b> Third integral, e.g. <b>S3(1)</b><br />
+</td></tr></table>
 <i>Only one integral can be included in one function. So something like S(...)+S2(...) won't work.</i><br />
 Integral of fourth order over a whole function can be generated by using S3 together with selecting 'Integral' in the display.
 <br /><br />
@@ -382,66 +384,71 @@ Integral of fourth order over a whole function can be generated by using S3 toge
 <a id="11"></a><h1>Adjust the display</h1>
 <h3>Display options:</h3>
 <table>
-<tr><td><b>Image type</b>:</td><td>plotter knows three image formats: png (compression level 1), gif (GIF87a) or jpeg (90 percent quality level). The jpeg image format does not Support transparency.</td></tr>
-<tr><td><b>Width / Height</b></td><td> set the size of the image in pixels. For practical reasons, minimum size is 200, maximum is 500.</td></tr>
-<tr><td><b>Range</b></td><td> defines the interval the curves are displayed in. Maximal input and output value is 100000 (or -100000). With a logarithmic scale, the output value can raise up to about 10<sup>300</sup>. Constants like <b>pi</b> are allowed, too.</td></tr>
-<tr><td><b>Intervals</b></td><td> number of sectors on each axis labeled with dashes and numbers. Maximum is 250 or half of the width / height.</td></tr>
+<tr><td><b>image type</b>:</td><td>plotter knows three image formats: png (compression level 1), gif (GIF87a) or jpeg (90 percent quality level). The jpeg image format does not Support transparency.</td></tr>
+<tr><td><b>width / height</b></td><td> set the size of the image in pixels. For practical reasons, minimum size is 200, maximum is 500.</td></tr>
+<tr><td><b>range</b></td><td> defines the interval the curves are displayed in. Maximal input and output value is 100000 (or -100000). With a logarithmic scale, the output value can raise up to about 10<sup>300</sup>. Constants like <b>pi</b> are allowed, too.</td></tr>
+<tr><td><b>intervals</b></td><td> number of sectors on each axis labeled with dashes and numbers. Maximum is 250 or half of the width / height.</td></tr>
 <tr><td><b>grid lines</b></td><td> the number of the drawn lines in the grid. Maximum is half of the width or height.</td></tr>
-<tr><td><b>Dashes length</b></td><td> length of the dashes at interval borders. Maximum length is 500.</td></tr>
-<tr><td><b>Decimal places</b></td><td> defines the number of displayed decimal places displayed. The value is used for calculation of values, too. Maximum is 12.</td></tr>
-<tr><td><b>Gap at origin</b></td><td> gives the size of an optional gap around the origin. If set to 0, no gap is shown.</td></tr>
-<tr><td><b>Graph thickness</b></td><td> line thickness of function graphs. Values can be positive integers up to 200 (which looks quite funny...).</td></tr>
-</td></tr>
-<tr><td><b>Log. scale</b></td><td> switch between linear and logarithmic scale on one or both axes. 
+<tr><td><b>dashes length</b></td><td> length of the dashes at interval borders. Maximum length is 500.</td></tr>
+<tr><td><b>decimal places</b></td><td> defines the number of decimal places displayed. This is used for calculation of values, too. Maximum is 12.</td></tr>
+<tr><td><b>gap at origin</b></td><td> sets the size of an optional gap around the origin. If set to 0, no gap is shown.</td></tr>
+<tr><td><b>graph thickness</b></td><td> line thickness of function graphs. Values can be positive integers up to 200 (which looks quite funny...).</td></tr>
+<tr><td><b>log. scale</b></td><td> switch between linear and logarithmic scale on one or both axes. 
 No is a linear scale. You can choose 2, e, 10 or 100, as logarithmic base or enter an individual value.
-<i>Caution: the logarithmic display won't show integrated or derivated graphs or iterations!</i></td></tr>
-</td></tr>
-<tr><td><b>Quadrants</b></td><td>offers several buttons to change the displayed quadrants and an input field for their size. If you wish to change the size, do that before you click on one of these buttons.</td></tr>
-</td></tr>
+<i>Caution: logarithmic display will not work with integration, derivates or iterations.</i></td></tr>
+<tr><td><b>quadrants</b></td><td>offers some buttons to change the displayed quadrants and an input field for their size. If you wish to change the size, do so before clicking one of these buttons.</td></tr>
 </table>
 
 
 
 
 
-The <b>checks</b>, if set, cause the display of the reticule lines, axes lines (x- and y-axis), caption (values and axes), dashes, frame and potentially occuring error messages.<br />
+The <b>checkboxes</b> can be used to switch grid and axes lines (x- and y-axis),
+caption (values and axes), dashes, frame and potentially occuring error messages.<br />
 <br />
-In the next line you can define the <b>colors of the display</b> and choose <b>Antialiasing</b> (which often looks better). <b>Poles</b>, if selected, finds poles and doesn't connect them. Unfortunately, this feature is far from being perfect.<br />
-You can also decide, whether lines and caption should be drawn in the background or in the foreground or not at all.<br />
-At <b>Gamma</b>, you can make a gamma correction, enter a value larger than 0 here, 1 is standard.<br />
-At <b>Brightness</b>, enter an integer between -255 and 255, 0 doesn't change the brightness.<br />
-At <b>Contrast</b>, enter an integer between -100 and 100, 0 doesn't change anything.<br />
-At <b>Rotation</b>, enter the angle in degrees, which you wish the image to rotate.<br />
-<b>Emboss</b>, <b>Blur</b>, <b>Negative</b>, <b>Greyscale</b>, <b>Sketchy</b> and <b>Edges only</b> are special effects which, when checked, will change the look of the graph as their name implies.<br />
-<b>Self-defined color</b> lets you define three colors of your own choice, which can be chosen as <b>Self 1-3</b> in the color lists. Enter the color as a 6-digit hex code, e.g. ffffff for white. <a href="http://jumk.de/color-calculator/" target="_blank" style="font-style:italic;font-weight:normal">Color calculator to find out color codes</a>.<br />
+Below, some <b>display colors</b> and <b>antialiasing</b> (which often looks better) can be chosen.
+<b>poles</b>, if selected, tries to find poles and doesn't connect them (unfortunately, this feature is far from being perfect).<br />
+Lines and captions can be drawn in the back- or foreground or switched off.<br />
+<b>rotation</b> sets an angle in degrees, by which the image will be rotated.<br />
+<b>emboss</b>, <b>blur</b>, <b>negative</b>, <b>greyscale</b>, <b>sketchy</b> and <b>edges only</b> are effects which, when checked, will change the look of the graph as their name implies.
 <br />
 <i>The displayed graph is never an exact image of the function, but an approximation as good as possible.</i>
 <br /><br />
 <a href="#top" class="uplink">top</a><br /><br />
-<a id="12"></a><h1>Calculate single value</h1>
-Enter a function with the syntax above or click on <b>1</b>, <b>2</b> or <b>3</b> to take a specified function term. Choose a numeric (no formula) input value and click <b>Calculate</b> to see its function value. The result is rounded according to the setting at <b>Decimal places</b>. Values of the function phi, derivatives, integrals and iterations can't be calculated.<br />
-Enter several values, separated by spaces (e.g. 1 2 3 4 5), to get a score table. Press <b>+10</b> to get the numbers from 1 to 10, or <b>-10</b> to get those from -1 to -10. You can also choose, if you want as output only the <b>Results</b>, a <b>Table</b> with the x-values as well or a <b>CSV</b>-type list (semicolon separated).<br />
-This tool can also be used as a pocket calculator. Simply enter an arithmetic term like <b>2*2</b> and no input value.<br />
+
+<a id="12"></a><h1>calculate function values</h1>
+<p>To calculate values, you need a function in the syntax
+used for plotter input already (see above). There are three buttons 
+that will copy the function definitions in the plotting part
+(named f(x), g(x) and h(x)).</p>
+<p>Variable values used to calculate distinct points on the curve can
+be given in text form (a line of numbers separated by spaces), the buttons
+<b>+10</b>/<b>-10</b> will enter whole numbers from 1 to 10 rsp
+-1 to -10.</p>
+<p>Once calculated, the values will be displayed in the
+Format selected by the radio buttons  - a line of numbers, table, in csv-notation (semicolon-separated)
+or as a snippet of Latex code.</p>
 <br />
 <a href="#top" class="uplink">top</a><br /><br />
-<a id="13"></a><h1>Load &amp; Save</h1>
+<a id="13"></a><h1>load &amp; save</h1>
 <p>Each time a plot is created, all selected values and options
-are mangled into a query string used to pass the relevant
-data and get the actual image. The plot can be reconstructed
-anytime by passing this data to graph.php (you will get an image
-in the previously selected format). This means the URL displayed
-in the text field can be used as an URL to create a predefined 
-plot on the fly - there's no need to save the image into a file.
-Of course, the URL can be saved as text to create a plot later
-on.
-</p><p>Direct linking to a function plot is a nice feature, but
+are concatenated into a (long!) query string to pass the relevant
+data to the graphing part and get the actual image. The plot can
+be redrawn anytime by passing this data to graph.php (which will
+return an image in the previously selected format). All the required
+information is stored in the query string - so the URL displayed
+in the text field can be used to create a predefined plot on the
+fly, there's no need to save the image into a file. Of course, the
+URL can be saved as text to create a plot later on.
+</p><br />
+<p>Direct linking to a function plot is a nice feature, but
 the URL with plotter's options is really ugly. That's why
 there's a short link (tinyurl-a-like) in the upper field.
 This one can be used if you do not need a direct link to the
 image (if a redirection is acceptable).</p>
 <p>By appending &quot; .qr &quot; to the end of the short
 link, you'll get a QRCode (as a png image) of the short link
-which in turn will Redirect to the image of the created
+which in turn will redirect to the image of the created
 plot - simple, huh?</p>
 <br />
 <a href="#top" class="uplink">top</a><br /><br />
@@ -450,7 +457,7 @@ plot - simple, huh?</p>
 <?php
 echo $licensetext;
 if ($plotterinfo) {
-	echo "<p>Plotter $plotterversion is published under <a href='https://www.gnu.org/licenses/gpl-2.0.html'>GPL V.2</a>. If you like it, get it from <a href='https://github.com/MarcusOettinger/plotter'>the github repository</a>.</p>";
+        echo "<p>Plotter $plotterversion is published under <a href='https://www.gnu.org/licenses/gpl-2.0.html'>GPL V.2</a>. If you like it, get it from <a href='https://github.com/MarcusOettinger/plotter'>the github repository</a>.</p>";
 }
 ?>
 <a href="#top" class="uplink">top</a><br /><br />

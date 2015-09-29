@@ -13,20 +13,21 @@
 // Functional changes:
 //  * added the possibility to plot up to 10 named points (e.g. maxima or such)
 //  * added a shortlink (a la tinyurl) for URL with the bloated query string
+//  * added a workaround for gdlib packages w/o imageantialias (debian, ubuntu
+//    maybe others?)
 // License: GPL
 //
+//
+//   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+// <script src="http://lib.familie-oettinger.net/min/?g=jssmall" type="text/javascript"></script>
 //
 ?>
 <!DOCTYPE html><html>
   <head><title>Plotter</title>
   <meta name="robots" content="index,follow">
-  <meta name="author" content="Marcus Oettinger">
   <meta name="content-language" content="en">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <script src="http://lib.familie-oettinger.net/min/?g=jssmall" type="text/javascript"></script>
-  <link rel="shortcut icon" type="image/x-icon" href="images/plotter.ico">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+<?php echo $extopts; ?>
   <link rel="stylesheet" href="plotstyle.css" type="text/css">
   <script src="js/functionplotter.js" type="text/javascript"></script>
   <script>
@@ -378,11 +379,11 @@
   <div class="info"  id="info4"><p>
     Every image drawn by plotter can be dynamically reproduced by a simple
     call to plotter's image creating part (graph.php). All the information needed is placed
-    in a query string appended to its URL.
+    in a query string appended to its URL.</p>
     <?php echo $short_msg; ?>
-    </p><p>Of course, this Information can be used
+    <p>Of course, this Information can be used
     to load an existing plot, e.g. to modify some of its Settings - that is what the button
-    labeled <i>Load graph</i> is for.</p>
+    labeled <i>Load graph</i> is for.
   </p></div>
   <table style="width:100%;">
   <?php if (isset($useShortening) && $useShortening == true) {  ?>

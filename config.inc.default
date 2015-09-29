@@ -15,6 +15,18 @@ $fqdn = "http://theplotterthingie.example.com/goplotting";
 // this line
 $srv = "$fqdn/graph.php?";
 
+// External libraries, stylesheets - default: use a local copy of jquery and jquery-ui.
+// The bare minimum to get a working plotter is
+//  * jquery (code.jquery.com is a good choice if used online)
+//  * jquery-ui (ibid)
+//
+$extopts = '<meta name="author" content="Marcus Oettinger">
+  <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
+  <script src="js/jquery-ui.min.js" type="text/javascript"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="images/plotter.ico">
+  <link rel="stylesheet" href="js/jquery-ui-1.10.4.custom.min.css">';
+
+
 // the truetype font to use. To disable freetype font display, just leave
 // this value empty (as a builtin GD font is used if the font file isn't
 // found).
@@ -75,7 +87,7 @@ $infotext = array(
 // $short_msg = "Alternatively, use the short link provided below";
 
 // for your own shortening service via yourls (http://www.yourls.com),
-// use authentication via secret signature token:
+// use authentication via secret signature token (passwordless authentication):
 // $secret = "XXXX"
 // $shorten = "http://example.com/yourls-api.php?action=shorturl&signature=".$secret."&url=";
 // $short_msg = "Alternatively, use the short link provided below";

@@ -19,7 +19,8 @@
     <li><a href="manual.html#10">differential and integral equations</a></li>
    </ul></li>
   <li><a href="manual.html#11">options</a></li>
+  <li><a href="manual.html#12">calculate</a></li>
+  <li><a href="manual.html#13">load &amp; save</a></li>
   <li><a href="examples.html">examples</a>
   <li><a href="manual.html#14">licensing</a></li>
-  </li>
 </ul>
