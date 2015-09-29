@@ -50,22 +50,23 @@ include_once("helpers.php");
 <?php
 
 // header and footer for html table
-define(HD_table, '<table cellspacing="0" cellpadding="1" border="1"><tr><th>x </th>');
-define(FT_table, '</tr></table>');
+define('HD_table', '<table cellspacing="0" cellpadding="1" border="1"><tr><th>x </th>');
+define('FT_table', '</tr></table>');
 // header and footer for Latex table
-define(HD_latex, '\begin{tabular}{c|c}<br />');
-define(FT_latex, '<br />\end{tabular}');
+define('HD_latex', '\begin{tabular}{c|c}<br />');
+define('FT_latex', '<br />\end{tabular}');
 
-// read variables 
-$c=$_POST['c'];
-$qqsingle=$_POST['qqsingle'];
-$single1=$_POST['single1'];
-$inpval=$_POST['inpval'];	// variable values as a blank-separated string
-$decis=$_POST['decis'];
-$format=$_POST['format'];	// Format is one of
-if (!$format) $format = 0;	// 0: values blank-separated
+$format = 0;			// Format is one of
+				// 0: values blank-separated
 				// 1: a html table
 				// 2: csv lines
+// read variables 
+if (isset($_POST['c'])) $c = $_POST['c'];
+if (isset($_POST['qqsingle'])) $qqsingle = $_POST['qqsingle'];
+if (isset($_POST['single1'])) $single1 = $_POST['single1'];
+if  (isset($_POST['inpval'])) $inpval = $_POST['inpval'];
+if  (isset($_POST['decis'])) $decis = $_POST['decis'];
+if  (isset($_POST['format'])) $format = $_POST['format'];
 
 // called for each pair of (value/result)				
 function printValue($val, $erg, $format, $tk) {
@@ -78,7 +79,7 @@ function printValue($val, $erg, $format, $tk) {
 // to make it understandable by PHP
 if(!$inpval) $inpval=0;
 // no function to calculate
-if (!$single1) die('<br />Result</body></html>');
+if (!isset($single1)) die('<br />Result</body></html>');
 // functions containing Diff or Integration cannot be evaluated by php
 if ($single1!=str_replace('D','',$single1) || $single1!=str_replace('S','',$single1) || $single1!=str_replace('phi','',$single1))
 	die('<br />_</body></html>');
@@ -118,7 +119,7 @@ include 'init.php';
 		
 		case 3:	$tk = array("\\\\<br />", "&", "");
 		echo HD_latex;
-		echo "x&$single1\\\\ \hline";
+		echo '$x$&$' . str_replace("*", "\cdot", $single1) . '$\\\\ \hline';
 		$ft = FT_latex;
 		break;	
 	}
