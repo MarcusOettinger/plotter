@@ -47,7 +47,7 @@ empirical plotter for mathematical functions and a bit of calculus.</p>
 <p>
 <a href="http://plot.oettinger-physics.de/" target="_top">Plotter</a>
 is a tool to draw function graphs or calculate function
-values at some given points. It is quite useful to create
+values at distinct points. It can be used to produce
 images showing up to three curves of given functions and/or
 ten points of interest in a cartesian coordinate system.</p>
 <p>Quick-n-dirty usage: declare one ore more functions by
@@ -55,13 +55,13 @@ mathematical expressions in the input fields on the right
 and gently press the button labeled 'Draw' to see the
 corresponding curves in an image on the left side.</p>
 <p>The main functions <b>f(x), g(x), h(x)</b> and some
-specials can be defined in text inputs on the right
-hand side, the <b>color</b> of each curve (in hex notation)
-and some display options can be set.
-The function term can be shown in a simple legend on the plot,
-points creating the curve can be drawn as single
+specials can be declared in text inputs on the right
+hand side, the <b>color</b> of the curves (in hex notation)
+and some options for each curve can be selected:
+the function term can be printed out in the plot,
+the points calculated to draw the curve can be shown as
 dots or interconnected and the inside or outside of each 
-function graph can be filled with the selected color.</p>
+curve can be filled with the selected color.</p>
 <br />
 
 <p>The special options settable on the right are</p>
@@ -80,10 +80,10 @@ function graph can be filled with the selected color.</p>
 </td></tr></table>
 
 <a id="0"></a><h2>Syntax</h2>
-<p>For all functions  and numbers use mathematical expressions which
+<p>For all functions and numbers, you can use mathematical expressions which
 may contain function names, constant names and combinations of the following symbols:</p>
 <br /><table><tr><td>
-<b>x</b></td><td> is treated as variable x in functions</td></tr>
+<b>x</b></td><td> is treated as variable name in functions f(x)</td></tr>
 <tr><td><b>0-9</b></td><td>Numbers like <b>123.45</b>, input values
   are hardly restricted (as long as you don't plan to use more than
   some hundred digits). The output value (result) at a non-log scale
@@ -91,13 +91,13 @@ may contain function names, constant names and combinations of the following sym
   axes.<br />
   Large or small numbers can be written in 
   <a href="https://en.wikipedia.org/wiki/Scientific_notation">scientific Notation</a>
-  (the standard index form <b>2.5E20</b> for 2.5*10<sup>20</sup>),
+  (the standard index form <b>2.5E20</b> for 2.5&middot;10<sup>20</sup>),
   decimal digits are exact up to a number of 12.</td></tr> 
-<tr><td><b>. ,</b></td><td>Point or comma as decimal separator: <b>1.5</b> is the same as <b>1,5</b></td></tr>
-<tr><td><b>+-*/</b></td><td>Basic arithmetic operations (when multiplying a number and a letter, the operator '*' can be omitted, i.e. <b>2x = 2*x</b>)</td></tr>
-<tr><td><b>( ) [ ] { } < ></b></td><td>Brackets, e.g. <b>{[(1+x)/(2-x)+1]*3}/(2*x^2)</b>. As common in mathematics, the type of brackets used does not matter.</td></tr>
-<tr><td><b>#</b></td><td> is used as separator for functions with multiple input values, e.g. <b>scir(x#2)</b></td></tr>
-<tr><td><b>asy</b></td><td>define a vertical asymptote at a fixed value x, e.g. <b>asy(1)</b> or <b>asy(e)</b></td></tr>
+<tr><td><b>. ,</b></td><td>point or comma as decimal separators: <b>1.5</b> is the same as <b>1,5</b></td></tr>
+<tr><td><b>+-*/</b></td><td>basic arithmetic operations<br>(when multiplying a number and a letter, the operator '*' can be omitted, i.e. <b>2x = 2*x</b>)</td></tr>
+<tr><td><b>( ) [ ] { } < ></b></td><td>brackets, e.g. <b>{[(1+x)/(2-x)+1]*3}/(2*x^2)</b>. As common in mathematics, the type of brackets used does not matter.</td></tr>
+<tr><td><b>#</b></td><td> is used as separator for functions accepting multiple input values, e.g. <b>scir(x#2)</b></td></tr>
+<tr><td><b>asy</b></td><td>show a vertical asymptote at a fixed value x, e.g. <b>asy(1)</b> or <b>asy(e)</b></td></tr>
 </table>
 
 <a href="#top" class="uplink">top</a><br /><br />
@@ -109,11 +109,11 @@ as <b>exp(x)</b> and a plot can easily be drawn from
 <span class="greek">-&pi;</span> to <span class="greek">&pi;</span> by
 setting the plotting range from <b>-pi</b> to <b>pi</b>.</p>
 <table>
-<tr><td><b>e</b></td><td>Euler's number: 2.718281828459</td></tr>
+<tr><td><b>e</b></td><td>Euler&apos;s number: 2.718281828459</td></tr>
 <tr><td><b>pi</b></td><td><span class="greek">&pi;</span>, Pi: 3.1415926535898</td></tr>
 <tr><td><b>pi2</b></td><td><span class="greek">&pi;</span>/2, Pi/2: 1.5707963267949</td></tr>
-<tr><td><b>sq2</b></td><td>Square root of 2: 1.4142135623731</td></tr>
-<tr><td><b>go</b></td><td>Relation of the golden ratio: 1.6180339887499</td></tr>
+<tr><td><b>sq2</b></td><td>square root of 2: 1.4142135623731</td></tr>
+<tr><td><b>go</b></td><td>relation of the golden ratio: 1.6180339887499</td></tr>
 <tr><td><b>d</b></td><td>Feigenbaum constant delta: 4.6692016091030</td></tr>
 </table>
 <a href="#top" class="uplink">top</a><br /><br />
@@ -128,13 +128,13 @@ shown in the examples.</p>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="3"></a><h4>- Basic functions</h4>
 <table>
-<tr><td><b>^</b>&nbsp;or&nbsp;<b>pow</b> </td><td>Power, e.g. <b>x^2</b> or <b>pow(x#2)</b> for x<sup>2</sup>. Root can be written as e.g. <b>x^(1/2)</b> or <b>x^.5</b> for square root of x, an exponential function like this: <b>e^x</b> for e<sup>x</sup>.
-  <i> &nbsp; Roots of negative values can only be shown, if the numerator of the power is 1 and the denominator of the power is odd (e.g. <b>x^(1/3)</b> ). To calculate negative x-values for e.g. <b>x^(2/3)</b> , you have to alter this function into <b>(x^(1/3))^2</b></i></td></tr>
-<tr><td><b>sqr</b> </td><td>Square root, e.g. <b>sqr(x)</b> as equivalent to x^(1/2).</td></tr>
-<tr><td><b>exp</b></td><td> Exponential function, Euler-function, e.g. <b>exp(x)</b> as equivalent to e^x.</td></tr>
-<tr><td><b>log</b> </td><td>Natural logarithm , e.g. <b>log(x)</b></td></tr>
-<tr><td><b>log10</b> </td><td>Decadic logarithm, e.g. <b>log10(x)</b></td></tr>
-<tr><td><b>logn</b></td><td> Logarithm to the base n, e.g. <b>logn(2#x)</b> for the binary (base 2) logarithm.</td></tr>
+<tr><td><b>^</b>&nbsp;or&nbsp;<b>pow</b> </td><td>power function, e.g. <b>x^2</b> or <b>pow(x#2)</b> for x<sup>2</sup>. A root can be written as power of a fraction, e.g. <b>x^(1/2)</b> or <b>x^.5</b> for square root of x, an exponential function like this: <b>e^x</b> for e<sup>x</sup>.
+  <i> &nbsp; Roots of negative values can only be shown, if the numerator 1 and the denominator is odd (e.g. <b>x^(1/3)</b> ). To calculate negative x-values for e.g. <b>x^(2/3)</b> , you have to alter this function into <b>(x^(1/3))^2</b></i></td></tr>
+<tr><td><b>sqr</b> </td><td>square root, e.g. <b>sqr(x)</b> as equivalent to x^(1/2).</td></tr>
+<tr><td><b>exp</b></td><td> exponential function, Euler-function, e.g. <b>exp(x)</b> as equivalent to e^x.</td></tr>
+<tr><td><b>log</b> </td><td>natural logarithm (logarithm to base e) , e.g. <b>log(x)</b></td></tr>
+<tr><td><b>log10</b> </td><td>decadic logarithm, e.g. <b>log10(x)</b></td></tr>
+<tr><td><b>logn</b></td><td> logarithm to base n, e.g. <b>logn(2#x)</b> for the binary (base 2) logarithm.</td></tr>
 </table><a href="#top" class="uplink">top</a><br /><br />
 
 <a id="4"></a><h4>- Trigonometric and hyperbolic functions</h4>
@@ -183,94 +183,94 @@ shown in the examples.</p>
 <tr><td><b>tanc</b> </td><td> Tanc function or tangent cardinalis, e.g. <b>tanc(x)</b> for tan(x)/x.
 <tr><td><b>hubb</b> </td><td> Hubbert curve, e.g. <b>hubb(x)</b> for 1/(2+2*cosh(x)).</td></tr>
 <tr><td><b>L</b> </td><td> <a href="http://scienceworld.wolfram.com/physics/LangevinFunction.html">Langevin function</a>, e.g. <b>L(x)</b> for coth(x)-1/x.</td></tr>
-<tr><td><b>deg</b> </td><td> Converts the radian number to the equivalent number in degrees, e.g. <b>deg(pi)</b></td></tr>
-<tr><td><b>rad</b> </td><td> Converts the number in degrees to the radian equivalent, e.g. <b>rad(180)</b></td></tr>
+<tr><td><b>deg</b> </td><td> converts a radian number to the equivalent number in degrees, e.g. <b>deg(pi)</b></td></tr>
+<tr><td><b>rad</b> </td><td> converts a number in degrees to the radian equivalent, e.g. <b>rad(180)</b></td></tr>
 </table>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="5"></a><h3>- Non-differentiable functions</h3>
 <table>
-<tr><td><b>abs</b></td><td> Absolute value, e.g. <b>abs(x)</b></td></tr>
-<tr><td><b>min</b></td><td> Minimum of several values, e.g. <b>min(1#x#x^(1/3))</b> as minimum of 1, x and third root of x.</td></tr>
-<tr><td><b>max</b></td><td> Maximum of several values, e.g. <b>max(abs(x)#x*x)</b> as maximum of the absolute value of x and x<sup>2</sup>.</td></tr>
-<tr><td><b>%</b></td><td> Modulo division, whole-numbered remainder, e.g. <b>10%x</b></td></tr>
-<tr><td><b>fmod</b></td><td> Modulo division, floating point remainder, e.g. <b>fmod(x#1)</b> displays only the position after the decimal point of the input value.</td></tr>
-<tr><td><b>R</b></td><td> Round, e.g. <b>R(x#2)</b> rounds two decimal places, <b>R(x)</b> rounds to an integer.</td></tr>
-<tr><td><b>R0</b></td><td> Floor (rounding down), e.g. <b>R0(x)</b></td></tr>
-<tr><td><b>R1</b></td><td> Ceil (rounding up), e.g. <b>R1(x)</b></td></tr>
-<tr><td><b>dist</b></td><td> Distance function, e.g. <b>dist(x)</b> gives the distance to the nearest integer.</td></tr>
-<tr><td><b>prime</b></td><td> Prime number function, e.g. <b>prime(x)</b> This returns the next lower prime number (or x itself, if prime) for all x&ge;2 and x&le;100000. At all four prime functions, non-integers are rounded.</td></tr>
-<tr><td><b>prime1</b></td><td> Prime number detecting function, e.g. <b>prime1(x)</b> Displays a number only if prime, else 0. To find all prime numbers in an interval, the span of the x-axis shouldn't be wider than the width of the image (usually 500) and you should switch off poles.</td></tr>
-<tr><td><b>prime2</b></td><td> Distinct prime factor counting function, e.g. <b>prime2(x)</b> returns the amount of different prime factors for an integer.</td></tr>
-<tr><td><b>prime3</b> </td><td>Prime factor counting function, e.g. <b>prime3(x)</b> returns the amount of prime factors for an integer, including multiples. E.g. prime2(4) = 1, whereas prime3(4) = 2. If prime3(x) = 1, then x is prime.</td></tr>
-<tr><td><b>div</b></td><td> Divisor function, e.g. <b>div(x)</b> returns the number of divisors of an integer. Non-integers are rounded.</td></tr>
-<tr><td><b>dig</b></td><td> Digit sum, e.g. <b>dig(x)</b> returns the digital sum of an integer. Non-integers are rounded, - is ignored.</td></tr>
-<tr><td><b>dig2</b></td><td> Iterated (one-digit) digit sum, e.g. <b>dig2(x)</b> returns the iterated digital sum of an integer.</td></tr>
-<tr><td><b>adig</b> </td><td>Alternating digit sum, e.g. <b>adig(x)</b> Non-integers are rounded, - is ignored.</td></tr>
-<tr><td><b>fac</b> </td><td>Factorial, e.g. <b>fac(x)</b>  Non-integers are rounded.</td></tr>
-<tr><td><b>H</b></td><td> Heaviside step function, e.g. <b>H(x)</b> 0, if x&#8804;0, else 1.</td></tr>
-<tr><td><b>Hm</b></td><td> Multivariate Heaviside step function, e.g. <b>Hm(x*x-1#sin(x))</b> 0, if at least one value &#8804;0, else 1. Enter as many arguments as you want.</td></tr>
-<tr><td><b>sig</b> </td><td>Signum function (sign function), e.g. <b>sig(x)</b></td></tr>
-<tr><td><b>haar</b></td><td> Haar wavelet, e.g. <b>haar(x)</b></td></tr>
-<tr><td><b>gcf</b></td><td> Greatest common factor (or greatest common divisor, gcd), e.g. <b>gcf(8#x)</b> returns the greatest common factor between two integers. Non-integers are rounded.</td></tr>
-<tr><td><b>lcm</b></td><td> Least common multiple, e.g. <b>lcm(8#x)</b> returns the least common multiple between two integers. Non-integers are rounded.</td></tr>
-<tr><td><b>mo</b></td><td> M&ouml;bius function, e.g. <b>mo(x)</b> returns for all positive integers 0, if divisible by a square>1, -1 if it has an odd number of distinct prime factors and 1 if it has an even number of distinct prime factors. Non-integers are rounded. Values are allowed up to 100000.</td></tr>
-<tr><td><b>toti</b></td><td> Euler's totient function, e.g. <b>toti(x)</b> counts all positive integers less than x that are comprime to x. Non-integers are rounded.</td></tr>
-<tr><td><b>odd</b></td><td> Find odd numbers, e.g. <b>odd(x)</b> returns numbers only when odd. Non-integers are rounded.</td></tr>
-<tr><td><b>even</b></td><td> Find even numbers, e.g. <b>even(x)</b> returns numbers only when even. Non-integers are rounded.</td></tr>
-<tr><td><b>bin</b></td><td> Binomial coefficient, e.g. <b>bin(4#x)</b> The two values are n and k. Non-integers are rounded.</td></tr>
-<tr><td><b>tri</b></td><td> Triangle curve, e.g. <b>tri(1#2#x)</b> The first value is the period, the second is the amplitude.</td></tr>
-<tr><td><b>rect</b></td><td> Rectangle curve, e.g. <b>rect(1#-1#2#x)</b> The first value is the upper limit, the second is the lower and the third is the period.</td></tr>
-<tr><td><b>saw</b></td><td> Sawtooth wave, e.g. <b>saw(2#1#x)</b> The first value is the period, the second is the amplitude.</td></tr>
-<tr><td><b>saw2</b></td><td> Reverse sawtooth wave, e.g. <b>saw2(2#1#x)</b> The first value is the period, the second is the amplitude.</td></tr>
-<tr><td><b>ramp</b></td><td> Ramp function, e.g. <b>ramp(1#2#1#x)</b> The first value is the start value, the second is the end value and the third is the height.</td></tr>
-<tr><td><b>ramp2</b></td><td> Reverse ramp function, e.g. <b>ramp2(1#2#1#x)</b> The first value is the start value, the second is the end value and the third is the height.</td></tr>
-<tr><td><b>trap</b></td><td> Trapezium (trapezoid) function, e.g. <b>trap(-4#-1#3#2#3#x)</b> The first value is the start value of the climb, the second is the end value of the climb, the third is the height, the fourth is the start value of the descent and the fifth is the end value of the descent.</td></tr>
-<tr><td><b>poly</b></td><td> Polygon or chart line, e.g. <b>poly(-4#2#-3#4#-2#1#-1#0#0#3#1#2#2#-1#3#3#4#1#x)</b> gives a chart, respectively a half polygon. Here, (-4,2) is connected to (-3,4), this to (-2,1) and so on. The first value of each pair is the x-value, the second one is the y-value. The x-values must increase with each step. To get a full polygon, enter a second term with the same start and end points, like <b>poly(-4#2#0.5#-4#4#1#x)</b></td></tr>
-<tr><td><b>rand</b></td><td> Integer random number between two integers, e.g. <b>rand(0#2)</b> returns 0, 1 or 2 (Mersenne twister is used for generating).</td></tr>
-<tr><td><b>rand2</b></td><td> Random number between two numbers with decimal places (maximal 9), e.g. <b>rand2(0#1#3)</b> returns a number with three decimal places between 0 and 1 (Mersenne twister, too).</td></tr>
+<tr><td><b>abs</b></td><td> absolute value, e.g. <b>abs(x)</b></td></tr>
+<tr><td><b>min</b></td><td> minimum of several values, e.g. <b>min(1#x#x^(1/3))</b> as minimum of 1, x and third root of x.</td></tr>
+<tr><td><b>max</b></td><td> maximum of several values, e.g. <b>max(abs(x)#x*x)</b> as maximum of the absolute value of x and x<sup>2</sup>.</td></tr>
+<tr><td><b>%</b></td><td> modulo division, whole-numbered remainder, e.g. <b>10%x</b></td></tr>
+<tr><td><b>fmod</b></td><td> modulo division, floating point remainder, e.g. <b>fmod(x#1)</b> displays only the position after the decimal point of the input value.</td></tr>
+<tr><td><b>R</b></td><td> round, e.g. <b>R(x#2)</b> rounds two decimal places, <b>R(x)</b> rounds to an integer.</td></tr>
+<tr><td><b>R0</b></td><td> floor (rounding down), e.g. <b>R0(x)</b>. This is equivalent to Gaussian brackets <b>[x]</b>.</td></tr>
+<tr><td><b>R1</b></td><td> ceil (rounding up), e.g. <b>R1(x)</b></td></tr>
+<tr><td><b>dist</b></td><td> distance function, e.g. <b>dist(x)</b> gives the distance to the nearest integer.</td></tr>
+<tr><td><b>prime</b></td><td> prime number function, e.g. <b>prime(x)</b> This returns the next lower prime number (or x itself, if prime) for all x&ge;2 and x&le;100000. At all four prime functions, non-integers are rounded.</td></tr>
+<tr><td><b>prime1</b></td><td> prime number detecting function, e.g. <b>prime1(x)</b> displays the number x only if x is prime, 0 otherwise. To find all prime numbers in an interval, the span of the x-axis shouldn&apos;t be wider than the width of the image (usually 500) and you should switch off poles.</td></tr>
+<tr><td><b>prime2</b></td><td> distinct prime factor counting function, e.g. <b>prime2(x)</b> returns the amount of different prime factors for an integer.</td></tr>
+<tr><td><b>prime3</b> </td><td>prime factor counting function, e.g. <b>prime3(x)</b> returns the amount of prime factors for an integer, including multiples. E.g. prime2(4) = 1, whereas prime3(4) = 2. If prime3(x) = 1, then x is prime.</td></tr>
+<tr><td><b>div</b></td><td> divisor function, e.g. <b>div(x)</b> returns the number of divisors of an integer. Non-integers are rounded.</td></tr>
+<tr><td><b>dig</b></td><td> digit sum, e.g. <b>dig(x)</b> returns the digital sum of an integer. Non-integers are rounded, - is ignored.</td></tr>
+<tr><td><b>dig2</b></td><td> iterated (one-digit) digit sum, e.g. <b>dig2(x)</b> returns the iterated digital sum of an integer.</td></tr>
+<tr><td><b>adig</b> </td><td>alternating digit sum, e.g. <b>adig(x)</b> Non-integers are rounded, - is ignored.</td></tr>
+<tr><td><b>fac</b> </td><td>factorial, e.g. <b>fac(x)</b>  Non-integers are rounded.</td></tr>
+<tr><td><b>H</b></td><td>Heaviside step function, e.g. <b>H(x)</b> 0, if x&#8804;0, else 1.</td></tr>
+<tr><td><b>Hm</b></td><td>multivariate Heaviside step function, e.g. <b>Hm(x*x-1#sin(x))</b> 0, if at least one value &#8804;0, else 1. Enter as many arguments as you want.</td></tr>
+<tr><td><b>sig</b> </td><td>signum function (sign function), e.g. <b>sig(x)</b></td></tr>
+<tr><td><b>haar</b></td><td>Haar wavelet, e.g. <b>haar(x)</b></td></tr>
+<tr><td><b>gcf</b></td><td>greatest common factor (or greatest common divisor, gcd), e.g. <b>gcf(8#x)</b> returns the greatest common factor between two integers. Non-integers are rounded.</td></tr>
+<tr><td><b>lcm</b></td><td>least common multiple, e.g. <b>lcm(8#x)</b> returns the least common multiple between two integers. Non-integers are rounded.</td></tr>
+<tr><td><b>mo</b></td><td>M&ouml;bius function, e.g. <b>mo(x)</b> returns for all positive integers 0, if divisible by a square>1, -1 if it has an odd number of distinct prime factors and 1 if it has an even number of distinct prime factors. Non-integers are rounded. Values are allowed up to 100000.</td></tr>
+<tr><td><b>toti</b></td><td>Euler&apos;s totient function, e.g. <b>toti(x)</b> counts all positive integers less than x that are comprime to x. Non-integers are rounded.</td></tr>
+<tr><td><b>odd</b></td><td>find odd numbers, e.g. <b>odd(x)</b> returns numbers only when odd. Non-integers are rounded.</td></tr>
+<tr><td><b>even</b></td><td>find even numbers, e.g. <b>even(x)</b> returns numbers only when even. Non-integers are rounded.</td></tr>
+<tr><td><b>bin</b></td><td>binomial coefficient, e.g. <b>bin(4#x)</b> The two values are n and k. Non-integers are rounded.</td></tr>
+<tr><td><b>tri</b></td><td>triangle curve, e.g. <b>tri(1#2#x)</b> The first value is the period, the second is the amplitude.</td></tr>
+<tr><td><b>rect</b></td><td>rectangle curve, e.g. <b>rect(1#-1#2#x)</b> The first value is the upper limit, the second is the lower and the third is the period.</td></tr>
+<tr><td><b>saw</b></td><td>sawtooth wave, e.g. <b>saw(2#1#x)</b> The first value is the period, the second is the amplitude.</td></tr>
+<tr><td><b>saw2</b></td><td>reverse sawtooth wave, e.g. <b>saw2(2#1#x)</b> The first value is the period, the second is the amplitude.</td></tr>
+<tr><td><b>ramp</b></td><td>ramp function, e.g. <b>ramp(1#2#1#x)</b> The first value is the start value, the second is the end value and the third is the height.</td></tr>
+<tr><td><b>ramp2</b></td><td>reverse ramp function, e.g. <b>ramp2(1#2#1#x)</b> The first value is the start value, the second is the end value and the third is the height.</td></tr>
+<tr><td><b>trap</b></td><td>trapezium (trapezoid) function, e.g. <b>trap(-4#-1#3#2#3#x)</b> The first value is the start value of the climb, the second is the end value of the climb, the third is the height, the fourth is the start value of the descent and the fifth is the end value of the descent.</td></tr>
+<tr><td><b>poly</b></td><td>polygon or chart line, e.g. <b>poly(-4#2#-3#4#-2#1#-1#0#0#3#1#2#2#-1#3#3#4#1#x)</b> gives a chart, respectively a half polygon. Here, (-4,2) is connected to (-3,4), this to (-2,1) and so on. The first value of each pair is the x-value, the second one is the y-value. The x-values must increase with each step. To get a full polygon, enter a second term with the same start and end points, like <b>poly(-4#2#0.5#-4#4#1#x)</b></td></tr>
+<tr><td><b>rand</b></td><td>integer random number between two integers, e.g. <b>rand(0#2)</b> returns 0, 1 or 2 (Mersenne twister is used for generating).</td></tr>
+<tr><td><b>rand2</b></td><td>random number between two numbers with decimal places (maximal 9), e.g. <b>rand2(0#1#3)</b> returns a number with three decimal places between 0 and 1 (Mersenne twister, too).</td></tr>
 </table>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="6"></a><h3>- Probability functions and statistics</h3>
 <table>
-<tr><td><b>norm</b></td><td> Normal or Gaussian distribution, e.g. <b>norm(0#1#x)</b> for the standard normal distribution. The first value is the expected value, the second is the standard deviation.</td></tr>
-<tr><td><b>phi</b></td><td> <span class="greek">&Phi;</span>, Cumulative Gaussian distribution function, e.g. <b>phi(0#1#x)</b> This is an approximation based on the displayed interval. It delivers reasonable values, if the normal distribution in the chosen interval starts at very low values near 0. A common display of both functions is advisable.</td></tr>
-<tr><td><b>chi2</b></td><td> Chi-square distribution, e.g. <b>chi2(3#x)</b> The first value is the number of the degrees of freedom.</td></tr>
-<tr><td><b>ichi2</b></td><td> Inverse-chi-square distribution, e.g. <b>ichi2(3#x)</b> The first value is the number of the degrees of freedom.</td></tr>
-<tr><td><b>sichi2</b></td><td> Scale-inverse-chi-square distribution, e.g. <b>sichi2(3#1#x)</b> The first value is the number of the degrees of freedom, the second is the scale parameter, both must be >0.</td></tr>
-<tr><td><b>chi</b></td><td> Chi distribution, e.g. <b>chi(3#x)</b> The first value is the number of the degrees of freedom.</td></tr>
-<tr><td><b>stud</b></td><td> Student's t-distribution, e.g. <b>stud(2#x)</b> The first value is the number of the degrees of freedom.</td></tr>
+<tr><td><b>norm</b></td><td>normal or Gaussian distribution, e.g. <a href="http://plot.oettinger-physics.de/graph.php?a0=2&a1=norm%282%231%23x%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=0&b5=0.5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z"><b>norm(2#1#x)</b></a> for the standard normal Distribution shifted two Units to the right. The first value is the expected value, the second is the standard deviation.</td></tr>
+<tr><td><b>phi</b></td><td><span class="greek">&Phi;</span>, cumulative Gaussian distribution function, e.g. <b>phi(0#1#x)</b> This is an approximation based on the displayed interval. It delivers reasonable values, if the normal distribution in the chosen interval starts at very low values near 0. A common display of both functions is advisable.</td></tr>
+<tr><td><b>chi2</b></td><td>chi-square distribution, e.g. <b>chi2(3#x)</b> The first value is the number of the degrees of freedom.</td></tr>
+<tr><td><b>ichi2</b></td><td>inverse-chi-square distribution, e.g. <b>ichi2(3#x)</b> The first value is the number of the degrees of freedom.</td></tr>
+<tr><td><b>sichi2</b></td><td>scale-inverse-chi-square distribution, e.g. <b>sichi2(3#1#x)</b> The first value is the number of the degrees of freedom, the second is the scale parameter, both must be >0.</td></tr>
+<tr><td><b>chi</b></td><td>chi distribution, e.g. <b>chi(3#x)</b> The first value is the number of the degrees of freedom.</td></tr>
+<tr><td><b>stud</b></td><td> Student&apos;s t-distribution (also known as t-distribution), e.g. <b>stud(2#x)</b> The first value is the number of the degrees of freedom.</td></tr>
 <tr><td><b>F</b></td><td> F-distribution (Fisher-Snedecor), e.g. <b>F(5#2#x)</b> The first two values are the numbers of the degrees of freedom.</td></tr>
-<tr><td><b>Fz</b></td><td> Fisher's z-distribution, e.g. <b>Fz(5#2#x)</b> The first two values are the numbers of the degrees of freedom.</td></tr>
-<tr><td><b>lnorm</b></td><td> Log-normal distribution, e.g. <b>lnorm(0#1#x)</b> The first value is the mean, the second is the standard deviation.</td></tr>
+<tr><td><b>Fz</b></td><td> Fisher&apos;s z-distribution, e.g. <b>Fz(5#2#x)</b> The first two values are the numbers of the degrees of freedom.</td></tr>
+<tr><td><b>lnorm</b></td><td> log-normal distribution, e.g. <b>lnorm(0#1#x)</b> The first value is the mean, the second is the standard deviation.</td></tr>
 <tr><td><b>cau</b></td><td> Cauchy distribution or Lorentz distribution, e.g. <b>cau(0#1#x)</b> for the standard Cauchy distribution. The first value is the location parameter, the second is the scale parameter.</td></tr>
 <tr><td><b>lapc</b></td><td> Laplace distribution, e.g. <b>lapc(0#1#x)</b> The first value is the location parameter, the second is the scale parameter. The second parameter must be >0.</td></tr>
-<tr><td><b>logd</b></td><td> Logistic distribution, e.g. <b>logd(1#2#x)</b> The first value is the location parameter, the second is the scale parameter.</td></tr>
-<tr><td><b>hlogd</b></td><td> Half-logistic distribution, e.g. <b>hlogd(x)</b></td></tr>
+<tr><td><b>logd</b></td><td> logistic distribution, e.g. <b>logd(1#2#x)</b> The first value is the location parameter, the second is the scale parameter.</td></tr>
+<tr><td><b>hlogd</b></td><td> half-logistic distribution, e.g. <b>hlogd(x)</b></td></tr>
 <tr><td><b>rlng</b></td><td> Erlang distribution, e.g. <b>rlng(5#1#x)</b> The first value is the shape parameter, the second is the rate parameter. The first parameter must be a natural number.</td></tr>
-<tr><td><b>pon</b></td><td> Exponential distribution, e.g. <b>pon(1#x)</b> The first value is the rate parameter.</td></tr>
-<tr><td><b>cosd</b></td><td> Raised cosine distribution, e.g. <b>cosd(0#1#x)</b> The first value is the location parameter, the second is the scale parameter. cosd is defined in the interval [location-scale;location+scale].</td></tr>
-<tr><td><b>sechd</b></td><td> Hyperbolic secant distribution, e.g. <b>sechd(x)</b></td></tr>
+<tr><td><b>pon</b></td><td> exponential distribution, e.g. <b>pon(1#x)</b> The first value is the rate parameter.</td></tr>
+<tr><td><b>cosd</b></td><td> raised cosine distribution, e.g. <b>cosd(0#1#x)</b> The first value is the location parameter, the second is the scale parameter. cosd is defined in the interval [location-scale;location+scale].</td></tr>
+<tr><td><b>sechd</b></td><td> hyperbolic secant distribution, e.g. <b>sechd(x)</b></td></tr>
 <tr><td><b>kum</b></td><td> Kumaraswamy distribution, e.g. <b>kum(2#3#x)</b> The first two values are the shape parameters a and b.</td></tr>
 <tr><td><b>levy</b></td><td> L&#233;vy distribution, e.g. <b>levy(1#x)</b> The first value is the scale parameter.</td></tr>
 <tr><td><b>rlgh</b></td><td> Rayleigh distribution, e.g. <b>rlgh(1#x)</b> The first value is the scale parameter.</td></tr>
 <tr><td><b>wb</b></td><td> Weibull distribution, e.g. <b>wb(2#1#x)</b> The first value is the shape parameter, the second is the scale parameter.</td></tr>
 <tr><td><b>wig</b></td><td> Wigner semicircle distribution, e.g. <b>wig(1#x)</b> The first value gives the radius.</td></tr>
-<tr><td><b>gammad</b></td><td> Gamma distribution, e.g. <b>gammad(2#3#x)</b> The first value is the shape parameter, the second is the scale parameter.</td></tr>
-<tr><td><b>igammad</b></td><td> Inverse-gamma distribution, e.g. <b>igammad(2#1#x)</b> The first value is the shape parameter, the second is the scale parameter.</td></tr>
-<tr><td><b>igauss</b></td><td> Inverse Gaussian distribution, e.g. <b>igauss(1#0.25#x)</b> The first value is the shape parameter, the second is the scale parameter.</td></tr>
-<tr><td><b>betad</b></td><td> Beta distribution, e.g. <b>betad(2#3#x)</b> The first two values are the shape parameters, these must be &ge;0. betad is defined for x in [0;1].</td></tr>
-<tr><td><b>betap</b></td><td> Beta prime distribution, e.g. <b>betap(2#3#x)</b> The first two values are the shape parameters, these must be >0.</td></tr>
+<tr><td><b>gammad</b></td><td> gamma distribution, e.g. <b>gammad(2#3#x)</b> The first value is the shape parameter, the second is the scale parameter.</td></tr>
+<tr><td><b>igammad</b></td><td> inverse-gamma distribution, e.g. <b>igammad(2#1#x)</b> The first value is the shape parameter, the second is the scale parameter.</td></tr>
+<tr><td><b>igauss</b></td><td> inverse Gaussian distribution, e.g. <b>igauss(1#0.25#x)</b> The first value is the shape parameter, the second is the scale parameter.</td></tr>
+<tr><td><b>betad</b></td><td> beta distribution, e.g. <b>betad(2#3#x)</b> The first two values are the shape parameters, these must be &ge;0. betad is defined for x in [0;1].</td></tr>
+<tr><td><b>betap</b></td><td> beta prime distribution, e.g. <b>betap(2#3#x)</b> The first two values are the shape parameters, these must be >0.</td></tr>
 <tr><td><b>par</b></td><td> Pareto distribution, e.g. <b>par(2#1#x)</b> The first value is the location parameter, the second is the shape parameter.</td></tr>
 <tr><td><b>pear</b></td><td> Pearson distribution (type III), e.g. <b>pear(1#1#2#x)</b> The first value is the location parameter, the second is the scale parameter and the third is the shape parameter.</td></tr>
 <tr><td><b>nak</b></td><td> Nakagami distribution, e.g. <b>nak(4#1#x)</b> The first value is the shape parameter, the second is the spread parameter.</td></tr>
-<tr><td><b>shg</b></td><td> Shifted Gompertz distribution, e.g. <b>shg(0.5#1#x)</b> The first value is the scale parameter, the second is the shape parameter, both must be >0.</td></tr>
-<tr><td><b>brw</b></td><td> Relativistic Breit-Wigner distribution, e.g. <b>brw(1#2#x)</b> The first value is the mass of the resonance, the second is the resonance's width and the third is the energy.</td></tr>
-<tr><td><b>gen</b></td><td> Generalized extreme value distribution, e.g. <b>gen(0#1#0.2#x)</b> The first value is the location parameter, the second is the scale parameter and the third is the shape parameter.</td></tr>
+<tr><td><b>shg</b></td><td> shifted Gompertz distribution, e.g. <b>shg(0.5#1#x)</b> The first value is the scale parameter, the second is the shape parameter, both must be >0.</td></tr>
+<tr><td><b>brw</b></td><td> relativistic Breit-Wigner distribution, e.g. <b>brw(1#2#x)</b> The first value is the mass of the resonance, the second is the resonance's width and the third is the energy.</td></tr>
+<tr><td><b>gen</b></td><td> generalized extreme value distribution, e.g. <b>gen(0#1#0.2#x)</b> The first value is the location parameter, the second is the scale parameter and the third is the shape parameter.</td></tr>
 <tr><td><b>Ft</b></td><td> Fisher-Tippett distribution, e.g. <b>Ft(1#2#x)</b> The first value is the location parameter, the second is the scale parameter. The second parameter must be >0.</td></tr>
 <tr><td><b>rossi</b></td><td> Rossi distribution, or mixed extreme value distribution, e.g. <b>rossi(0#3#1#4#x)</b> The first four values are c1, c2, d1 and d2.</td></tr>
 <tr><td><b>gum1</b></td><td> Gumbel distribution type 1, e.g. <b>gum1(2#1#x)</b> The first two values are the parameters a and b.</td></tr>
 <tr><td><b>gum2</b></td><td> Gumbel distribution type 2, e.g. <b>gum2(2#1#x)</b> The first two values are the parameters a and b.</td></tr>
-<tr><td><b>trid</b></td><td> Triangular distribution, e.g. <b>trid(1#2#4#x)</b> The first value is the lower limit, the second is the most probable and the third is the upper limit.</td></tr>
+<tr><td><b>trid</b></td><td> triangular distribution, e.g. <b>trid(1#2#4#x)</b> The first value is the lower limit, the second is the most probable and the third is the upper limit.</td></tr>
 </table>
 <h4>- Discrete distributions</h4>
 <table>
@@ -358,7 +358,7 @@ shown in the examples.</p>
 </table>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="10"></a><h3>Differential and integral equations</h3>
-Derivatives within a function are written like this:<br />
+Derivatives of a function within a function can be calculated if declared as:<br />
 <table border="0" cellspacing="0" cellpadding="2"><tr><td>
 <b>D</b> or <b>D1</b> First derivative, e.g. <b>D(x*x)</b><br />
 <b>D2</b> Second derivative, e.g. <b>D2(x^3)</b><br />
@@ -368,21 +368,24 @@ Derivatives within a function are written like this:<br />
 <b>D02</b> Second derivative, alternative form, e.g. <b>D02(x^3)</b><br />
 <b>D03</b> Third derivative, alternative form, e.g. <b>D03(x^4)</b><br />
 </td></tr></table>
-<i>Only one derivative of each form can be included in one function. So something like D(...)+D2(...) or D(...)+D0(...) will work, D(...)+D(...) won't, D(...)+D1(...) won't either.</i><br />
-Derivative of fourth order over a whole function can be generated by using D3 together with selecting 'Derivative' in the display or by writing e.g. <b>D(D3(sin(x)))</b> (not D(D(...))). The maximum for reasonable results is seventh order, eg D(D3(D03(...))).
+<i>Only one derivative of each form can be used in one function. So something like D(...)+D2(...) or D(...)+D0(...) will work, but D(...)+D(...) or D(...)+D1(...) will not.</i><br />
+The derivative of fourth order over a function can be generated by using D3(...) and selecting derivative display option in the plot or by a combination like <b>D(D3(...))</b> (not D(D(...))). The maximum for reasonable results is an order of seven, eg D(D3(D03(...))).
 <br /><br />
-Integrals within a function are written like this:<br />
+Integrals within a function can be expressed as:<br />
 <table border="0" cellspacing="0" cellpadding="2"><tr><td>
-<b>S</b> or <b>S1</b> First integral, e.g. <b>S(x*x)</b><br />
-<b>S2</b> Second integral, e.g. <b>S2(x)</b><br />
-<b>S3</b> Third integral, e.g. <b>S3(1)</b><br />
+<b>S</b> or <b>S1</b> first integral, e.g. <b>S(x*x)</b><br />
+<b>S2</b> second integral, e.g. <b>S2(x)</b><br />
+<b>S3</b> third integral, e.g. <b>S3(1)</b><br />
 </td></tr></table>
-<i>Only one integral can be included in one function. So something like S(...)+S2(...) won't work.</i><br />
-Integral of fourth order over a whole function can be generated by using S3 together with selecting 'Integral' in the display.
+<i>Only one integral can be included in one function. So something like S(...)+S2(...) will not work.</i><br />
+An integral of fourth order over a function can be generated by using S3(...) with an integral Display option.
 <br /><br />
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="11"></a><h1>Adjust the display</h1>
 <h3>Display options:</h3>
+The appearance of drawn plots can be changed using one of the options in
+a dialog. If applicable, the resulting image can further be treated with image
+filters (the list of filters depends on the GD version used).
 <table>
 <tr><td><b>image type</b>:</td><td>plotter knows three image formats: png (compression level 1), gif (GIF87a) or jpeg (90 percent quality level). The jpeg image format does not Support transparency.</td></tr>
 <tr><td><b>width / height</b></td><td> set the size of the image in pixels. For practical reasons, minimum size is 200, maximum is 500.</td></tr>
@@ -393,15 +396,11 @@ Integral of fourth order over a whole function can be generated by using S3 toge
 <tr><td><b>decimal places</b></td><td> defines the number of decimal places displayed. This is used for calculation of values, too. Maximum is 12.</td></tr>
 <tr><td><b>gap at origin</b></td><td> sets the size of an optional gap around the origin. If set to 0, no gap is shown.</td></tr>
 <tr><td><b>graph thickness</b></td><td> line thickness of function graphs. Values can be positive integers up to 200 (which looks quite funny...).</td></tr>
-<tr><td><b>log. scale</b></td><td> switch between linear and logarithmic scale on one or both axes. 
-No is a linear scale. You can choose 2, e, 10 or 100, as logarithmic base or enter an individual value.
-<i>Caution: logarithmic display will not work with integration, derivates or iterations.</i></td></tr>
-<tr><td><b>quadrants</b></td><td>offers some buttons to change the displayed quadrants and an input field for their size. If you wish to change the size, do so before clicking one of these buttons.</td></tr>
+<tr><td><b>log. scale</b></td><td> select linear or logarithmic scale on one or both axes.
+If no logarithm is selected, an axis will be drawn using a linear scale. You can choose 2, e, 10 or 100 as logarithmic base or enter an individual value.
+<i>Caution: logarithmic display will not work in combination with integrals, derivates or iterations.</i></td></tr>
+<tr><td><b>quadrants</b></td><td>offers buttons to change the displayed quadrants and an input field for their size. If you wish to change the size, do so before clicking one of these buttons.</td></tr>
 </table>
-
-
-
-
 
 The <b>checkboxes</b> can be used to switch grid and axes lines (x- and y-axis),
 caption (values and axes), dashes, frame and potentially occuring error messages.<br />
