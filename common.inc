@@ -98,7 +98,7 @@
       <input type="hidden" name="c" value="2" >
       <input type="image" src="images/iconPlot.png" title="draw plot" value="Draw" >
       <script type="text/javascript">
-          document.write('<input type="image" src="images/iconReset" title="set default options" value="set default" onclick="standard()"  >');
+          document.write('<input type="image" src="images/iconReset.png" title="set default options" value="set default" onclick="standard()"  >');
       </script>
       <noscript><input type="reset" value="Reset" class="reset" ></noscript>
       <input type="image" src="images/iconGear.png" title="settings/options" value="Options" onclick="$('#dialog').dialog('open');" >
