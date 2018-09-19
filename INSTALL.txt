@@ -1,6 +1,6 @@
 Plotter,
-a function plotter (mostly), based on openPlaG (see
-http://rechneronline.de/openPlaG/) by Juergen Kummer (GPLed)
+a function plotter (mostly) to display curves of mathematical expressions (mostly),
+loosely based on openPlaG (see http://rechneronline.de/openPlaG/) by Juergen Kummer (GPLed).
 
 0. Requirements
 ---------------
@@ -9,19 +9,21 @@ untested) and the GD extension enabled. At least some packages of GD as
 an apache extension (cli and module) were shipped without antialiasing support
 compiled in - never mind, if you can live without this feature, there's a
 workaround built in.
+
 That's it.
 
 
 1. Installing plotter
----------------------
+-----------------------
 
-Get the package. The latest version can be found on github:
+Clone the repository or grab a package. The latest version can always be found
+on github:
    https://github.com/MarcusOettinger/plotter
 
-Unzip the package in the desired location of your webspace. Copy or rename
-the default configuration file config.inc.default to a new config.inc.
-Edit the config file to suit your needs - there is only one step that is
-absolutely necessary:
+Unzip if needed and copy the contents in the desired location of your webspace.
+Copy or rename the default configuration file config.inc.default to a new config.inc.
+Edit the config file to suit your needs - there is only one step that is absolutely
+necessary:
 
     set $fqdn to the address where your plotter will be located, e.g.
     $fqdn = theplotterthingy.example.com
@@ -43,7 +45,7 @@ Currently, two such services can be used:
 
  * tinyurl: its API works without authentication, so you can always call
    http://tinyurl.com/api-create.php to shorten your links anonymously. 
-   Configure your plotter tu shorten links via tinyurl by uncommenting the
+   Configure your plotter to shorten links via tinyurl by uncommenting the
    following lines in config.inc:
 
       $shorten = "http://tinyurl.com/api-create.php?url=";
@@ -53,7 +55,7 @@ Currently, two such services can be used:
    it and install according to the documentation there at http://yourls.org.
    If you already have a running YOURLS installation working with a secret key
    of XXXX, use it in plotter by uncommenting and changing the lines (you
-   don't want an URL shortener working anonymously. Really, you don't)
+   don't want an URL shortener working anonymously. Really, you don't!)
 
       $secret = "XXXX"
       $shorten = "http://YetAnotherYourls.example.com/yourls-api.php?action=shorturl&signature=".$secret."&url=";
