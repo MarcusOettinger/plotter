@@ -1,0 +1,123 @@
+/*
+ * plotstyle.css, part of plotter, a php/GD
+ * function plotter 
+ *
+ * M. Oettinger 2015
+ *
+ */
+/* general styling */
+body{margin:0px;padding:0px;font-family:Verdana,Arial,sans-serif;color:#000000;font-size:12px;}
+p{margin-top:0px;margin-bottom:5px;padding:0px;text-align:left;line-height:1.3em;}
+h1{text-align:left;color:#ff8000;padding-top:30px;padding-bottom:10px;margin:0px;font-size:1.6em}
+h2{text-align:left;color:#ff8000;padding-top:10px;padding-bottom:10px;margin:0px;font-size:1.2em}
+legend{font-weight: bold;}
+h3,legend{text-align:left;color:#ff8000;padding-top:10px;padding-bottom:10px;margin:0px;font-size:1.1em}
+h4{text-align:left;color:#ff8000;padding-top:10px;padding-bottom:10px;margin:0px;font-size:1em}
+hr {color:#ff8000;background-color:#ff8000;height:2px;border:none;}
+td {vertical-align:top;font-size:0.8em;}
+iframe{border-width:0px;margin:5px;width:504px;height:504px}
+a{font-weight:bold}
+
+/* styles for jquery accordion and dialog */
+.ui-widget-content{border:0px solid #cdcdcd;}
+h3.ui-accordion-header{color:#ff8000;font-size:1.1em;}
+.ui-state-active{border-width:0px;border-bottom:2px solid #cdcdcd;}
+.ui-dialog-buttonpane{background-color:#d1d1d1;}
+
+/* header bar and menu */
+#header{margin:0px;padding:10px;
+	background-size: 100%;
+        background: #293260 url(images/ui-bg_flat_75_617e9f_40x100.png) repeat-x;
+        color:#ffffff;font-size:1.8em;font-variant:small-caps;
+        font-family:Arial,sans-serif;font-weight:normal;
+        text-align:center
+}
+#header a, #header a.visited {color:#ffffff;text-decoration:none}
+#menubar{margin:0px;padding:0px;margin-top:-25px;font-size:100%;font-weight:normal;color:#ffffff;}
+#menubar a, #menubar a.visited {color:#ffffff;text-decoration:none}
+
+
+/* elements for calculation (iframe, input) */
+.calcframe{width:95%;height:70px;border:1px solid #999999}
+
+#plotcontrol{text-align:left;margin-top:5px;margin-bottom:25px;}
+/* Options in a dialog */
+#dialog{border:2px solid #555555; }
+
+.smalldiv{display:inline-block;text-align:left;font-size:0.8em;margin-top:10px;}
+
+input {
+	background-color:#e1e1e1;
+	font-weight:bold;
+	color:#555555;
+	border-top: 2px solid #ffffff;
+	border-left: 2px solid #ffffff;
+	border-right: 2px solid #ffffff;
+	border-bottom: 2px solid #ffffff;
+	font-size:11px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-ms-border-radius: 5px;
+	border-radius: 5px;
+ }
+input:hover{border-bottom: 2px solid #ff8000;border-left: 2px solid #ff8000;background:#ffeedd;}
+input.check{color:#ff0000; background-color: #ff8000; font-size: 0.9em;}
+input[type='checkbox'].check{outline: 1px solid #dddddd;vertical-align: middle; margin:0px; *margin-top: -2px;margin-right:4px; margin-left:9px;}
+input[type='image']{border:0px;margin-bottom:-4px;background-color:#ffffff;}
+
+/* text inputs as color display */
+.coldisplay{width:50px;border-width:0px;}
+/* standard image styled as a clickable */
+.bt{cursor:pointer;margin-bottom:-4px}
+/* info - popups */
+.info{display:none;border:3px solid #aa4444; background-color: #F5F6CE;
+	margin:10px;padding:3%;font-weight:normal;font-family:Verdana,Arial,sans-serif;
+	font-size:110%;line-height:1.3em;}
+
+.greek{font-family:serif;font-size:16px}
+.draw{background-color:#f6a828;font-weight:bold;width:100px}
+.draw:hover{background-color:#ff8000;}
+.reset{background-color:#eeeeee;font-weight:bold;width:100px}
+.reset:hover{background-color:#cccccc}
+
+/* defining functions */
+#cint1, #cint2, #cint3 {width:50px;}
+#formula1, #formula2, #formula3 {width:150px;}
+#ta1,#ta2,#tb1,#tb2,#tc1,#tc3 {width:30px;}
+.function{padding:10px;margin-top:5px;border-bottom:0px;border-left:0px;border-right:0px;color:#444444}
+
+#fl0, #fl1, #fl2, #pl {margin:0px;padding:0px;font-size:2em;font-weight:normal;font-style:italic;}
+.fndiv{font-size:0.8em;margin-left:75px;margin-top:10px;}
+.align{background-color:#eeeeee;font-family:sans-serif;font-weight:bold;text-align:center;vertical-align:middle;width:25px;height:25px;letter-spacing:0px;margin-top:1px;
+       border-top:1px solid #333333;border-left:1px solid #333333;}
+.align:hover{background-color:#cccccc}
+.pline{margin:5px;display:block;}
+#path{margin-bottom:10px;margin-top:5px;}
+
+#QRcode{margin:15px;margin-left:35px;}
+
+#plotpage{margin:0px;padding:5px;max-width:1000px;margin-left:auto;margin-right:auto;background-color:#ffffff;}
+.calcpage {width:650px;height:50px;margin:0px;padding:0px;background-color:#ffffff;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;}
+#calculate{text-align:center;max-width:917px;margin-left:auto;margin-right:auto;}
+
+fieldset{border:2px solid #dddddd;padding:5px;}
+label{margin-left:20px;}
+
+/* ---------- Manual and example page -------- */
+a.uplink{display:block;font-size:80%;padding-left:20px;margin-top:20px;text-align:left;background: #ffffff url(images/carat-u-black.png) no-repeat left;}
+.examplediv{display:inline-block;margin:10px;vertical-align:top;max-width:500px;}
+#manualbody{margin:10%;margin-top:45px;font-size:14px;text-align:justify;line-height:1.4em;}
+#manualbody h1, #manualbody h2, #manualbody h3, #manualbody h4 { margin-top:30px; }
+#manualbody p {font-size:100%;}
+#manualbody table{margin-bottom:25px;}
+#manualbody td{font-size:100%;padding:5px;padding-left:30px;padding-right:10px;
+               margin-left:30px;border-bottom:1px solid #dddddd;}
+#manualbody a{text-decoration:none;}
+#manualbody a:hover{text-decoration:underline;}
+
+/* printing styles */
+@media print {
+	a.uplink { display:none; }
+	#manualbody { font-size:90%; }
+	#maintitle { font-size:20px;margin-top:0px; margin-bottom:30px; }
+}
