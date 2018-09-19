@@ -17,9 +17,7 @@ td {vertical-align:top;font-size:0.8em;}
 iframe{border-width:0px;margin:5px;width:504px;height:504px}
 a{font-weight:bold}
 
-
-
-/* styles for jquery accordion and dialog */
+/* the jquery accordion and dialog */
 .ui-widget-content{border:0px solid #cdcdcd;}
 h3.ui-accordion-header{color:#ff8000;font-size:1.1em;}
 .ui-state-active{border-width:0px;border-bottom:2px solid #cdcdcd;}

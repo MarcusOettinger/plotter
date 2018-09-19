@@ -296,15 +296,17 @@ if ($starty>=$width) $starty=$width-1;
 
 //
 // the Font to use in the plot - if the TTF set in config.inc is found, use it:
-$nice = file_exists( $defaultTTFont);
+$nice = file_exists( $defaultTTFont.".ttf");
+putenv('GDFONTPATH=' . realpath('.'));
+$TTfont = $defaultTTFont;
 
 // plot text: draw string $text at position $x/$y in a given color.
 //            Boolean $nice: use ttf Font defined in config.inc
 function plotText($img, $size, $x, $y, $text, $color, $nice){
-	global $defaultTTFont;
+	global $TTfont;
 	if ($nice) {
-		$ttfb = imagettfbbox ( $size*2+2 , 0 , $defaultTTFont, $text );
-		imagettftext ($img , $size*2+2 , 0, $x, $y + abs($ttfb[5] - $ttfb[1]), $color , $defaultTTFont, $text);
+		$ttfb = imagettfbbox ( $size*2+2 , 0 , $TTfont, $text );
+		imagettftext ($img , $size*2+2 , 0, $x, $y + abs($ttfb[5] - $ttfb[1]), $color , $TTfont, $text);
 	} else {
 		imagestring ($img, $size, $x, $y, $text, $color);
 	}
