@@ -1,10 +1,12 @@
 <?php
 //
-// 
+// plotter manual/documentation - example page.
+// https://github.com/MarcusOettinger/plotter
 //
-// common menu in all Manual/doc-pages
+// This file contains the common menu in all manual/doc-pages
 ?>
-<ul id="main-menu" class="sm sm-mint"> 
+<div id='cssmenu'>
+<ul> 
  <li><a href="manual.html#0">syntax</a></li>
  <li><a href="manual.html#1">constants</a></li>
  <li><a href="manual.html#2">predefined functions</a>
@@ -24,3 +26,4 @@
   <li><a href="examples.html">examples</a>
   <li><a href="manual.html#14">licensing</a></li>
 </ul>
+</div>

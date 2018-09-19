@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!--
-plotter Manual/documentation
+plotter manual/documentation.
+https://github.com/MarcusOettinger/plotter
 
 Copyright (C) 2015 Marcus Oettinger
 
@@ -17,58 +18,56 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
 -->
-<head>
+<?php
+include_once("config.inc");
+?>
+<html><head>
 <title>Plotter - manual</title>
 <meta name="robots" content="index,follow" />
 <meta name="content-language" content="en" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="plotstyle.css" type="text/css" />
-<script src="http://lib.familie-oettinger.net/min/?g=jquery" type="text/javascript"></script>
-<script src="js/jquery.smartmenus.min.js" type="text/javascript"></script>
-
-<!-- SmartMenus core CSS (required) -->
-<link href='js/css/sm-core-css.css' rel='stylesheet' type='text/css' />
-<!-- "sm-blue" menu theme (optional, you can use your own CSS, too) -->
-<link href='js/css/sm-mint/sm-mint.css' rel='stylesheet' type='text/css' />
-<script>
-$(function() {
-  $('#main-menu').smartmenus();
-});
-</script>
+<link rel="stylesheet" href="include/plotstyle.min.css" type="text/css" />
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="js/menu.min.js" type="text/javascript"></script>
+<link href='include/menu.min.css' rel='stylesheet' type='text/css' />
 </head>
-<body id="manualbody"><a id="top"></a>
-<?php include_once("manual_menu.inc"); ?>
-<br />
-<h1>Plotter - manual</h1>
-<p>Plotter is <a href="http://www.oettinger-physics.de">oettinger-physics.de</a>'s
-empirical plotter for mathematical functions and a bit of calculus.</p>
-<p>
-<a href="http://plot.oettinger-physics.de/" target="_top">Plotter</a>
-is a tool to draw function graphs or calculate function
-values at distinct points. It can be used to produce
-images showing up to three curves of given functions and/or
-ten points of interest in a cartesian coordinate system.</p>
-<p>Quick-n-dirty usage: declare one ore more functions by
-mathematical expressions in the input fields on the right
+<body><a id="top"></a>
+<?php include_once("manual_menu.inc"); ?><br />
+<div  id="manualbody">
+<h1 id="maintitle">Plotter - manual</h1>
+<p>Plotter is <a href="<?php if($mainsite !== '') echo $mainsite; ?>"><?php echo $mainsite_name; ?></a>
+empirical plotting utility, a tool to draw function
+graphs or calculate function values at certain points.
+<a href="<?php echo $fqdn; ?>">Plotter</a>
+can be used to produce images showing up to three
+curves of given functions and ten points of interest
+in a simple cartesian system.</p>
+<p>Quick-n-dirty usage: enter one ore more functions 
+(mathematical expressions) into the fields on the right
 and gently press the button labeled 'Draw' to see the
 corresponding curves in an image on the left side.</p>
-<p>The main functions <b>f(x), g(x), h(x)</b> and some
-specials can be declared in text inputs on the right
-hand side, the <b>color</b> of the curves (in hex notation)
-and some options for each curve can be selected:
-the function term can be printed out in the plot,
-the points calculated to draw the curve can be shown as
+<p>The functions <b>f(x), g(x), h(x)</b> to plot and
+some specials can be declared in text inputs on the right
+hand side, a <b>color</b> (in hex notation)
+and some options can be set:
+a function term can be printed out in the plot,
+points calculated to draw the curve can be shown as
 dots or interconnected and the inside or outside of each 
 curve can be filled with the selected color.</p>
 <br />
 
 <p>The special options settable on the right are</p>
 <table>
-<tr><td><b>hull</b></td><td> this is an outer function using  f(x), g(x) and h(x) as a variable Y or inner function. 
-  This is similar to a substitution, e.g. <b>sin(Y)</b> will plot the sine of each defined function.
-  Consider using <b>2*exp(-.5*Y)</b> as hull, x as f(x) and x^2 as g(x) - you will get <a href="graph.php?a0=2&a1=x&a2=x%5E2&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=2%2Aexp%28-.5%2AY%29&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">this plot</a>.
+<tr><td><b>hull</b></td><td> is the outer function in a function composition.
+  The results of the inner functions f(x), g(x) and h(x) will pointwise be used
+  as a variable Y for the outer (hull) function H(Y) or in math notation
+  <b>(H &#8728; f)(x), (H &#8728; g)(x)</b> and <b>(H &#8728; g)(x)</b>.<br> 
+  This is similar to a substitution, e.g. <b>sin(Y)</b> defined as hull function
+  will plot the sine of each defined function. Consider using <b>2*exp(-.5*Y)</b>
+  as hull, <b>x</b> as <b>f(x)</b> and <b>x^2</b> as <b>g(x)</b> - you will get
+  <a href="graph.php?a0=2&a1=x&a2=x%5E2&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=2%2Aexp%28-.5%2AY%29&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">this plot</a>
+  of <b>2*exp(-.5*x)</b> and <b>2*exp(-.5*x^2)</b>.
 </td></tr>
 <tr><td><b>Q</b></td><td>Substitution mechanism. An expression
   can be defined and used as a substitute for the special variable Q
@@ -89,15 +88,15 @@ may contain function names, constant names and combinations of the following sym
   some hundred digits). The output value (result) at a non-log scale
   is restricted to +/-100000 which is also the maximum value for both
   axes.<br />
-  Large or small numbers can be written in 
+  Large or small numbers may be written in 
   <a href="https://en.wikipedia.org/wiki/Scientific_notation">scientific Notation</a>
-  (the standard index form <b>2.5E20</b> for 2.5&middot;10<sup>20</sup>),
+  (the standard index form like <b>2.5E20</b> for 2.5&middot;10<sup>20</sup>),
   decimal digits are exact up to a number of 12.</td></tr> 
 <tr><td><b>. ,</b></td><td>point or comma as decimal separators: <b>1.5</b> is the same as <b>1,5</b></td></tr>
-<tr><td><b>+-*/</b></td><td>basic arithmetic operations<br>(when multiplying a number and a letter, the operator '*' can be omitted, i.e. <b>2x = 2*x</b>)</td></tr>
+<tr><td><b>+-*/</b></td><td>basic arithmetic operations<br>(when multiplying numbers and variable names, the operator '*' can be omitted, i.e. <b>2x = 2*x</b>)</td></tr>
 <tr><td><b>( ) [ ] { } < ></b></td><td>brackets, e.g. <b>{[(1+x)/(2-x)+1]*3}/(2*x^2)</b>. As common in mathematics, the type of brackets used does not matter.</td></tr>
 <tr><td><b>#</b></td><td> is used as separator for functions accepting multiple input values, e.g. <b>scir(x#2)</b></td></tr>
-<tr><td><b>asy</b></td><td>show a vertical asymptote at a fixed value x, e.g. <b>asy(1)</b> or <b>asy(e)</b></td></tr>
+<tr><td><b>asy</b></td><td>show a vertical asymptote at a fixed value x, e.g. <b><a href="graph.php?a0=2&a1=asy%281%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&z">asy(1)</a></b> or <b>asy(e)</b></td></tr>
 </table>
 
 <a href="#top" class="uplink">top</a><br /><br />
@@ -232,7 +231,7 @@ shown in the examples.</p>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="6"></a><h3>- Probability functions and statistics</h3>
 <table>
-<tr><td><b>norm</b></td><td>normal or Gaussian distribution, e.g. <a href="http://plot.oettinger-physics.de/graph.php?a0=2&a1=norm%282%231%23x%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=0&b5=0.5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z"><b>norm(2#1#x)</b></a> for the standard normal Distribution shifted two Units to the right. The first value is the expected value, the second is the standard deviation.</td></tr>
+<tr><td><b>norm</b></td><td>normal or Gaussian distribution, e.g. <a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=norm%282%231%23x%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=0&b5=0.5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z"><b>norm(2#1#x)</b></a> for the standard normal Distribution shifted two Units to the right. The first value is the expected value, the second is the standard deviation.</td></tr>
 <tr><td><b>phi</b></td><td><span class="greek">&Phi;</span>, cumulative Gaussian distribution function, e.g. <b>phi(0#1#x)</b> This is an approximation based on the displayed interval. It delivers reasonable values, if the normal distribution in the chosen interval starts at very low values near 0. A common display of both functions is advisable.</td></tr>
 <tr><td><b>chi2</b></td><td>chi-square distribution, e.g. <b>chi2(3#x)</b> The first value is the number of the degrees of freedom.</td></tr>
 <tr><td><b>ichi2</b></td><td>inverse-chi-square distribution, e.g. <b>ichi2(3#x)</b> The first value is the number of the degrees of freedom.</td></tr>
@@ -460,5 +459,6 @@ if ($plotterinfo) {
 }
 ?>
 <a href="#top" class="uplink">top</a><br /><br />
+</div>
 </body>
 </html>
