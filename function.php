@@ -4,10 +4,13 @@
 // graph.php.
 // (This file is the content of the iframe, where the image
 // of the graph is displayed. It is called by the main page
-// hosting the iframe and only contains the Image plus some
+// hosting the iframe and only contains the image plus some
 // js code to interoperate with the calling page)
 //
-// Marcus Oettinger 6/2015:
+// Marcus Oettinger 06/2018
+// - conversion to SSL-encrypted pages: QR-code inline to avoid
+//   mixed content
+// 06/2015:
 // - converted query string used to load plot into the main page
 //     to an URL (usable for Hyperlinks).
 // - reworked code for smoother color handling
@@ -35,7 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 include_once("config.inc");
-include("function.inc");
+include("modules/function.inc");
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -73,7 +76,14 @@ include("function.inc");
 	//
 	// ... display QRcode of  thew shortened link
 	//
-	echo $shorturl . ".qr";
+	// echo $shorturl . ".qr";
+	// the page is served SSL-encrypted, to avoid trouble the
+	// QR-code is embedded as a data-URI:
+	//
+	$imgurl = $shorturl . ".qr" ;
+	$imagedata = file_get_contents($imgurl);
+	$base64 = base64_encode($imagedata);
+	echo "data:image/png;base64," . $base64;
         ?>";
       }
     </script>

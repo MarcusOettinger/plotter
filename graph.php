@@ -11,6 +11,8 @@
  *  - added a workaround for gdlib packages w/o imageantialias (debian, ubuntu
  *    maybe others?)
  *
+ * 12/2015 new option to set custom variable names 
+ *
  * ---------------------------------------------------------------------------------
 /* (openPlaG: Original source: http://rechneronline.de/function-graphs/
     Copyright (C) 2011 Juergen Kummer)
@@ -37,13 +39,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //	die();
 
 include_once("config.inc");
-include_once("helpers.php");
+include_once("modules/helpers.php");
 
 $c=$_GET['a0'];
 // set initial values
 if (!$c) {
 	$formula1='x^2'; // default value for formula 1 (f(x))
-	$col1=1;		//color 1
+	$selfcol0="00ff00";		//color 1
 	$term1=1;	//show term 1
 	$term2="";	//don't show term 2
 	$term3="";	//don't show term 3
@@ -90,6 +92,7 @@ if (!$c) {
 	$selfcol1="a0b0c0";
 	$selfcol2="6080a0";
 	$thick=1;	//line thickness
+	$varname="x";	//variable name to display
 } else { // read the query string and give the variables their old name 
 	$formula1=$_GET['a1'];
 	$formula2=$_GET['a2'];
@@ -158,11 +161,16 @@ if (!$c) {
 	$selfcol1=$_GET['g8'];
 	$selfcol2=$_GET['g9'];
 	$thick=$_GET['h0'];
-	if (isset($_GET["pc"])) $pointc = $_GET["pc"];
+	if (isset($_GET['h1'])) { 
+		$varname=$_GET['h1']; 
+	} else {
+		$varname = "x";
+	}
+	if (isset($_GET['pc'])) $pointc = $_GET['pc'];
 	for ($i=0;$i<10;$i++) {
 		if (isset($_GET["p$i"])) {
 			$pcount = $i+1;
-			$pn[$i] = rawurldecode($_GET["p$i"]);	// Name (P,Q,...)
+			$pn[$i] = urldecode($_GET["p$i"]);	// Name (P,Q,...)
 			$newval = handleConstants($_GET["x$i"]);
 			if (is_numeric($newval)) $px[$i] = $newval;	// x
 			$newval = handleConstants($_GET["y$i"]);
@@ -262,7 +270,7 @@ for($i=0;$i<3;$i++) { //constants as from-to range and +C
 // create an empty image and define colors
 //
 $img=imagecreatetruecolor($width,$height);
-if (function_exists(imageantialias)) imageantialias($img,$anti);
+if (function_exists('imageantialias')) imageantialias($img,$anti);
 
 // color[0 - 3] - function 1 - 3
 $color[0]=imagecolorallocate($img,hexdec(substr($selfcol0,0,2)),hexdec(substr($selfcol0,2,2)),hexdec(substr($selfcol0,4,2)));//self-defined color 1
@@ -280,7 +288,7 @@ $color[7]=imagecolorallocate($img,hexdec(substr($pointcc,0,2)),hexdec(substr($po
 imagefill ($img,0,0,$color[3]);
 
 $single=0; //we don't want to compute a single value, but the whole graph
-include 'init.php';
+include 'modules/init.php';
 
 // start values for lines and caption
 $rulex=$rulex2-$rulex1;
@@ -314,7 +322,7 @@ function plotText($img, $size, $x, $y, $text, $color, $nice){
 
 // grid and axis lines, caption and dashes
 function drawlines() {
-	global $width, $height, $gridx, $gridy, $startx, $starty, $color, $intervalsx, $intervalsy, $rulex, $rulex1, $ruley, $ruley2, $linex, $liney, $grid, $dashes, $deci, $numbers, $logsk, $logskx, $linec, $capt, $gapc, $lines, $img, $nice;
+	global $width, $height, $gridx, $gridy, $startx, $starty, $color, $intervalsx, $intervalsy, $rulex, $rulex1, $ruley, $ruley2, $linex, $liney, $grid, $dashes, $deci, $numbers, $logsk, $logskx, $linec, $capt, $gapc, $lines, $img, $nice, $varname;
 
 	// draw reticule lines
 	if($grid) {
@@ -370,7 +378,7 @@ function drawlines() {
 		}
 	}
 	if($numbers)
-		plotText($img,4,$width-15,min($startx,$height)+$align-$linex,"x",$color[4],$nice);
+		plotText($img,4,$width-15,min($startx,$height)+$align-$linex,$varname,$color[4],$nice);
 	
 	// caption y-axis
 	$count=0;
@@ -565,9 +573,11 @@ for ($j=0;$j<3;$j++) {
 if($bf==2)
 	drawlines();
 
-// draw function terms
+// If $varname ist set, replace all occurences of 'x' by $varname
+// and draw function terms.
 for($i=0;$i<3;$i++) {
 	if($form[$i]!='' && $term[$i]){
+		$form[$i] = str_replace("x",$varname,$form[$i]);
 		if($i==0)
 			$term1="f";		
 		else if($i==1)
@@ -575,16 +585,16 @@ for($i=0;$i<3;$i++) {
 		else
 			$term1="h";
 		if ($sint[$i]==2) {
-			$form[$i]=strtoupper($term1).'(x)=S['.$form[$i].']';
+			$form[$i]=strtoupper($term1).'('.$varname.')=S['.$form[$i].']';
 			if($cint[$i]>0)
 				$form[$i].='+';
 			if ($cint[$i])
 				$form[$i].=$cint[$i];
 		}
 		else if ($sint[$i]==1)
-			$form[$i]=$term1."'(x)=[".$form[$i]."]'";
+			$form[$i]=$term1."'($varname)=[".$form[$i]."]'";
 		else
-			$form[$i]=$term1.'(x)='.$form[$i];
+			$form[$i]=$term1.'('.$varname.')='.$form[$i];
 		if(strlen($form[$i])<$width/9) {
 			imagefilledrectangle ($img,0,20*($i+1)-10,9*strlen($form[$i])+5,20*($i+1)+5,$color[3]);
 			plotText($img,5,5,20*($i+1)-10,$form[$i],$color[$col[$i]],$nice);
@@ -596,7 +606,7 @@ for($i=0;$i<3;$i++) {
 	}
 }
 
-// draw frame
+// draw frame if selected
 if ($frame)
 	imagerectangle ($img,0,0,$width-1,$height-1,$color[4]);
 	
@@ -625,7 +635,7 @@ if($rotate) $img=imagerotate($img,-$rotate,$color[3]);
 
 imagecolortransparent($img,$color[38]);
 
-// finally, we're done, stream the result in selected Format
+// we're done, stream the result in selected format
 if($filetype==1)
 	imagegif($img);
 else if($filetype==2)

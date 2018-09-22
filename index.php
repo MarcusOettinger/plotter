@@ -4,7 +4,7 @@
 // openPlaG (http://rechneronline.de/openPlaG/) by
 // Juergen Kummer (GPL)
 // ---------------------------------------------------
-// Marcus Oettinger (www.oettinger-physisc.de)
+// Marcus Oettinger (www.oettinger-physics.de)
 // 09/2015
 //  * polished UI (options in a jquery-ui dialog, colors)
 //  * replaced some tables by divs to get the interface responsive
@@ -27,7 +27,8 @@ function ErrMsg($header, $text) {
 }
 
 if (!file_exists("config.inc")) {
-	ErrMsg("Error: unable to find config.inc", "<p>To get your plotter up and running, copy the default file <b>config.inc.default</b> to <b>config.inc</b> and edit the new file according to your setup.</p>");
+	ErrMsg("Error: unable to find config.inc", 
+	"<p>To get your plotter up and running, copy the default file <b>config.inc.default</b> to <b>config.inc</b> and edit the new file according to your setup.</p>");
 }
 
 if (!is_readable("config.inc")) {
@@ -35,7 +36,7 @@ if (!is_readable("config.inc")) {
 }
 
 include_once("config.inc");
-require_once("helpers.php");
+require_once("modules/helpers.php");
 
 // set silent true to suppress creation of short link and QRCode
 // (no need if testing/Debugging)
