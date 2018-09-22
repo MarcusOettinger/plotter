@@ -10,6 +10,8 @@ an apache extension (cli and module) were shipped without antialiasing support
 compiled in - never mind, if you can live without this feature, there's a
 workaround built in.
 
+The webserver plotter is running on should interpret inline PHP-code in html pages - you may need to enable this feature.
+
 That's it.
 
 
@@ -21,9 +23,7 @@ on github:
    https://github.com/MarcusOettinger/plotter
 
 Unzip if needed and copy the contents in the desired location of your webspace.
-Copy or rename the default configuration file config.inc.default to a new config.inc.
-Edit the config file to suit your needs - there is only one step that is absolutely
-necessary:
+Copy or rename the default configuration file config.inc.default to a new config.inc and edit the configuration to suit your needs - there is only one step that is absolutely necessary:
 
     set $fqdn to the address where your plotter will be located, e.g.
     $fqdn = theplotterthingy.example.com
