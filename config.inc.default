@@ -42,7 +42,7 @@ $extopts = '  <meta name="author" content="John Doe">
 // this value empty (as a builtin GD font is used if the font file isn't
 // found).
 // 
-$defaultTTFont = "FreeSans.ttf";
+$defaultTTFont = "include/FreeSans.ttf";
 
 //
 // Licensing information (shown on the manual page)
