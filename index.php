@@ -5,7 +5,8 @@
 // Juergen Kummer (GPL)
 // ---------------------------------------------------
 // Marcus Oettinger (www.oettinger-physics.de)
-// 09/2015
+// 09/2019
+//  * removed inline styles/scripts
 //  * polished UI (options in a jquery-ui dialog, colors)
 //  * replaced some tables by divs to get the interface responsive
 //  * replaced color setting mechanism
@@ -18,8 +19,9 @@
 //
 
 function ErrMsg($header, $text) {
-        echo "<html><head><title>plotter error</title><style>body{font-family:Arial,sans-serif;font-size:130%:}h1{margin-top:30px;margin-bottom:10px;color:#CC0000;}p{font-size:130%;}</style></head>";
-	echo "<body><h1>$header</h1>";
+        echo '<html><head><title>plotter error</title>
+        <link rel="stylesheet" href="include/ploterror.css" type="text/css">';
+	echo "<body><h1 class='errheader'>$header</h1>";
         echo "$text";
 	echo "<p>(see <a href='INSTALL.txt'>INSTALL.txt</a> or <a href='http://marcusoettinger.github.io/plotter/'>the github pages</a>)</p>";
         echo "</body></html>";
@@ -41,6 +43,5 @@ require_once("modules/helpers.php");
 // set silent true to suppress creation of short link and QRCode
 // (no need if testing/Debugging)
 $silent = false;
-
 include("common.inc");
 ?>
