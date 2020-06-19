@@ -1,7 +1,7 @@
 <?php
 /*
 diffint.inc: calculus for any of Plotters functions.
-M. Oettinger 09/2015
+M. Oettinger 06/2020
 --------------------------------------------------------------------------------
 
 OpenPLAG: Copyright (C) 2011 Juergen Kummer
@@ -29,12 +29,12 @@ would be appreciated.
 */
 
 
-// simple numerical Integration
-// (fundamental theorem of calculus)
+// simple numerical Integration (using the fundamental theorem
+// of calculus - approximation by rectangles)
 //
 function S($a) {
-	if (!is_numeric($a))
-		return NULL;
+	if (!is_numeric($a)) return NULL;
+	
 	global $sums, $width, $rulex;
 	$sums += ($a/$width*$rulex);
 	return $sums;
@@ -43,8 +43,8 @@ function S($a) {
 // second integral
 //
 function S2($a) {
-	if (!is_numeric($a))
-		return NULL;
+	if (!is_numeric($a)) return NULL;
+	
 	$a=S($a);
 	global $sums2, $width, $rulex;
 	$sums2+=($a/$width*$rulex);
@@ -54,8 +54,8 @@ function S2($a) {
 // third integral
 //
 function S3($a) {
-	if (!is_numeric($a))
-		return NULL;
+	if (!is_numeric($a)) return NULL;
+	
 	$a=S2($a);
 	global $sums3, $width, $rulex;
 	$sums3 += ($a/$width*$rulex);
@@ -64,8 +64,8 @@ function S3($a) {
 
 // derivative in function
 function D($a) {
-	if (!is_numeric($a))
-		return NULL;
+	if (!is_numeric($a)) return NULL;
+	
 	global $derval;
 	if (!is_numeric($derval)){
 		$derval=$a;
@@ -81,8 +81,8 @@ function D($a) {
 
 // second derivative in function
 function D2($a) {
-	if (!is_numeric($a))
-		return NULL;
+	if (!is_numeric($a)) return NULL;
+	
 	//first d
 	global $derval21;
 	if (!is_numeric($derval21)){
