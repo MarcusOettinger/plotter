@@ -24,144 +24,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/* parse ^ as pow
-made by Matthias Bilger
-this is the only OOP part of the program */
-$opsh = array("*", "/", "%");
-$opsl = array("+", "-", ",", "#");
-$ops = array("*", "/","+", "-", ",", "#", "%");
-$pow = "^";
-class term{
-
-	private $cont = "";
-	private $literal = true;
-	private $brackets = false;
-
-	private $tl = null;
-	private $tr = null;
-	private $lvl = 0;
-
-	public function __construct($term, $level=0) {
-		$term = str_replace(" ", "", $term);
-		$this->ParseLine($term);
-		$this->lvl = $level;
-	}
-
-	private function ParseLine($str){
-		$index = $this->SplitIt($str);
-		if($index == -1){
-			$this->cont = $str;
-			$this->literal = true;
-		}
-	}
-	private function AddChilds($str, $index){
-		$this->cont = substr($str, $index, 1);	
-		$this->tl = new term(substr($str, 0, $index), $this->lvl + 1);
-		$this->tr = new term(substr($str, $index+1), $this->lvl + 1);
-		$this->literal = false;
-	}
-	private function SplitIt(&$str){
-		global $opsh,$opsl,$ops, $fcts, $unary, $pow;
-		$index = -1;
-		$openbrackets = 0;
-		$outerbrackets = 0;
-		$outerbrackets_number = 0;
-		$positions = array();
-		do{
-			for($i = strlen($str)-1; $i >= 0 ; $i--){
-				if ($str[$i] == "("){
-					$openbrackets++;
-					if($openbrackets == 0){
-						$outerbrackets++;
-						array_push($positions, $i);
-					}
-				}
-				else if ($str[$i] == ")"){
-					$openbrackets--;
-				}
-				else if($openbrackets == 0){
-					array_push($positions, $i);
-				}
-			}
-		}while($outerbrackets == ++$outerbrackets_number && $this->RemoveUnusedBrackets($str));
-		if($index == -1){
-			for($i = 0; $i < count($positions) ; $i++){
-				if(in_array($str[$positions[$i]], $opsl)){
-					$index = $positions[$i];
-					$this->AddChilds($str, $index);
-				}
-			}
-		}
-		
-		if($index == -1){
-			for($i = 0; $i < count($positions) ; $i++){
-				if(in_array($str[$positions[$i]], $opsh)){
-					$index = $positions[$i];
-					$this->AddChilds($str, $index);
-				}
-			}
-		}
-		if($index == -1){
-			for($i = 0; $i < count($positions) ; $i++){
-				if($str[$positions[$i]] == $pow){
-					$index = $positions[$i];
-					$this->AddChilds($str, $index);
-				}	
-			}
-		}
-		if($index == -1 && $outerbrackets == $outerbrackets_number)	{
-
-			$tmppos =  strpos($str, "(");
-			$tmp = substr($str, 0, $tmppos);
-			if($tmppos != 0){
-				$this->cont = substr($str,0, $tmppos);
-				$tmppos++;
-				$this->tr = new term(substr($str, $tmppos, strlen($str)-$tmppos-1));
-				$this->literal = false;
-				$index = $tmppos;
-			}
-		}
-		return $index;
-	}
-
-	private function RemoveUnusedBrackets(&$str){
-		$tmp = $str;
-		if($str[0] == "(" && $str[strlen($str)-1] == ")"){
-			$str = substr($str, 1, strlen($str)-2);
-			$this->brackets = true;
-		}
-		return ($tmp != $str);
-	}
-
-	public function ContainsBrackets(){
-		return $this->brackets;
-	}
-
-	public function ToString(){
-		global $ops, $fcts, $unary, $pow;
-  	if($this->literal == true)
-		{
-			return (string)$this->cont;
-		}
-		else{
-			if($this->cont == $pow){
-				return "pow(".$this->tl->ToString().",".$this->tr->ToString().")";
-			}
-			else if($this->cont == "#" || $this->cont == ","){
-				return $this->tl->ToString().",".$this->tr->ToString();
-			}
-			else if($this->tl == null)
-			{
-				return $this->cont."(".$this->tr->ToString().")";
-			}
-			else
-			{
-				return (($this->lvl != 0 && $this->brackets)?"(":"").$this->tl->ToString()."".$this->cont."".$this->tr->ToString().(($this->lvl != 0 && $this->brackets)?")":"");
-			}
-		}
-	}
-};
-
 // add a multiplication operator where omitted, e.g. 3x -> 3*x
 function multisign($term) {
 	for($i=0;$i<strlen($term);$i++) {
@@ -224,6 +86,7 @@ for($i=0;$i<3;$i++) {
 	$formula[$i] = str_replace('>',')',$formula[$i]);
 	$formula[$i] = str_replace(',','.',$formula[$i]);
 	$formula[$i] = str_replace('#',',',$formula[$i]);
+	$formula[$i] = str_replace(';',',',$formula[$i]);
 	// ggt is the German term for gcf
 	$formula[$i] = str_replace('ggt','gcf',$formula[$i]);
 	// kgv is the German term for lcm
@@ -251,11 +114,8 @@ for($i=0;$i<3;$i++) {
 	// catch 0 as a function
 	if($formula[$i]=='0') $formula[$i]='0*1';
 
-	// convert ^ to pow()
-	if($formula[$i]!=str_replace("^","",$formula[$i])) {
-		$t = new term($formula[$i]);
-		$formula[$i]=$t->ToString();
-	}
+	// convert ^ to **
+	$formula[$i] = str_replace("^","**",$formula[$i]);
 
 	// look for bracket errors
 	$bracketerror[$i]=0;
