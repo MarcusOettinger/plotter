@@ -24,6 +24,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+
+// emulate PHP_VERSION_ID for older interpreters
+if (!defined('PHP_VERSION_ID')) {
+    $version = explode('.', PHP_VERSION);
+    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
+}
+
+
 // add a multiplication operator where omitted, e.g. 3x -> 3*x
 function multisign($term) {
 	for($i=0;$i<strlen($term);$i++) {
@@ -114,8 +122,17 @@ for($i=0;$i<3;$i++) {
 	// catch 0 as a function
 	if($formula[$i]=='0') $formula[$i]='0*1';
 
-	// convert ^ to **
-	$formula[$i] = str_replace("^","**",$formula[$i]);
+	// The ** operator was added in PHP 5.6
+	if (PHP_VERSION_ID < 50600) {
+		include("modules/caretPow.php");
+		if($formula[$i]!=str_replace("^","",$formula[$i])) {
+		$t = new term($formula[$i]);
+		$formula[$i]=$t->ToString();
+	}
+	} else {
+		// convert ^ to **
+		$formula[$i] = str_replace("^","**",$formula[$i]);
+	}
 
 	// look for bracket errors
 	$bracketerror[$i]=0;
