@@ -41,15 +41,15 @@ include_once("config.inc");
 include("modules/function.inc");
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html><html>
 <head><title></title>
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="cache-control" content="no-cache">
 <meta name="robots" content="noindex,nofollow" />
-</head><body style="padding:0px;margin:0px;background-color:#f0ffff" onload="document.getElementById('back').style.backgroundImage='url(images/back.png)'">
+<link rel="stylesheet" href="include/plotstyle.min.css" type="text/css" />
+</head><body>
 <table border="0" cellspacing="0" cellpadding="0">
-<tr><td id="back" style="width:500px;height:500px;text-align:center;vertical-align:middle">
+<tr><td id="back">
 <img src="graph.php?<?= $query ?>" width="<?= $width ?>" height="<?= $height ?>" alt="Graph" />
 </td></tr></table>
 <script type="text/javascript">
