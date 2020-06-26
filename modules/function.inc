@@ -3,7 +3,8 @@
 // function.inc: handle query Options and call graph.php.
 // (included by function.php and function_silent.php)
 //
-// Marcus Oettinger 6/2015:
+// Marcus Oettinger 6/2020:
+// - fixed querystring for points
 // - converted query string used to load plot into the main page
 //     to an URL (usable for Hyperlinks).
 // - reworked code for smoother color handling
@@ -98,11 +99,11 @@ $Y=$_POST['Y'];
 $selfcol0=$_POST['selfcol0'];
 $selfcol1=$_POST['selfcol1'];
 $selfcol2=$_POST['selfcol2'];
-$bg=$_POST['selfcol3'];
-$capt=$_POST['selfcol4'];
-$linec=$_POST['selfcol5'];
-$gapc=$_POST['selfcol6'];
-$pointc=$_POST['selfcol7'];
+$selfcol3=$_POST['selfcol3'];
+$selfcol4=$_POST['selfcol4'];
+$selfcol5=$_POST['selfcol5'];
+$selfcol6=$_POST['selfcol6'];
+$selfcol7=$_POST['selfcol7'];
 $thick=$_POST['thick'];		// line thickness
 $varname=$_POST['varname'];	// allow for custom variable names
 
@@ -185,11 +186,23 @@ if (ctype_alpha($varname) == false) { $varname = "x"; }
 
 // change variable names to keep the query string short (well, sort of...)
 // &z marks the end of the query string
-$query="a0=".$c."&a1=".$formula1."&a2=".$formula2."&a3=".$formula3."&a7=".$term1."&a8=".$term2."&a9=".$term3."&b0=".$width."&b1=".$height."&b2=".$rulex1."&b3=".$rulex2."&b4=".$ruley1."&b5=".$ruley2."&b6=".$intervalsx."&b7=".$intervalsy."&b8=".$linex."&b9=".$liney."&c0=".$deci."&c1=".$mid."&c2=".$lines."&c3=".$numbers."&c4=".$dashes."&c5=".$frame."&c6=".$errors."&c7=".$sint1."&c8=".$sint2."&c9=".$sint3."&d0=".$grid."&d1=".$gridx."&d2=".$gridy."&d3=".$logsk."&d4=".$ta1."&d5=".$ta2."&d6=".$tb1."&d7=".$tb2."&d8=".$tc1."&d9=".$tc2."&e0=".$cint1."&e1=".$cint2."&e2=".$cint3."&e3=".$qq."&e4=".$bg."&e5=".$gapc."&e6=".$capt."&e7=".$linec."&e8=".$con0."&e9=".$con1."&f0=".$con2."&f1=".$anti."&f2=".$gamma."&f3=".$bri."&f4=".$cont."&f5=".$emb."&f6=".$blur."&f7=".$neg."&f8=".$gray."&f9=".$mean."&g0=".$edge."&g1=".$bf."&g2=".$pol."&g3=".$rotate."&g4=".$filetype."&g5=".$logskx."&g6=".$Y."&g7=".$selfcol0."&g8=".$selfcol1."&g9=".$selfcol2."&h0=".$thick."&h1=".$varname;
-if ($pcount > 0) $query .= "&pc=".$pointc;
-for ($i=0;$i<$pcount;$i++) {
-	$query .= "&p".$i."=".rawurlencode($pn[$i])."&x".$i."=".$px[$i]."&y".$i."=".$py[$i];
+$query="a0=".$c."&a1=".$formula1."&a2=".$formula2."&a3=".$formula3."&a7=".$term1."&a8=".$term2."&a9=".$term3
+     ."&b0=".$width."&b1=".$height."&b2=".$rulex1."&b3=".$rulex2."&b4=".$ruley1."&b5=".$ruley2."&b6=".$intervalsx."&b7=".$intervalsy."&b8=".$linex."&b9=".$liney
+     ."&c0=".$deci."&c1=".$mid."&c2=".$lines."&c3=".$numbers."&c4=".$dashes."&c5=".$frame."&c6=".$errors."&c7=".$sint1."&c8=".$sint2."&c9=".$sint3
+     ."&d0=".$grid."&d1=".$gridx."&d2=".$gridy."&d3=".$logsk."&d4=".$ta1."&d5=".$ta2."&d6=".$tb1."&d7=".$tb2."&d8=".$tc1."&d9=".$tc2
+     ."&e0=".$cint1."&e1=".$cint2."&e2=".$cint3."&e3=".$qq."&e4=".$selfcol3."&e5=".$selfcol6."&e6=".$selfcol4."&e7=".$selfcol5."&e8=".$con0."&e9=".$con1
+     ."&f0=".$con2."&f1=".$anti."&f2=".$gamma."&f3=".$bri."&f4=".$cont."&f5=".$emb."&f6=".$blur."&f7=".$neg."&f8=".$gray."&f9=".$mean
+     ."&g0=".$edge."&g1=".$bf."&g2=".$pol."&g3=".$rotate."&g4=".$filetype."&g5=".$logskx."&g6=".$Y."&g7=".$selfcol0."&g8=".$selfcol1."&g9=".$selfcol2
+     ."&h0=".$thick."&h1=".$varname;
+if (strpos($query, "&pc=") === FALSE) {
+	if ($pcount > 0) {
+		$query .= "&pc=".$selfcol7;
+		for ($i=0;$i<$pcount;$i++) {
+			$query .= "&p".$i."=".rawurlencode($pn[$i])."&x".$i."=".$px[$i]."&y".$i."=".$py[$i];
+		}
+	}
 }
+
 // &z marks the end of the query string!
 $query .= "&z";
 // encode in UTF8 to avoid Problems in URL (e.g. if using # in functions):
