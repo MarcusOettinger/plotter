@@ -1,0 +1,297 @@
+/**
+* @fileOverview
+* @author Zoltan Toth
+* @version 0.1
+*/
+
+/**
+* @description
+* Vanilla Javascript tooltip.
+*
+* @class
+* @param {string} [options.theme=dark] - Selects one of the pre-defined tooltip styles - light or dark.
+* @param {number} [options.dist=10] - Specifies the distance in pixels from trigger to tooltip.
+* @param {number} [options.delay=0] - Specifies how long the tooltip remains visible after the mouse leaves the trigger.
+*/
+
+Tooltip = function(options) {
+    var theme = options.theme || "dark",
+        delay = options.delay || 0,
+        dist  = options.distance || 10;
+
+    /* 
+    * Attaching one mouseover and one mouseout listener to the document
+    * instead of listeners for each trigger 
+    */
+    document.body.addEventListener("mouseover", function(e) {
+        if (!e.target.hasAttribute('data-tooltip')) return;
+
+        var tooltip = document.createElement("div");
+        tooltip.className = "b-tooltip " + "b-tooltip-" + theme;
+        tooltip.innerHTML = e.target.getAttribute('data-tooltip');
+
+        document.body.appendChild(tooltip);
+
+        var pos = e.target.getAttribute('data-position') || "center top",
+            posHorizontal = pos.split(" ")[0];
+            posVertical = pos.split(" ")[1];
+
+        positionAt(e.target, tooltip, posHorizontal, posVertical);
+    });
+
+    document.body.addEventListener("mouseout", function(e) {
+        if (e.target.hasAttribute('data-tooltip')) {
+            setTimeout(function() {
+                document.body.removeChild(document.querySelector(".b-tooltip"));
+            }, delay);
+        }
+    });
+
+    /**
+     * Positions the tooltip.
+     * 
+     * @param {object} parent - The trigger of the tooltip.
+     * @param {object} tooltip - The tooltip itself.
+     * @param {string} posHorizontal - Desired horizontal position of the tooltip relatively to the trigger (left/center/right)
+     * @param {string} posVertical - Desired vertical position of the tooltip relatively to the trigger (top/center/bottom)
+     * 
+     */
+    function positionAt(parent, tooltip, posHorizontal, posVertical) {
+        var parentCoords = parent.getBoundingClientRect(), left, top;
+
+        console.log(posVertical)
+
+        switch (posHorizontal) {
+            case "left":
+                left = parseInt(parentCoords.left) - dist - tooltip.offsetWidth;
+                if (parseInt(parentCoords.left) - tooltip.offsetWidth < 0) {
+                    left = dist;
+                } 
+                break;
+                
+            case "right":
+                left = parentCoords.right + dist;
+                if (parseInt(parentCoords.right) + tooltip.offsetWidth > document.documentElement.clientWidth) {
+                    left = document.documentElement.clientWidth - tooltip.offsetWidth - dist;
+                }
+                break;
+
+            default:
+            case "center":
+                left = parseInt(parentCoords.left) + ((parent.offsetWidth - tooltip.offsetWidth) / 2);
+        }
+        
+        switch (posVertical) {
+            case "center":
+                top = (parseInt(parentCoords.top) + parseInt(parentCoords.bottom)) / 2 - tooltip.offsetHeight / 2;
+                break;
+                
+            case "bottom":
+                top = parseInt(parentCoords.bottom) + dist;
+                break;
+
+            default:
+            case "top":
+                top = parseInt(parentCoords.top) - tooltip.offsetHeight - dist;
+        }       
+
+        left = (left < 0) ? parseInt(parentCoords.left) : left;
+        top  = (top < 0) ? parseInt(parentCoords.bottom) + dist : top;
+
+        tooltip.style.left = left + "px";
+        tooltip.style.top  = top + pageYOffset + "px";
+    }
+};
+
+/**
+* @fileOverview
+* @author Zoltan Toth
+* @version 1.1.0
+*/
+
+/**
+* @description
+* Vanilla JavaScript Accordion
+*
+* @class
+* @param {(string|Object)} options.element - HTML id of the accordion container
+*         or the DOM element.
+* @param {number} [options.openTab=1] - Start the accordion with this item opened.
+* @param {boolean} [options.oneOpen=false] - Only one tab can be opened at a time.
+*/
+var Accordion = function(options) {
+    var element = typeof options.element === 'string' ?
+                    document.getElementById(options.element) : options.element,
+        openTab = options.openTab,
+        oneOpen = options.oneOpen || false,
+
+        titleClass   = 'js-Accordion-title',
+        contentClass = 'js-Accordion-content';
+
+    render();
+
+    /**
+     * Initial rendering of the accordion.
+     */
+    function render() {
+        // attach classes to buttons and containers
+        [].forEach.call(element.querySelectorAll('button.acccordionbutton'),
+            function(item) {
+                item.classList.add(titleClass);
+                item.nextElementSibling.classList.add(contentClass);
+            });
+
+        // attach only one click listener
+        element.addEventListener('click', onClick);
+
+        // accordion starts with all tabs closed
+        closeAll();
+
+        // sets the open tab - if defined
+        if (openTab) {
+            open(openTab);
+        }
+    }
+
+    /**
+     * Handles clicks on the accordion.
+     *
+     * @param {object} e - Element the click occured on.
+     */
+    function onClick(e) {
+        if (e.target.className.indexOf(titleClass) === -1) {
+            return;
+        }
+
+        if (oneOpen) {
+            closeAll();
+        }
+
+        toggle(e.target.nextElementSibling);
+    }
+
+    /**
+     * Closes all accordion tabs.
+     */
+    function closeAll() {
+        [].forEach.call(element.querySelectorAll('.' + contentClass), function(item) {
+            item.style.height = 0;
+        });
+    }
+
+    /**
+     * Toggles corresponding tab for each title clicked.
+     *
+     * @param {object} el - The content tab to show or hide.
+     */
+    function toggle(el) {
+        // getting the height every time in case
+        // the content was updated dynamically
+        var height = el.scrollHeight;
+
+        if (el.style.height === '0px' || el.style.height === '') {
+            el.style.height = height + 'px';
+        } else {
+            el.style.height = 0;
+        }
+    }
+
+
+    /**
+     * Returns the corresponding accordion content element by index.
+     *
+     * @param {number} n - Index of tab to return
+     */
+    function getTarget(n) {
+        return element.querySelectorAll('.' + contentClass)[n - 1];
+    }
+
+    /**
+     * Opens a tab by index.
+     *
+     * @param {number} n - Index of tab to open.
+     *
+     * @public
+     */
+    function open(n) {
+        var target = getTarget(n);
+
+        if (target) {
+            if (oneOpen) closeAll();
+            target.style.height = target.scrollHeight + 'px';
+        }
+    }
+
+    /**
+     * Closes a tab by index.
+     *
+     * @param {number} n - Index of tab to close.
+     *
+     * @public
+     */
+    function close(n) {
+        var target = getTarget(n);
+
+        if (target) {
+            target.style.height = 0;
+        }
+    }
+
+    /**
+     * Destroys the accordion.
+     *
+     * @public
+     */
+    function destroy() {
+        element.removeEventListener('click', onClick);
+    }
+
+    return {
+        open: open,
+        close: close,
+        destroy: destroy
+    };
+};
+
+/**
+* @description
+* Javascript popup. Using a polyfill für dialog-elements
+* until <dialog> is ready...
+* Based on https://wiki.selfhtml.org/wiki/JavaScript/Tutorials/zug%C3%A4ngliche_Dialog-Box
+* *should* work in IE9+
+*/
+'use strict';
+document.addEventListener("DOMContentLoaded", function () {
+	/* open dialog/modal on click of a button element */
+	document.querySelector('#open-dialog')
+		.addEventListener('click', toggleDialog);
+
+	function toggleDialog() {
+		var dialog = document.querySelector('dialog'),
+			closeButton = document.getElementById('close-dialog'),
+			closeIcon = document.getElementById('close-icon');
+		if (!dialog.hasAttribute('open')) {
+			// show the dialog 
+			dialog.setAttribute('open', 'open');
+			// after displaying the dialog, focus the closeButton inside it
+			closeButton.focus();
+			closeButton.addEventListener('click', toggleDialog);
+			closeIcon.addEventListener('click', toggleDialog);
+			// EventListener für ESC-Taste
+			document.addEventListener('keydown', function (event) {
+				if (event.keyCode == 27) {
+					toggleDialog();
+				}
+			}, true);
+			// only hide the background *after* you've moved focus out of the content that will be "hidden" 
+			var div = document.createElement('div');
+			div.id = 'backdrop';
+			document.body.appendChild(div);
+		} else {
+			dialog.removeAttribute('open');
+			var div = document.querySelector('#backdrop');
+			div.parentNode.removeChild(div);
+/*			lastFocus.focus(); */
+		}
+	}
+});
