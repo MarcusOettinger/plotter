@@ -7,7 +7,7 @@
 // hosting the iframe and only contains the image plus some
 // js code to interoperate with the calling page)
 //
-// Marcus Oettinger 06/2018
+// Marcus Oettinger 06/2020
 // - conversion to SSL-encrypted pages: QR-code inline to avoid
 //   mixed content
 // 06/2015:
@@ -52,7 +52,7 @@ include("modules/function.inc");
 <tr><td id="back">
 <img src="graph.php?<?= $query ?>" width="<?= $width ?>" height="<?= $height ?>" alt="Graph" />
 </td></tr></table>
-<script type="text/javascript">
+<script type="text/javascript" nonce="<?php echo $GLOBALS['plotternonce'];?>">
     parent.document.getElementById("path").value="<?php
 	// ... echo the original (ugly) URL and ...
 	$longurl = $srv . $query;
