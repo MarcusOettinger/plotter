@@ -1,15 +1,19 @@
 <?php
 //
 // options.inc: 
-// create a jquery dialog to change display settings for plotter.
+// a modal dialog to change display settings for plotter.
 // This one should degrade nicely (and ugly, of course...)
-// (uses jquery-ui)
-// M. Oettinger
-// 06/2020: CSP capable
+// 
+// M. Oettinger 2020
+// 06/2020: get rid of jquery and jquery-ui
+// 09/2019: CSP capable
 // 12/2015: added an option to change variable Name (e.g. for use of t instead of x in time domain)
 // --- begin options --
+//  <div id="dialog">
 ?>
-<div id="dialog">
+<dialog role="dialog"><h2 id="header">Options</h2>
+<button id="close-dialog">Close</button>
+<button id="close-icon">X</button>
   <fieldset><legend class="text1em">plot properties</legend>
   <table><tr>
 	<td>&nbsp;width: </td><td class="ralign"><input class="w50" id="width" name="width" value="500" > </td><td rowspan="7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -45,19 +49,19 @@
 	<td></td>
   </tr><tr>
 	<td colspan="4" class="pt15">&nbsp;log. scale x:
-	<input type="radio" class="check" class="logskx" name="logskx" checked="checked" value="0" >No
-	<input type="radio" class="check" class="logskx" name="logskx" value="2" >2
-	<input type="radio" class="check" class="logskx" name="logskx" value="M_E" >e
-	<input type="radio" class="check" class="logskx" name="logskx" value="10" >10
-	<input type="radio" class="check" class="logskx" name="logskx" value="100" >100
+	<input type="radio" class="check logskx" name="logskx" checked="checked" value="0" >No
+	<input type="radio" class="check logskx" name="logskx" value="2" >2
+	<input type="radio" class="check logskx" name="logskx" value="M_E" >e
+	<input type="radio" class="check logskx" name="logskx" value="10" >10
+	<input type="radio" class="check logskx" name="logskx" value="100" >100
 	</td><td colspan="2" class="pt15 centertext">or <input name="logskix" id="logskix" class="w50"></td>
   </tr><tr>
 	<td colspan="4">&nbsp;log. scale y:
-	<input type="radio" class="check" class="logsk" name="logsk" checked="checked" value="0" >No
-	<input type="radio" class="check" class="logsk" name="logsk" value="2" >2
-	<input type="radio" class="check" class="logsk" name="logsk" value="M_E" >e
-	<input type="radio" class="check" class="logsk" name="logsk" value="10" >10
-	<input type="radio" class="check" class="logsk" name="logsk" value="100" >100
+	<input type="radio" class="check logsk" name="logsk" checked="checked" value="0" >No
+	<input type="radio" class="check logsk" name="logsk" value="2" >2
+	<input type="radio" class="check logsk" name="logsk" value="M_E" >e
+	<input type="radio" class="check logsk" name="logsk" value="10" >10
+	<input type="radio" class="check logsk" name="logsk" value="100" >100
 	</td><td colspan="2" class="centertext">or <input name="logski" id="logski" class="w50"></td>
   </tr>
   </table>
@@ -107,13 +111,12 @@
   <label for="edge">edges</label><input type="checkbox" class="check" id="edge" name="edge" value="1" >
   </fieldset>
   </div>
-
   </fieldset>
-  </div></div>
-
-  </form>
-</div>
-</div>
+  </div><!-- align -->
+  <div id="spacer"></div>
+  </div>
+</dialog><!-- dialog -->
+</form>
 <?php
 // --- end options --
 ?>
