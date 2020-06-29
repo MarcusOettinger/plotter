@@ -4,7 +4,8 @@
  *     draws the function plot and displays it as png, gif or jpeg image.
  *
  * Modified by Marcus Oettinger for plot.oettinger-physics.de 
- * 06/2015:
+ * 06/2020:
+ *  - minor cleanups
  *  - use TTF font set in config.inc for text output
  *  - added the ability to draw up to 10 additional points on the plot
  *  - reworked the code to allow for smoother color handling
@@ -41,14 +42,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 include_once("config.inc");
 include_once("modules/helpers.php");
 
-$c=$_GET['a0'];
-// set initial values
+$c = $_GET['a0'];
+
 if (!$c) {
+	// set default values
 	$formula1='x^2'; // default value for formula 1 (f(x))
 	$selfcol0="00ff00";		//color 1
-	$term1=1;	//show term 1
-	$term2="";	//don't show term 2
-	$term3="";	//don't show term 3
+	$term1=1;	// show term 1 (f(x)) in the legend
+	$term2="";	// don't show term 2 in the legend
+	$term3="";	// don't show term 3 in the legend
 	$sint1=0;	//integral, derivative or f(x) of function 1
 	$width=500;	// image width and height
 	$height=500;
@@ -63,37 +65,38 @@ if (!$c) {
 	$linex=5;	// length x dashes
 	$liney=5;	// length y dashes
 	$mid=0;		// gap at origin
-	$deci=3;		// decimal places
+	$deci=3;	// decimal places
 	$lines=1;	// axis lines yes
-	$grid=1;		// grid lines on
+	$grid=1;	// grid lines on
 	$numbers=1;	// caption yes
 	$dashes=1;	// dashes yes
 	$frame=0;	// no Frame around the plot
-	$errors=1;//show errors yes
-	$logsk=0;//logarithmic scale y no
-	$logskx=0;//logarithmic scale x no
-	$bg=14;//white background
-	$gapc=14;//white gap
-	$capt=13;//black caption
-	$linec=12;//grey reticule lines
-	$con0=0;//connect dots
-	$con1=0;//connect dots
-	$con2=0;//connect dots
-	$anti=1;//antialiasing yes
-	$gamma=1;//no gamma correction
-	$bri=0;//normal brightness
-	$cont=0;//normal contrast
-	$bf=1;//lines in background
-	$pol=1;//find poles
-	$rotate=0;//no rotation
-	$filetype=0;	//output as png image
+	$errors=1;	//show errors yes
+	$logsk=0;	//logarithmic scale y no
+	$logskx=0;	//logarithmic scale x no
+	$bg=14;		//white background
+	$gapc=14;	//white gap
+	$capt=13;	//black caption
+	$linec=12;	//grey reticule lines
+	$con0=0;	//connect dots
+	$con1=0;	//connect dots
+	$con2=0;	//connect dots
+	$anti=1;	//antialiasing yes
+	$gamma=1;	//no gamma correction
+	$bri=0;		//normal brightness
+	$cont=0;	//normal contrast
+	$bf=1;		//lines in background
+	$pol=1;		//find poles
+	$rotate=0;	//no rotation
+	$filetype=0;	//output as jpeg image
 	$Y="Y";		// plot function values - no hull function
-	$selfcol0="ffffff";//self-defined colors
+	$selfcol0="ffffff";	//self-defined colors for curves
 	$selfcol1="a0b0c0";
 	$selfcol2="6080a0";
 	$thick=1;	//line thickness
-	$varname="x";	//variable name to display
-} else { // read the query string and give the variables their old name 
+	$varname="x";	//variable name to display in legend
+} else { 
+	// read the query string and convert variable names 
 	$formula1=$_GET['a1'];
 	$formula2=$_GET['a2'];
 	$formula3=$_GET['a3'];
@@ -161,16 +164,16 @@ if (!$c) {
 	$selfcol1=$_GET['g8'];
 	$selfcol2=$_GET['g9'];
 	$thick=$_GET['h0'];
-	if (isset($_GET['h1'])) { 
+	if (isset($_GET['h1'])) {
 		$varname=$_GET['h1']; 
 	} else {
 		$varname = "x";
 	}
 	if (isset($_GET['pc'])) $pointc = $_GET['pc'];
-	for ($i=0;$i<10;$i++) {
+	for ($i=0; $i<10; $i++) {
 		if (isset($_GET["p$i"])) {
 			$pcount = $i+1;
-			$pn[$i] = urldecode($_GET["p$i"]);	// Name (P,Q,...)
+			$pn[$i] = urldecode($_GET["p$i"]);		// Name of point (P,Q,...)
 			$newval = handleConstants($_GET["x$i"]);
 			if (is_numeric($newval)) $px[$i] = $newval;	// x
 			$newval = handleConstants($_GET["y$i"]);
@@ -184,8 +187,8 @@ if (!$c) {
 
 // html header: set file type
 if($filetype==1) 	Header ("Content-type: image/gif");
-else if($filetype==2) 	Header ("Content-type: image/jpeg");
-else 			Header ("Content-type: image/png");
+else if($filetype==2) 	Header ("Content-type: image/png");
+else 			Header ("Content-type: image/jpeg");
 
 // use constants as overall range
 $rulex1=handleConstants($rulex1);
@@ -226,9 +229,9 @@ $form[2]=$formula3;//formula term 2 for display
 $sint[0]=$sint1;//integral, derivative or f(x) of func 1
 $sint[1]=$sint2;//integral, derivative or g(x) of func 2
 $sint[2]=$sint3;//integral, derivative or h(x) of func 3
- $col[0]=0; // $col1;//color 1
- $col[1]=1; //$col2;//color 2
- $col[2]=2; //$col3;//color 3
+$col[0]=0; // $col1;//color 1
+$col[1]=1; //$col2;//color 2
+$col[2]=2; //$col3;//color 3
 $term[0]=$term1;//show term 1
 $term[1]=$term2;//show term 2
 $term[2]=$term3;//show term 3
@@ -266,7 +269,7 @@ for($i=0;$i<3;$i++) { //constants as from-to range and +C
 	$cint[$i]=handleConstants($cint[$i]);
 }
 
-// Everything initialized -  
+// Everything should be set up by now -  
 // create an empty image and define colors
 //
 $img=imagecreatetruecolor($width,$height);
@@ -322,7 +325,12 @@ function plotText($img, $size, $x, $y, $text, $color, $nice){
 
 // grid and axis lines, caption and dashes
 function drawlines() {
-	global $width, $height, $gridx, $gridy, $startx, $starty, $color, $intervalsx, $intervalsy, $rulex, $rulex1, $ruley, $ruley2, $linex, $liney, $grid, $dashes, $deci, $numbers, $logsk, $logskx, $linec, $capt, $gapc, $lines, $img, $nice, $varname;
+	// good god - that's ugly...
+	global $width, $height, $gridx, $gridy, 
+	       $startx, $starty, $color, $intervalsx, $intervalsy,
+	       $rulex, $rulex1, $ruley, $ruley2, $linex, $liney, 
+	       $grid, $dashes, $deci, $numbers, $logsk, $logskx,
+	       $linec, $capt, $gapc, $lines, $img, $nice, $varname;
 
 	// draw reticule lines
 	if($grid) {
@@ -421,10 +429,10 @@ function drawlines() {
 }
 
 // draw lines in background
-if($bf==1)
+if($bf == 1)
 	drawlines();
 
-// draw gap at origin
+// draw a gap at origin
 if ($mid>0) {
 	$middlex=-$rulex1/$rulex*$width;
 	$middley=$ruley2/$ruley*$height;
@@ -570,14 +578,14 @@ for ($j=0;$j<3;$j++) {
 }
 
 // draw lines in foreground
-if($bf==2)
+if($bf == 2)
 	drawlines();
 
 // If $varname ist set, replace all occurences of 'x' by $varname
 // and draw function terms.
 for($i=0;$i<3;$i++) {
 	if($form[$i]!='' && $term[$i]){
-		$form[$i] = str_replace("x",$varname,$form[$i]);
+		$form[$i] = str_replace("x", $varname, $form[$i]);
 		if($i==0)
 			$term1="f";		
 		else if($i==1)
@@ -606,7 +614,7 @@ for($i=0;$i<3;$i++) {
 	}
 }
 
-// draw frame if selected
+// draw frame if desired
 if ($frame)
 	imagerectangle ($img,0,0,$width-1,$height-1,$color[4]);
 	
@@ -635,11 +643,10 @@ if($rotate) $img=imagerotate($img,-$rotate,$color[3]);
 
 imagecolortransparent($img,$color[38]);
 
-// we're done, stream the result in selected format
+// That's it => stream the result in selected format
 if($filetype==1)
 	imagegif($img);
 else if($filetype==2)
-	imagejpeg($img,NULL,90);
-else
 	imagepng($img,NULL,1);
+else imagejpeg($img,NULL,90);
 ?>
