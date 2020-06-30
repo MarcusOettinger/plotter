@@ -111,6 +111,7 @@ function intshow(x) {
 	document.getElementById("formula"+x).addClass("w120");
 	document.getElementById("intc"+x).addClass("display");
 	document.getElementById("cint"+x).focus();
+	getgraph();
 }
 
 function intclose(x) {
@@ -118,6 +119,7 @@ function intclose(x) {
 	document.getElementById("intc"+x).removeClass("display");
 	document.getElementById("formula"+x).addClass("w190");
 	document.getElementById("intc"+x).addClass("nodisplay");
+	getgraph();
 }
 
 /*
@@ -131,9 +133,9 @@ function loadg() {
 	document.getElementById( "formula1" ).value = decodeURIComponent(pp.substring(pp.indexOf("&a1=")+4,pp.indexOf("&a2=")));
 	document.getElementById( "formula2" ).value = decodeURIComponent(pp.substring(pp.indexOf("&a2=")+4,pp.indexOf("&a3=")));
 	document.getElementById( "formula3" ).value = decodeURIComponent(pp.substring(pp.indexOf("&a3=")+4,pp.indexOf("&a7=")));
-	document.getElementById( "term1").checked = (pp.substring(pp.indexOf("&a7=")+4,pp.indexOf("&a8=")) == 1);
-	document.getElementById( "term2").checked = (pp.substring(pp.indexOf("&a8=")+4,pp.indexOf("&a9=")) == 1);
-	document.getElementById( "term3").checked = (pp.substring(pp.indexOf("&a9=")+4,pp.indexOf("&b0=")) == 1);
+	document.getElementById( "term0").checked = (pp.substring(pp.indexOf("&a7=")+4,pp.indexOf("&a8=")) == 1);
+	document.getElementById( "term1").checked = (pp.substring(pp.indexOf("&a8=")+4,pp.indexOf("&a9=")) == 1);
+	document.getElementById( "term2").checked = (pp.substring(pp.indexOf("&a9=")+4,pp.indexOf("&b0=")) == 1);
 	document.getElementById( "width" ).value = pp.substring(pp.indexOf("&b0=")+4,pp.indexOf("&b1="));
 	document.getElementById( "height" ).value = pp.substring(pp.indexOf("&b1=")+4,pp.indexOf("&b2="));
 	document.getElementById( "rulex1" ).value = pp.substring(pp.indexOf("&b2=")+4,pp.indexOf("&b3="));
@@ -291,7 +293,7 @@ function loadg() {
 };
 
 
-/* set log checkboxes in the dialog to unchecked (for a = "x" or "y" */
+/* set log checkboxes in the dialog to unchecked (for a = "x" or "" (for y) */
 function clrlog(a) {
 	var nm = "logsk" + a;
 	var mylist = document.getElementsByName( nm );
@@ -318,29 +320,39 @@ function standard() {
 		document.getElementById( "selfcol6").value = "ffffff";
 		document.getElementById( "linex").value = 5;
 		document.getElementById( "liney").value = 5;
-		document.getElementById( "gapc").value = 14;
+		document.getElementById( "gridx").value = 20;		
+		document.getElementById( "gridy").value = 20;		
+		document.getElementById( "deci").value = 3;
+		document.getElementById( "mid").value = 0;
+		document.getElementById( "varname").value = "x";
 		document.getElementById( "grid").checked = true;
-		document.getElementById( "lines"). checked = true;
-		document.getElementById( "numbers"). checked = true;
-		document.getElementById( "dashes"). checked = true;
+		document.getElementById( "lines").checked = true;
+		document.getElementById( "numbers").checked = true;
+		document.getElementById( "dashes").checked = true;
 		document.getElementById( "frame").checked = false;
-		document.getElementById( "errors"). checked = true;
-		document.getElementById( "anti"). checked = true;
-		document.getElementById( "pol"). checked = true;
+		document.getElementById( "errors").checked = true;
+		document.getElementById( "anti").checked = true;
+		document.getElementById( "pol").checked = true;
 		document.getElementById( "bf").value = 1;
 		document.getElementById( "gamma").value = 1;
 		document.getElementById( "bri").value = 0;
 		document.getElementById( "cont").value = 0;
 		document.getElementById( "rotate").value = 0;
 		document.getElementById( "emb").checked = false;
-		document.getElementById( "blur"). checked = false;
-		document.getElementById( "neg"). checked = false;
-		document.getElementById( "gray"). checked = false;
-		document.getElementById( "mean"). checked = false;
-		document.getElementById( "edge"). checked = false;
+		document.getElementById( "blur").checked = false;
+		document.getElementById( "neg").checked = false;
+		document.getElementById( "gray").checked = false;
+		document.getElementById( "mean").checked = false;
+		document.getElementById( "edge").checked = false;
 		document.getElementById( "width").value = 500;
 		document.getElementById( "height").value = 500;
-		document.getElementById( "thick").value = 1;
+		document.getElementById( "thick").value = 2;
+//		clrlog( "x");
+//		clrlog( "" );
+		document.getElementById( "logskix").value = "";
+		document.getElementById( "logski").value = "";
+		document.getElementById( "logskx").value= "0";
+		document.getElementById( "logsk").value= "0";
 		getgraph();
 	}
 }
@@ -435,6 +447,7 @@ function copyURL() {
 	el.insertAdjacentHTML('beforeend', html);
 	document.getElementById("delpoint").style.display = "inline";
 	if (nPt == 10) { document.getElementById("addpoint").style.display = "none"; }
+	accordion.resize(1);
     }
 
     /* 
@@ -471,8 +484,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	document.getElementById( "infobutton4" ).addEventListener('click', function() {  
 		togglediv( "info4" ); });
 	
-//	$( "#accordion" ).accordion({heightStyle: "content", autoHeight: false });
-	var accordion = new Accordion({
+	accordion = new Accordion({
 	    element: 'accordion',
 	    openTab: 1,
  	   oneOpen: true
@@ -528,6 +540,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			document.getElementById( id ).addEventListener('click', 
 					function( event ) { intclose( n ); });
 		}(n)
+	}
+	/* replot graph when select value changes */
+	for (var n = 0; n<3; n++) {
+		id = "con" + n;
+		document.getElementById( id ).addEventListener('change', 
+					function( event ) { getgraph(); });
+		id = "term" + n;
+		document.getElementById( id ).addEventListener('change', 
+					function( event ) { getgraph(); });
 	}
 
 	/* set color via textinputs */
@@ -615,8 +636,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		document.getElementById( "inpval" ).value = "-1 -2 -3 -4 -5 -6 -7 -8 -9 -10"; });
 	document.getElementById( "urlclear" ).addEventListener('click', function( event ) { 
 		document.getElementById( "path").value = "";
-		if (document.getElementById( "shortpath" )) 
-			document.getElementById( "shortpath" ).value = "";
+	if (document.getElementById( "shortpath" ))
+		document.getElementById( "shortpath" ).value = "";
 		document.getElementById( "path" ).focus();
 	});
 	document.getElementById( "urlselect" ).addEventListener('click', function( event ) {
