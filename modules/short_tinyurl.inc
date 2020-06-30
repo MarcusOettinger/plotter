@@ -1,11 +1,12 @@
 <?php
 //
-// YAPlot: URL shortening via tinyurl.com
-// M. Oettinger 08/2015
+// Plotter: URL shortening via tinyurl.com
+// M. Oettinger 06/2020
 // License: GPL
 //
 
 $useShortening = true;
+$useQR = false;
 
 function getshortlink($longurl) {
 	global $shorten;
