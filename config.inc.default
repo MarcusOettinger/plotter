@@ -3,9 +3,15 @@
 // Copy this one to config.inc in your plotter installations root directory
 // to configure your plotter.
 //
-// M. Oettinger 09/2018
+// M. Oettinger 06/2020
 // -------------------------------------------------------------------------
 //
+// -----------------------------------------------------------------------------
+// Read plotter version
+
+$va = explode("=", file_get_contents("VERSION"));
+$plotter_version = $va[1];
+
 // location (URL) of your plotter installation. Setting this value is
 // mandatory.
 //
@@ -21,32 +27,34 @@ $fqdn = "http://theplotterthingie.example.com/goplotting";
 // $mainsite_name="foo to frobnicate the bar's";
 
 $mainsite="";
-$mainsite_name="a wonderful";
+$mainsite_name="a wonderful site";
 
 
-// This is the value prepended to the URL of the generated function plot
+// The location prepended to the URL of the generated function plot
 // (set this to the location of graph.php). Probably there's no need to change
 // this line
 
 $srv = "$fqdn/graph.php?";
 
 // Include simple CSP headers via PHP.
-// katex is an external library to render laTeX used on the example page - suck it from
-// cloudflare cdn by default. Reasonable CSP headers require the cdn to be defined:
+// katex is an external library to render laTeX used on the example/manual page,
+// loaded from  cloudflare cdn by default. Reasonable CSP headers require the
+// cdn to be defined:
 
 $CDN = "cdnjs.cloudflare.com";
 include_once("modules/CSP.inc");
 
 // extras:
-// * set a meta tag for author
-// * favicon
+// * set a meta tag for author/owner
+// * set a favicon 
 //
+
 $extopts = '  <meta name="author" content="John Doe">
   <link rel="shortcut icon" type="image/x-icon" href="plotter.ico">';
 
 //
 // External libraries used on pages displaying math with katex hosted on
-// cloudflare cdn
+// cloudflare cdn - change if you would like to avoid using this
 //
 $extmath = '<meta http-equiv="cache-control" content="max-age=3600">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" integrity="sha256-V8SV2MO1FUb63Bwht5Wx9x6PVHNa02gv8BgH/uH3ung=" crossorigin="anonymous" />
@@ -54,16 +62,18 @@ $extmath = '<meta http-equiv="cache-control" content="max-age=3600">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/contrib/auto-render.min.js" integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI=" crossorigin="anonymous"></script>
 ';
 
-
-// the truetype font to use. To disable freetype font display, just leave
-// this value empty (as a builtin GD font is used if the font file isn't
-// found).
 //
+// A truetype font to use in the plotter images.
+// To disable freetype font display, just set to empty (as a builtin GD font
+// is used if the font file isn't found).
+//
+
 $defaultTTFont = "include/FreeSans.ttf";
 
 //
 // Licensing information (shown on the manual page)
 //
+
 $licensetext = "<p>Licensing: GPL V.2</p>";
 $plotterinfo = true;
 
@@ -80,7 +90,7 @@ $infotext = array(
         <p>Use the lower tab to calculate tables of function values (in csv or text
         format) and get a hyperlink to reproduce an image on the fly (using an URL or QRcode).</p>",
   // info: points to display in the plot
-  "info2" => "<p>Define named points to be displayed in the graph:<br>add or remove points
+  "info2" => "<p>Define named points to draw into the graph:<br>add or remove points
        with +/-. </p>",
   // info: calculating values
   "info3" => "<p>Enter some variable values and a formula to be calculated, 
@@ -95,7 +105,7 @@ $infotext = array(
        </ul>",
   // info: load (sort of...)
   "info4" => "<p> Every image drawn by plotter can be reproduced by a call to plotter's image
-       creating part (graph.php). All the information needed is passed by a query
+       creating part (graph.php). All the information needed is passed in a query
        string appended to its URL, the result is a direct image stream in one of the
        supported formats. The URL (including the querystring) can be used like every
        other image created.</p><p>Of course, the information in the query string can be used
@@ -110,9 +120,9 @@ $infotext = array(
 // URL shortening service to use, examples are 
 //
 // tinyurl: no authentication needed, the API will silently act on your link:
-// $shorten = "http://tinyurl.com/api-create.php?url=";
-// include_once("short_tinyurl.inc");
-// $short_msg = "Alternatively, use the short link provided below";
+$shorten = "http://tinyurl.com/api-create.php?url=";
+include_once("short_tinyurl.inc");
+$short_msg = "Alternatively, use the short link provided below";
 
 // for your own shortening service via yourls (http://www.yourls.com),
 // use authentication via secret signature token (passwordless authentication):
@@ -120,7 +130,3 @@ $infotext = array(
 // $shorten = "http://example.com/yourls-api.php?action=shorturl&signature=".$secret."&url=";
 // $short_msg = "Alternatively, use the short link provided below";
 
-// -----------------------------------------------------------------------------
-// Read plotter version
-$va = explode("=", file_get_contents("VERSION"));
-$plotter_version = $va[1];
