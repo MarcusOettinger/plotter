@@ -59,6 +59,7 @@ include("modules/function.inc");
 	echo $longurl;
     ?>";
     if ( parent.document.getElementById("shortpath") !== null) {
+console.log("Entering loop");
       parent.document.getElementById("shortpath").value="<?php
 	//
 	// $srv . $query is the URL of the graph,
@@ -80,10 +81,12 @@ include("modules/function.inc");
 	// the page is served SSL-encrypted, to avoid trouble the
 	// QR-code is embedded as a data-URI:
 	//
-	$imgurl = $shorturl . ".qr" ;
-	$imagedata = file_get_contents($imgurl);
-	$base64 = base64_encode($imagedata);
-	echo "data:image/png;base64," . $base64;
+	if (isset($useQR) && $useQR ) {
+		$imgurl = $shorturl . ".qr" ;
+		$imagedata = file_get_contents($imgurl);
+		$base64 = base64_encode($imagedata);
+		echo "data:image/png;base64," . $base64;
+	}
         ?>";
       }
     </script>
