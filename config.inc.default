@@ -1,7 +1,7 @@
 <?php
 // default function plotter configuration
-// Copy this one to config.inc in your plotter installations root directory
-// to configure your plotter.
+// Copy this one to config.inc in your plotter installation's root 
+// directory to configure your plotter.
 //
 // M. Oettinger 06/2020
 // -------------------------------------------------------------------------
@@ -12,9 +12,9 @@
 $va = explode("=", file_get_contents("VERSION"));
 $plotter_version = $va[1];
 
+//
 // location (URL) of your plotter installation. Setting this value is
 // mandatory.
-//
 
 $fqdn = "http://theplotterthingie.example.com/goplotting";
 
@@ -24,17 +24,18 @@ $fqdn = "http://theplotterthingie.example.com/goplotting";
 // If not needed, set $mainsite to an empty string
 //
 // $mainsite="http://frobnicate.foo.bar";
-// $mainsite_name="foo to frobnicate the bar's";
+// $mainsite_name="foo to frobnicate the bar";
 
 $mainsite="";
 $mainsite_name="a wonderful site";
 
-
+//
 // The location prepended to the URL of the generated function plot
 // (set this to the location of graph.php). Probably there's no need to change
 // this line
 
 $srv = "$fqdn/graph.php?";
+if (substr( $srv , -1 ) !== "?") $srv .= "?";
 
 // Include simple CSP headers via PHP.
 // katex is an external library to render laTeX used on the example/manual page,
@@ -53,8 +54,9 @@ $extopts = '  <meta name="author" content="John Doe">
   <link rel="shortcut icon" type="image/x-icon" href="plotter.ico">';
 
 //
-// External libraries used on pages displaying math with katex hosted on
-// cloudflare cdn - change if you would like to avoid using this
+// External libraries used on pages to render math expressions.
+// Default is katex (see www.katex.org) hosted on cloudflare cdn
+// - change if you would like to avoid using this.
 //
 $extmath = '<meta http-equiv="cache-control" content="max-age=3600">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" integrity="sha256-V8SV2MO1FUb63Bwht5Wx9x6PVHNa02gv8BgH/uH3ung=" crossorigin="anonymous" />
@@ -64,15 +66,13 @@ $extmath = '<meta http-equiv="cache-control" content="max-age=3600">
 
 //
 // A truetype font to use in the plotter images.
-// To disable freetype font display, just set to empty (as a builtin GD font
+// To disable freetype font display, just set to empty (a builtin GD font
 // is used if the font file isn't found).
-//
 
 $defaultTTFont = "include/FreeSans.ttf";
 
 //
 // Licensing information (shown on the manual page)
-//
 
 $licensetext = "<p>Licensing: GPL V.2</p>";
 $plotterinfo = true;
@@ -81,7 +81,7 @@ $plotterinfo = true;
 // Poor man's help: text snippets displayed in info toggles.
 // Set in this config file because this way the infomation can be changed
 // w/o touching the main page.
-//
+
 $infotext = array(
   // info - what is this?
   "info1" => "<p>... is a simple tool to draw curves of functions
@@ -93,12 +93,12 @@ $infotext = array(
   "info2" => "<p>Define named points to draw into the graph:<br>add or remove points
        with +/-. </p>",
   // info: calculating values
-  "info3" => "<p>Enter some variable values and a formula to be calculated, 
+  "info3" => "<p>Enter some variable values and a term to be calculated, 
        functions plotted above can be used by the buttons labeled f(x), g(x) and h(x).
        Variables will usually be simple numbers, separate multiple input values (x)
        by spaces.</p>
-       <p>Select one of the checkboxes to chose a format for the results:</p>
-       <ul style='text-align:left;'><li>results - a string of function values, separated by spaces</li>
+       <p>Select one of the checkboxes to chose how results will be displayed:</p>
+       <ul><li>results - a string of function values, separated by spaces</li>
          <li>table - a simple html table including variable values</li>
          <li>csv - colon separated values including variable values</li>
          <li>latex - code to layout a table including variable values in laTeX</li>
