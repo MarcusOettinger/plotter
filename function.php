@@ -59,7 +59,6 @@ include("modules/function.inc");
 	echo $longurl;
     ?>";
     if ( parent.document.getElementById("shortpath") !== null) {
-console.log("Entering loop");
       parent.document.getElementById("shortpath").value="<?php
 	//
 	// $srv . $query is the URL of the graph,
