@@ -1,29 +1,30 @@
-Plotter,
-a function plotter (mostly) to display curves of mathematical expressions (mostly),
-loosely based on openPlaG (see http://rechneronline.de/openPlaG/) by Juergen Kummer (GPLed).
+Plotter
+========
+is a function plotter (mostly) to display curves of mathematical expressions (mostly),
+loosely based on openPlaG (see http://rechneronline.de/openPlaG/) by Juergen Kummer
+(which is GPLed).
 
 0. Requirements
 ---------------
 The bare minimum to run a plotter is a webserver with PHP>=4.3 (that is
 untested) and the GD extension enabled. At least some packages of GD as
 an apache extension (cli and module) were shipped without antialiasing support
-compiled in - never mind, if you can live without this feature, there's a
+compiled in - never mind if you can live without this feature, there's a
 workaround built in.
-
-The webserver plotter is running on should interpret inline PHP-code in html pages - you may need to enable this feature.
 
 That's it.
 
 
 1. Installing plotter
 -----------------------
-
 Clone the repository or grab a package. The latest version can always be found
 on github:
    https://github.com/MarcusOettinger/plotter
 
-Unzip if needed and copy the contents in the desired location of your webspace.
-Copy or rename the default configuration file config.inc.default to a new config.inc and edit the configuration to suit your needs - there is only one step that is absolutely necessary:
+Unzip if needed and copy the contents into the desired location of your webspace.
+Copy or rename the default configuration file config.inc.default to a new config.inc.
+Edit the config file to suit your needs - there is only one step that is absolutely
+necessary:
 
     set $fqdn to the address where your plotter will be located, e.g.
     $fqdn = theplotterthingy.example.com
@@ -70,4 +71,4 @@ of the info boxes by changing the string
 The plotter is released by M. Oettinger under a GNU General Public License V.2
 (see https://www.gnu.org/licenses/gpl-2.0.html or the file LICENSE).
 
-(c) Marcus Oettinger 2015
+(c) Marcus Oettinger 2015-2020
