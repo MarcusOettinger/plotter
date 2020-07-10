@@ -1,11 +1,10 @@
 /*
- * plotstyle.css, part of plotter, a php/GD
- * function plotter 
+ * plotstyle.css: part of plotter, a php/GD2
+ * function plotter (https://github.com/MarcusOettinger/plotter)
  *
- * M. Oettinger 06/2020
+ * M. Oettinger 07/2020
  *
  */
-/* general styling */
 body {
 	margin:0px;
 	padding:0px;
@@ -63,21 +62,6 @@ iframe {
 }
 a {
 	font-weight:bold
-}
-
-/* 
- * styles needed for jquery-ui accordion and dialog
- */
-.ui-widget-content {
-	border:none;
-}
-h3.ui-accordion-header {
-	color:#ff8000;
-	font-size:1.1em;
-}
-.ui-state-active {
-	border-width:0px;
-	border-bottom:2px solid #cdcdcd;
 }
 
 /* header bar and menu */
@@ -146,8 +130,8 @@ h3.ui-accordion-header {
 
 
 /* 
- * elements for calculation of distinct values
- * (iframe, input, table)
+ * elements for calculation of discrete function 
+ * values (iframe, input, table)
  */
 .calcframe {
 	width:95%;
@@ -176,7 +160,7 @@ table.calctable tr th  {
 }
 
 /* 
- * Options can be changed in a jquery-ui dialog
+ * Settings can be changed in a dialog
  */
 #singleform {
 	padding:5px 0px;
@@ -243,9 +227,9 @@ input[type='image'] {
  */
 .info{
 	display:none;
-	border:3px solid #aa4444;
-	background-color: #F5F6CE;
-	margin:10px;
+	border:2px solid #ff8000;
+	background-color: #deeaff;
+	margin:0px;
 	padding:3%;
 	font-weight:normal;
 	font-size:13px;
