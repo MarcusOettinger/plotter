@@ -7,7 +7,7 @@ loosely based on openPlaG (see http://rechneronline.de/openPlaG/) by Juergen Kum
 0. Requirements
 ---------------
 The bare minimum to run a plotter is a webserver with PHP>=4.3 (that is
-untested) and the GD extension enabled. At least some packages of GD as
+untested) and the GD extension (version 2) enabled. At least some packages of GD as
 an apache extension (cli and module) were shipped without antialiasing support
 compiled in - never mind if you can live without this feature, there's a
 workaround built in.
