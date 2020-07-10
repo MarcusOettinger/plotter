@@ -32,9 +32,9 @@ most of the plotter will work without.
 */
 
 /* 
-  HTML Element extension to add and remove classes
-  This seems to work in IE9+
-*/
+ * HTML Element extension to add and remove classes
+ * This seems to work in IE9+
+ */
 HTMLElement = typeof(HTMLElement) != 'undefined' ? HTMLElement : Element;
 
 HTMLElement.prototype.addClass = function(string) {
@@ -62,6 +62,9 @@ HTMLElement.prototype.removeClass = function(remove) {
     this.className = newClassName;
 }
 
+/*
+ * getgraph(): submit form to reload the graphic part
+ */
 function getgraph() {
 	document.getElementById("funcs").submit();
 	intsopen();
@@ -238,27 +241,20 @@ function loadg() {
 	document.getElementById( "selfcol0" ).value = values["g7"];
 	document.getElementById( "selfcol1" ).value = values["g8"];
 	document.getElementById( "selfcol2" ).value = values["g9"];
-	
 	document.getElementById( "thick" ).value = values["h0"];
-	/* varname (h1) is optional: */
+	
+	/* varname (h1) and further options are optional (for backward compatibility) */
 	document.getElementById( "varname" ).value = (values["h1"] == undefined ? "x" : values["h1"]);
 	document.getElementById( "transp" ).checked = 1;
-	if (values["h2"] == undefined)
-		document.getElementById( "transp" ).checked = true;
-	else
-		document.getElementById( "transp" ).checked = (values["h2"] == 1);
+	if (values["h2"] == undefined) document.getElementById( "transp" ).checked = true;
+	else document.getElementById( "transp" ).checked = (values["h2"] == 1);
 
 	/* points, color is 'p', name 'p'#, x/y are 'x'# and 'y'# */
 	/* delete pointlines!! */
-	while (nPt > 0) {
-		delline()
-	}
+	while (nPt > 0) delline()
 	document.getElementById( "selfcol7" ).value = (values["p"] == undefined ? "6080a0" : values["p"]);
-	
 	var pointindex = 0;
 	var pval = "&p" + pointindex + "=";
-	
-	
 	/* iterate through point definitions */
 	while ( pp.indexOf(pval) > 0) {
 		addline();
