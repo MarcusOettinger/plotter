@@ -2,7 +2,7 @@
 //
 // mainplot.inc: 
 // This is the main part of the GUI: display a plot in an <img> on the left,
-// the most common controls and a a list of points to plot on the right.
+// the most common controls and a a list of named points to plot on the right.
 // This one should degrade nicely (BUT ugly, of course...)
 // M. Oettinger
 // 06/2020: conversion of tooltips/accordion to get rid of jquery-ui
@@ -24,7 +24,7 @@
   <div id="plotcontrol">
   <input type="hidden" name="c" value="2" >
   <input id="submit" type="image" src="images/iconPlot.png" data-tooltip="redraw plot" value="Draw" >
-  <input type="image" id="inputReset" src="images/iconReset.png" data-tooltip="reset to default options" value="set default">
+  <input type="image" id="inputReset" src="images/iconReset.png" data-tooltip="reset to default settings" value="set default">
   <input type="image" id="open-dialog" src="images/iconGear.png" data-tooltip="settings/options" value="Options">
   </div>
   <iframe id="function" name="function">Function Graph</iframe>
