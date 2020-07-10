@@ -9,7 +9,7 @@ The images can be drawn on the fly: after a plot is created and formatted in the
 Because the URL is long and ugly, the possibility to use an URL-shortener (using [tinyURL](https://tinyurl.com/) or [YOURLS](https://yourls.org/)) is built in - although this might need some fiddling to get it to work.
 
 ### Prerequisites
-To run a plotter, a standard installation of a webserver capable of interpreting PHP (>=4.3 - that is untested) with an enabled GD extension is needed.
+To run a plotter, a standard installation of a webserver capable of interpreting PHP (>=4.3 - that is untested) with an enabled GD extension (at least version 2) is needed.
 
 Plotter uses the [katex math typesetting library](https://katex.org/) (which is loaded from a cdn by default) to print maths on the manual and example page and obviously uses javaScript (mostly for user interaction).
 
