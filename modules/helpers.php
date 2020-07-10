@@ -3,7 +3,7 @@
 modules/helpers.php: 
 Required by: graph.php, single.php
 
-Copyright (C) 2015 Marcus Oettinger,
+Copyright (C) 2015-2020 Marcus Oettinger,
 Original source: http://rechneronline.de/function-graphs/
 Copyright (C) 2011 Juergen Kummer
 
@@ -22,6 +22,32 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+
+// emulate PHP_VERSION_ID for older interpreters
+if (!defined('PHP_VERSION_ID')) {
+    $version = explode('.', PHP_VERSION);
+    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
+}
+
+// check if the GD extension is installed and if
+// its a GD2+
+function chkgd2(){
+  $testGD = get_extension_funcs("gd"); // Grab function list
+  if (!$testGD){ echo "GD not even installed."; exit; }
+  if (!in_array ("imagegd2",$testGD)) $gd_version = "<2"; // Check
+  if ($gd_version == "<2") return false; else return true;
+}
+
+// debug_writeline: write a line into debug.txt
+function debug_writeline($instr){
+	$file = 'debug.txt';
+	$current = file_get_contents($file);
+	$current .= "$instr\n"; 
+	file_put_contents($file, $current);
+}
+
+
+
 // replace constant names by numbers
 // $instr: a string that may contain constant names like 'pi','e', ...
 //
@@ -30,7 +56,9 @@ function handleConstants($instr) {
 	$instr=str_replace(",",".",$instr);
 	
 	$instr=str_replace('pi2',M_PI_2,$instr);
+	$instr=str_replace('PI2',M_PI_2,$instr);
 	$instr=str_replace('pi',M_PI,$instr);
+	$instr=str_replace('PI',M_PI,$instr);
 	$instr=str_replace('e',M_E,$instr);
 	$instr=str_replace('sq2',M_SQRT2,$instr);
 	$instr=str_replace('go','1.6180339887499',$instr);
@@ -39,7 +67,7 @@ function handleConstants($instr) {
 	// sanitize input
 	$instr= preg_replace("/[^0-9+\-.*\/()%]/","",$instr);
 	
-	if ( $instr!= "" ){
+	if ( $instr != "" ){
 		$result = @eval("return " . $instr. ";" );
 	}
  
