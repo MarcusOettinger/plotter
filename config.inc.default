@@ -121,12 +121,13 @@ $infotext = array(
 //
 // tinyurl: no authentication needed, the API will silently act on your link:
 $shorten = "http://tinyurl.com/api-create.php?url=";
-include_once("short_tinyurl.inc");
+include_once("modules/short_tinyurl.inc");
 $short_msg = "Alternatively, use the short link provided below";
 
 // for your own shortening service via yourls (http://www.yourls.com),
 // use authentication via secret signature token (passwordless authentication):
 // $secret = "XXXX"
 // $shorten = "http://example.com/yourls-api.php?action=shorturl&signature=".$secret."&url=";
+// include_once("modules/short_yourls.inc");
 // $short_msg = "Alternatively, use the short link provided below";
 
