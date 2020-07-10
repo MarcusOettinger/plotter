@@ -24,14 +24,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-
-// emulate PHP_VERSION_ID for older interpreters
-if (!defined('PHP_VERSION_ID')) {
-    $version = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
-}
-
-
 // add a multiplication operator where omitted, e.g. 3x -> 3*x
 function multisign($term) {
 	for($i=0;$i<strlen($term);$i++) {
@@ -62,13 +54,9 @@ if($c!=2) {//German
 	$text6 = "Too many D or S in formula ";
 }
 
-// read formulae into array
-$formula[0] = rawurldecode($formula1);
-$formula[1] = rawurldecode($formula2);
-$formula[2] = rawurldecode($formula3);
-
 // make some necessary changes in the formulae
 for($i=0;$i<3;$i++) {
+	$formula[$i] = rawurldecode($func[$i]);
 	// delete spaces
 	$formula[$i] = str_replace(' ','',$formula[$i]);
 	$Y=str_replace(' ','',$Y);
