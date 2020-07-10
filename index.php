@@ -40,6 +40,12 @@ if (!is_readable("config.inc")) {
 include_once("config.inc");
 require_once("modules/helpers.php");
 
+if (!chkgd2()) {
+	ErrMsg("Error: unable to find GD2",
+	"<p>The PHP GD2 library  wasn't found - probably you need to install or enable it (see
+	 <a href='https://www.libgd.org'>www.libgd.org</a>)</p>");
+} 
+
 // set silent true to suppress creation of short link and QRCode
 // (no need if testing/Debugging)
 $silent = false;
