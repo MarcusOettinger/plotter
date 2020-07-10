@@ -572,21 +572,16 @@ can be used to create a predefined plot on the fly, there&apos;s no need to save
 the image into a file. Of course, the URL can be saved as text to create a plot
 later on.
 </p><br />
-<p>Direct linking to a function plot is a nice feature, but the URL with
+<?php if (isset($useShortening) && $useShortening == true) {
+	echo '<p>Direct linking to a function plot is a nice feature, but the URL with
 plotter&apos;s options in the query string is really ugly. That&apos;s why
 a short link (tinyurl-a-like) is created in the upper field. The short link
 can be used if you do not need a direct link to the image (in other words:
-if a redirection is acceptable).</p>
-<p>By appending &quot; .qr &quot; to the end of the short link, a QRCode
+if a redirection is acceptable).</p>';
+	if ( isset($useQR) && $useQR )  echo '<p>By appending &quot; .qr &quot; to the end of the short link, a QRCode
 (in png format) of the short link will be created which in turn will redirect
-to the image of the created plot - simple, huh?</p>
-<p>Here&apos;s an example: the short URL 
-<a href="http://oeshort.de/h8">http://oeshort.de/h8</a> (the QR-code is
-&nbsp;<img src="<?php
-	$imagedata = file_get_contents('http://oeshort.de/h8.qr');
-	$base64 = base64_encode($imagedata);
-	echo "data:image/png;base64," . $base64;?>">&nbsp;)
-links to a simple plot of a standard parabola.</p>
+to the image of the created plot - simple, huh?</p>';
+}?>
 <br />
 <a href="#top" class="uplink">top</a><br /><br />
 
