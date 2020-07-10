@@ -18,13 +18,14 @@ header_remove("X-Powered-By");
 $domain = preg_replace('#^https?://#', '', $fqdn);
 $CSPRules = "default-src 'none' "
            .";  base-uri 'none'" 
-           ."; img-src 'self' data: " 
+           ."; img-src 'self' data: " . $CDN 
            ."; form-action 'self'"
-           ."; style-src 'self'"
+           ."; style-src 'self' " . $CDN
+           ."; font-src 'self' " . $CDN
            ."; worker-src 'self'"
            ."; frame-src 'self'"
            ."; frame-ancestors 'self'"
-           ."; script-src 'self' 'nonce-" . $GLOBALS['plotternonce'] . "'";
+           ."; script-src 'self' 'nonce-" . $GLOBALS['plotternonce'] . "' " . $CDN;
 header("Content-Security-Policy: " . $CSPRules);
 header("X-Content-Security-Policy: " . $CSPRules);
 header("X-WebKit-CSP: " . $CSPRules);
@@ -37,7 +38,7 @@ header("Strict-Transport-Security: max-age=31536000;includeSubDomains; preload")
 //
 header("Referrer-Policy: no-referrer");
 header("X-Content-Type-Options: nosniff");
-header("X-Frame-Options: sameorigin");
+//header("X-Frame-Options: sameorigin");
 header("Feature-Policy: camera 'none'; microphone 'none'; geolocation 'none'; payment 'none'");
 
 //
