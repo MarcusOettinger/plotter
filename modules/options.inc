@@ -5,6 +5,7 @@
 // This one should degrade nicely (and ugly, of course...)
 // 
 // M. Oettinger 2020
+// 07/2020: added an option to use transparency in png/gif
 // 06/2020: get rid of jquery and jquery-ui
 // 09/2019: CSP capable
 // 12/2015: added an option to change variable Name (e.g. for use of t instead of x in time domain)
@@ -73,6 +74,7 @@
   <fieldset><legend class="text1em">colors</legend>
   <div class="smalldiv">
       background #<input id="selfcol3" name="selfcol3" class="w60" value="ffffff"> <input class="coldisplay" readonly="readonly" id="selfcolbg3" >
+      <input type="checkbox"  class="check" id="transp" name="transp" value="1" checked="checked" ><label for="transp">transparent background (gif and png)</label><br>
       caption #<input id="selfcol4" name="selfcol4" class="w60" value="141414"> <input class="coldisplay" readonly="readonly" id="selfcolbg4" >
       grid #<input id="selfcol5" name="selfcol5" class="w60" value="f2f2f2"> <input class="coldisplay" readonly="readonly" id="selfcolbg5" >
       gap #<input id="selfcol6" name="selfcol6" class="w60" value="ffffff"> <input class="coldisplay" readonly="readonly" id="selfcolbg6" >
@@ -84,7 +86,7 @@
 	<select id="filetype" name="filetype">
             <option value="0">jpeg</option>
             <option value="1">gif</option>
-            <option value="2">png</option>
+            <option value="2" selected>png</option>
 	</select>
 	<label for="anti">antialiasing</label><input type="checkbox" class="check" id="anti" name="anti" value="1" checked="checked" >
 	<label for="poles">poles</label><input type="checkbox" class="check" id="pol" name="pol" value="1" checked="checked" >
