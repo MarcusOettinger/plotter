@@ -3,7 +3,7 @@
   (space-separated) and press calculate to produce sample points</p>
   <div class="info" id="info3">
     <p>Enter some variable values and a function term to be calculated,
-    functions used in the plot above can be copied using one of the 
+    the functions used in the plot above can be copied using one of the 
     buttons labeled f(x), g(x) or h(x). Variables will usually be 
     simple numbers, separate multiple input values (x) by spaces.</p>
     <p>Select one of the checkboxes to chose a format for output:</p>
@@ -58,16 +58,19 @@
     <img class="bt" id="infobutton4" src="images/iconInfo.png"> Load &amp; save:
     </legend>
     <p class="noprinting">In case you want to link to the graph or cannot use
-    one of the image formats provided, the graph in the plotter
-    can be reproduced any time by the following URL</p>
+    one of the image formats provided, the graph in the plotter can be reproduced
+    any time by the following URL</p>
     <div class="info"  id="info4"><p>
       Every image drawn by plotter can be dynamically reproduced by a simple
-      call to plotter's image creating part (graph.php). All the information needed is placed
-      in a query string appended to its URL.</p>
+      call to plotter's image creating part (called graph.php). All the information
+      needed is placed in the query string appended to its URL. So, wehenever you
+      call this URL (including the querystring), an image file of the plot above
+      will be returned.
+      </p>
       <?php echo $short_msg; ?>
-      <p>Of course, this Information can be used
-      to load an existing plot, e.g. to modify some of its Settings - that is what the button
-      labeled <i>Load graph</i> is for.
+      <p>Of course, this Information can be used to load an existing plot, e.g. to
+      modify some of its settings - that is what the button labeled <i>Load graph</i>
+      is for.
      </p></div>
      <div>
      <?php if (isset($useShortening) && $useShortening == true) {  ?>
@@ -81,7 +84,7 @@
      <br><p class="noprinting">full URL to your image file</p>
      <textarea id="path" class="calcframe"></textarea><br>
      <button class="guibutton" id="urlclear"> clear </button>
-     <button class="guibutton" id="urlselect"> select </button>
+     <button class="guibutton" id="graphcopy"> copy </button>
      <button class="guibutton" id="loadgraph"> load graph </button>
     </fieldset>
   </div><!-- accordion content -->
