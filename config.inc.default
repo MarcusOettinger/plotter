@@ -1,6 +1,6 @@
 <?php
 // default function plotter configuration
-// Copy this one to config.inc in your plotter installation's root 
+// Copy this one to config.inc in your plotter installations root 
 // directory to configure your plotter.
 //
 // M. Oettinger 06/2020
