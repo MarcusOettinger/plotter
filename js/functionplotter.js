@@ -1,5 +1,7 @@
 /*
-modified by Marcus Oettinger 06/2020
+modified by Marcus Oettinger 07/2020
+ - added an option to switch transparency in png/gif
+ - better parsing of query options
  - removed jquery/jquery-ui dependencies
  - restructured the code
  - CSP - capable
@@ -40,6 +42,8 @@ HTMLElement.prototype.addClass = function(string) {
     string = string.split(' ');
   }
   for(var i = 0, len = string.length; i < len; ++i) {
+  var s = new RegExp('(\\s+|^)' + string[i] + '(\\s+|$)');
+  s.test(this.className);
     if (string[i] && !new RegExp('(\\s+|^)' + string[i] + '(\\s+|$)').test(this.className)) {
       this.className = this.className.trim() + ' ' + string[i];
     }
@@ -67,60 +71,42 @@ function getgraph() {
 	}
 }
 
-
-function setback() {
-	if (confirm('Delete all changes?')) {
-		document.getElementById("funcs").reset(); 
-		getgraph();
-	}
-}
-
-/* FIXME: notreached?? */
+/* 
+ * intsopen: check for integral display on load and handle
+ * input fields for the functions
+ */
 function intsopen() {
-console.log("instopen called and doing nothing!");
-/*
 	for (var n=1; n<4; n++) {
-		if(document.getElementById("sint1").checked == true)
+		if(document.getElementById("sint" + n + "i").checked == true)
          		intshow(n);
 		else
         	 	intclose(n);
 	}
-	
-
-console.log(document.getElementById("sint1"));	
-	if($("#sint1").prop("checked") == true)
-         	intshow(1);
-         else
-         	intclose(1);
-	if($("#sint2").prop("checked") == true)
-         	intshow(2);
-         else
-         	intclose(2);
-	if
-	("#sint3").prop("checked") == true)
-         	intshow(3);
-         else
-         	intclose(3);
-        */ 
+	for(var i=1; i<4; i++) {
+		if(document.getElementById("sint"+i+"i").checked == true)
+			intshow(i);
+		else
+			intclose(i);
+	}
 }
 
-
+/* integral selected: add a field for integration constant */
 function intshow(x) {
 	document.getElementById("formula"+x).removeClass("w190");
 	document.getElementById("intc"+x).removeClass("nodisplay");
 	document.getElementById("formula"+x).addClass("w120");
 	document.getElementById("intc"+x).addClass("display");
 	document.getElementById("cint"+x).focus();
-	getgraph();
 }
 
+/* integral deselected: remove field for integration constant */
 function intclose(x) {
 	document.getElementById("formula"+x).removeClass("w120");
 	document.getElementById("intc"+x).removeClass("display");
 	document.getElementById("formula"+x).addClass("w190");
 	document.getElementById("intc"+x).addClass("nodisplay");
-	getgraph();
 }
+
 
 /*
  * loadg(): load a graph by reading the query-string in the textarea
@@ -129,48 +115,59 @@ function intclose(x) {
 function loadg() {
 	var pp = document.getElementById( "path" ).value;
 	if(!pp) return false;
+	
+	/* parse the query string into an assoziative array */
+	var query = pp.substring( pp.indexOf("?")+1 );
+	var vars = query.split('&');
+	var values = [];
+	for (var i = 0; i < vars.length; i++) {
+		var pair = vars[i].split('=');
+		values[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+	}
 
-	document.getElementById( "formula1" ).value = decodeURIComponent(pp.substring(pp.indexOf("&a1=")+4,pp.indexOf("&a2=")));
-	document.getElementById( "formula2" ).value = decodeURIComponent(pp.substring(pp.indexOf("&a2=")+4,pp.indexOf("&a3=")));
-	document.getElementById( "formula3" ).value = decodeURIComponent(pp.substring(pp.indexOf("&a3=")+4,pp.indexOf("&a7=")));
-	document.getElementById( "term0").checked = (pp.substring(pp.indexOf("&a7=")+4,pp.indexOf("&a8=")) == 1);
-	document.getElementById( "term1").checked = (pp.substring(pp.indexOf("&a8=")+4,pp.indexOf("&a9=")) == 1);
-	document.getElementById( "term2").checked = (pp.substring(pp.indexOf("&a9=")+4,pp.indexOf("&b0=")) == 1);
-	document.getElementById( "width" ).value = pp.substring(pp.indexOf("&b0=")+4,pp.indexOf("&b1="));
-	document.getElementById( "height" ).value = pp.substring(pp.indexOf("&b1=")+4,pp.indexOf("&b2="));
-	document.getElementById( "rulex1" ).value = pp.substring(pp.indexOf("&b2=")+4,pp.indexOf("&b3="));
-	document.getElementById( "rulex2").value = pp.substring(pp.indexOf("&b3=")+4,pp.indexOf("&b4="));
-	document.getElementById( "ruley1" ).value = pp.substring(pp.indexOf("&b4=")+4,pp.indexOf("&b5="));
-	document.getElementById( "ruley2" ).value = pp.substring(pp.indexOf("&b5=")+4,pp.indexOf("&b6="));
-	document.getElementById( "intervalsx" ).value = pp.substring(pp.indexOf("&b6=")+4,pp.indexOf("&b7="));
-	document.getElementById( "intervalsy" ).value = pp.substring(pp.indexOf("&b7=")+4,pp.indexOf("&b8="));
-	document.getElementById( "linex" ).value = pp.substring(pp.indexOf("&b8=")+4,pp.indexOf("&b9="));
-	document.getElementById( "liney" ).value = pp.substring(pp.indexOf("&b9=")+4,pp.indexOf("&c0="));
-	document.getElementById( "deci" ).value = pp.substring(pp.indexOf("&c0=")+4,pp.indexOf("&c1="));
-	document.getElementById( "mid" ).value = pp.substring(pp.indexOf("&c1=")+4,pp.indexOf("&c2="));
-	document.getElementById( "lines" ).checked = (pp.substring(pp.indexOf("&c2=")+4,pp.indexOf("&c3=")) == 1);
-	document.getElementById( "numbers" ).checked = (pp.substring(pp.indexOf("&c3=")+4,pp.indexOf("&c4=")) == 1);
-	document.getElementById( "dashes" ).checked = (pp.substring(pp.indexOf("&c4=")+4,pp.indexOf("&c5=")) == 1);
-	document.getElementById( "frame" ).checked = (pp.substring(pp.indexOf("&c5=")+4,pp.indexOf("&c6=")) == 1);
-	document.getElementById( "errors" ).checked = (pp.substring(pp.indexOf("&c6=")+4,pp.indexOf("&c7=")) == 1);
+	document.getElementById( "formula1" ).value = values["a1"];
+	document.getElementById( "formula2" ).value = values["a2"];
+	document.getElementById( "formula3" ).value = values["a3"];	
+	document.getElementById( "term0").checked = (values["a7"] == 1);
+	document.getElementById( "term1").checked = (values["a8"] == 1);
+	document.getElementById( "term2").checked = (values["a9"] == 1);
+	
+	document.getElementById( "width" ).value = values["b0"];
+	document.getElementById( "height" ).value = values["b1"];
+	document.getElementById( "rulex1" ).value = values["b2"];
+	document.getElementById( "rulex2").value = values["b3"];
+	document.getElementById( "ruley1" ).value = values["b4"];
+	document.getElementById( "ruley2" ).value = values["b5"];
+	document.getElementById( "intervalsx" ).value = values["b6"];
+	document.getElementById( "intervalsy" ).value = values["b7"];
+	document.getElementById( "linex" ).value = values["b8"];
+	document.getElementById( "liney" ).value = values["b9"];
+	
+	document.getElementById( "deci" ).value = values["c0"];
+	document.getElementById( "mid" ).value = values["c1"];
+	document.getElementById( "lines" ).checked = (values["c2"] == 1);
+	document.getElementById( "numbers" ).checked = (values["c3"] == 1);
+	document.getElementById( "dashes" ).checked = (values["c4"] == 1);
+	document.getElementById( "frame" ).checked = (values["c5"] == 1);
+	document.getElementById( "errors" ).checked = (values["c6"] == 1);
 
-	var s1=pp.substring(pp.indexOf("&c7=")+4,pp.indexOf("&c8="));
-	var s2=pp.substring(pp.indexOf("&c8=")+4,pp.indexOf("&c9="));
-	var s3=pp.substring(pp.indexOf("&c9=")+4,pp.indexOf("&d0="));
-	if(!s1) s1=0;
-	if(!s2) s2=0;
-	if(!s3) s3=0;
+	var s1 = values["c7"];
+	var s2 = values["c8"];
+	var s3 = values["c9"];
+	if(!s1) s1 = 0;
+	if(!s2) s2 = 0;
+	if(!s3) s3 = 0;
 	document.getElementsByName("sint1")[s1].checked=1;
 	document.getElementsByName("sint2")[s2].checked=1;
 	document.getElementsByName("sint3")[s3].checked=1;
 	intsopen();
 
-	document.getElementById( "grid" ).checked = (pp.substring(pp.indexOf("&d0=")+4,pp.indexOf("&d1=")) == 1);
-	document.getElementById( "gridx" ).value = pp.substring(pp.indexOf("&d1=")+4,pp.indexOf("&d2="));
-	document.getElementById( "gridy" ).value = pp.substring(pp.indexOf("&d2=")+4,pp.indexOf("&d3="));
+	document.getElementById( "grid" ).checked = (values["d0"] == 1);
+	document.getElementById( "gridx" ).value = values["d1"];
+	document.getElementById( "gridy" ).value = values["d2"];
 
-	var jslogskx=pp.substring(pp.indexOf("&g5=")+4,pp.indexOf("&g6="));
-	if(jslogskx!=0 && jslogskx!=2 && jslogskx!="M_E" && jslogskx!=10 && jslogskx!=100) {
+	var jslogskx = values["g5"];
+	if (jslogskx != 0 && jslogskx != 2 && jslogskx != "M_E" && jslogskx != 10 && jslogskx != 100) {
 		document.getElementById( "logskix ").value = jslogskx;
 		clrlog('x');
 	} else {
@@ -187,7 +184,7 @@ function loadg() {
 			document.getElementsByName("logskx")[4].checked=1;
 	}
 
-	var jslogsk=pp.substring(pp.indexOf("&d3=")+4,pp.indexOf("&d4="));
+	var jslogsk = values["d3"];
 	if(jslogsk!=0 && jslogsk!=2 && jslogsk!="M_E" && jslogsk!=10 && jslogsk!=100) {
 		document.getElementById( "logski" ).value = jslogsk;
 		clrlog('');
@@ -205,88 +202,71 @@ function loadg() {
 			document.getElementsByName("logsk")[4].checked=1;
 	}
 
-	document.getElementById( "ta1").value=pp.substring(pp.indexOf("&d4=")+4,pp.indexOf("&d5="));
-	document.getElementById( "ta2" ).value = pp.substring(pp.indexOf("&d5=")+4,pp.indexOf("&d6="));
-	document.getElementById( "tb1" ).value = pp.substring(pp.indexOf("&d6=")+4,pp.indexOf("&d7="));
-	document.getElementById( "tb2" ).value = pp.substring(pp.indexOf("&d7=")+4,pp.indexOf("&d8="));
-	document.getElementById( "tc1" ).value = pp.substring(pp.indexOf("&d8=")+4,pp.indexOf("&d9="));
-	document.getElementById( "tc2" ).value = pp.substring(pp.indexOf("&d9=")+4,pp.indexOf("&e0="));
-	document.getElementById( "cint1" ).value = pp.substring(pp.indexOf("&e0=")+4,pp.indexOf("&e1="));
-	document.getElementById( "cint2" ).value = pp.substring(pp.indexOf("&e1=")+4,pp.indexOf("&e2="));
-	document.getElementById( "cint3" ).value = pp.substring(pp.indexOf("&e2=")+4,pp.indexOf("&e3="));
-	document.getElementById( "qq" ).value = pp.substring(pp.indexOf("&e3=")+4,pp.indexOf("&e4="));
-	document.getElementById( "selfcol3" ).value = pp.substring(pp.indexOf("&e4=")+4,pp.indexOf("&e5="));
-	document.getElementById( "selfcol6" ).value = pp.substring(pp.indexOf("&e5=")+4,pp.indexOf("&e6="));
-	document.getElementById( "selfcol4" ).value = pp.substring(pp.indexOf("&e6=")+4,pp.indexOf("&e7="));
-	document.getElementById( "selfcol5" ).value = pp.substring(pp.indexOf("&e7=")+4,pp.indexOf("&e8="));
-	document.getElementById( "con0" ).value = pp.substring(pp.indexOf("&e8=")+4,pp.indexOf("&e9="));
-	document.getElementById( "con1" ).value = pp.substring(pp.indexOf("&e9=")+4,pp.indexOf("&f0="));
-	document.getElementById( "con2" ).value = pp.substring(pp.indexOf("&f0=")+4,pp.indexOf("&f1="));
-	document.getElementById( "anti").checked = (pp.substring(pp.indexOf("&f1=")+4,pp.indexOf("&f2=")) == 1);
-	document.getElementById( "gamma" ).value = pp.substring(pp.indexOf("&f2=")+4,pp.indexOf("&f3="));
-	document.getElementById( "bri" ).value = pp.substring(pp.indexOf("&f3=")+4,pp.indexOf("&f4="));
-	document.getElementById( "cont" ).value = pp.substring(pp.indexOf("&f4=")+4,pp.indexOf("&f5="));
-	document.getElementById( "emb").checked = (pp.substring(pp.indexOf("&f5=")+4,pp.indexOf("&f6=")) == 1);
-	document.getElementById( "blur").checked = (pp.substring(pp.indexOf("&f6=")+4,pp.indexOf("&f7=")) == 1);
-	document.getElementById( "neg").checked = (pp.substring(pp.indexOf("&f7=")+4,pp.indexOf("&f8=")) == 1);
-	document.getElementById( "gray").checked = (pp.substring(pp.indexOf("&f8=")+4,pp.indexOf("&f9=")) == 1);
-	document.getElementById( "mean").checked = (pp.substring(pp.indexOf("&f9=")+4,pp.indexOf("&g0=")) == 1);
-	document.getElementById( "edge").checked = (pp.substring(pp.indexOf("&g0=")+4,pp.indexOf("&g1=")) == 1);
-	document.getElementById( "bf" ).value = pp.substring(pp.indexOf("&g1=")+4,pp.indexOf("&g2="));
-	document.getElementById( "pol").checked = (pp.substring(pp.indexOf("&g2=")+4,pp.indexOf("&g3=")) == 1);
-	document.getElementById( "rotate" ).value = pp.substring(pp.indexOf("&g3=")+4,pp.indexOf("&g4="));
-	document.getElementById( "filetype" ).value = pp.substring(pp.indexOf("&g4=")+4,pp.indexOf("&g5="));
-	document.getElementById( "Y" ).value = pp.substring(pp.indexOf("&g6=")+4,pp.indexOf("&g7="));
-	document.getElementById( "selfcol0" ).value = pp.substring(pp.indexOf("&g7=")+4,pp.indexOf("&g8="));
-	document.getElementById( "selfcol1" ).value = pp.substring(pp.indexOf("&g8=")+4,pp.indexOf("&g9="));
-	document.getElementById( "selfcol2" ).value = pp.substring(pp.indexOf("&g9=")+4,pp.indexOf("&h0="));
-	/* 
-	 * h1 (variable name) and everything from pc on (dynamic list of points) is optional.
-	 * Caution: order of args in the query string is vital!
-	 */
-	if (pp.indexOf("&h1") > 0) {
-		document.getElementById( "thick" ).value = pp.substring(pp.indexOf("&h0=")+4,pp.indexOf("&h1"));
-	} else {
-		document.getElementById( "thick" ).value = pp.substring(pp.indexOf("&h0=")+4,pp.indexOf("&z"));
-	}
-	if (pp.indexOf("&pc") > 0) {
-		document.getElementById( "varname" ).value = pp.substring(pp.indexOf("&h1=")+4,pp.indexOf("&pc"));
-	} else {
-		document.getElementById( "varname" ).value = pp.substring(pp.indexOf("&h1=")+4,pp.indexOf("&z"));
-	}
+	document.getElementById( "ta1").value = values["d4"];
+	document.getElementById( "ta2" ).value = values["d5"];
+	document.getElementById( "tb1" ).value = values["d6"];
+	document.getElementById( "tb2" ).value = values["d7"];
+	document.getElementById( "tc1" ).value = values["d8"];
+	document.getElementById( "tc2" ).value = values["d9"];
+	document.getElementById( "cint1" ).value = values["e0"];
+	document.getElementById( "cint2" ).value = values["e1"];
+	document.getElementById( "cint3" ).value = values["e2"];
+	document.getElementById( "qq" ).value = values["e3"];
+	document.getElementById( "selfcol3" ).value = values["e4"];
+	document.getElementById( "selfcol6" ).value = values["e5"];
+	document.getElementById( "selfcol4" ).value = values["e6"];
+	document.getElementById( "selfcol5" ).value = values["e7"];
+	document.getElementById( "con0" ).value = values["e8"];
+	document.getElementById( "con1" ).value = values["e9"];
 	
+	document.getElementById( "con2" ).value = values["f0"];
+	document.getElementById( "anti").checked = values["f1"];
+	document.getElementById( "gamma" ).value = values["f2"];
+	document.getElementById( "bri" ).value = values["f3"];
+	document.getElementById( "cont" ).value = values["f4"];
+	document.getElementById( "emb").checked = (values["f5"] == 1);
+	document.getElementById( "blur").checked = (values["f6"] == 1);
+	document.getElementById( "neg").checked = (values["f7"] == 1);
+	document.getElementById( "gray").checked = (values["f8"] == 1);
+	document.getElementById( "mean").checked = (values["f9"] == 1);
+	document.getElementById( "edge").checked = (values["g0"] == 1);
+	document.getElementById( "bf" ).value = values["g1"];
+	document.getElementById( "pol").checked = (values["g2"] == 1);
+	document.getElementById( "rotate" ).value = values["g3"];
+	document.getElementById( "filetype" ).value = values["g4"];
+	document.getElementById( "Y" ).value = values["g6"];
+	document.getElementById( "selfcol0" ).value = values["g7"];
+	document.getElementById( "selfcol1" ).value = values["g8"];
+	document.getElementById( "selfcol2" ).value = values["g9"];
 	
-	/* points, color is 'pc', name 'P'#, x/y are 'x'# and 'y'# */
+	document.getElementById( "thick" ).value = values["h0"];
+	/* varname (h1) is optional: */
+	document.getElementById( "varname" ).value = (values["h1"] == undefined ? "x" : values["h1"]);
+	document.getElementById( "transp" ).checked = 1;
+	if (values["h2"] == undefined)
+		document.getElementById( "transp" ).checked = true;
+	else
+		document.getElementById( "transp" ).checked = (values["h2"] == 1);
+
+	/* points, color is 'p', name 'p'#, x/y are 'x'# and 'y'# */
 	/* delete pointlines!! */
 	while (nPt > 0) {
 		delline()
 	}
-	var pos = pp.indexOf("&pc=")
-	if ( pos > 0) {
-		document.getElementById( "selfcol7" ).value = pp.substring(pos+4,pos+10);
-		var pointindex = 0;
-		var pval = "&p" + pointindex + "=";
-		/* iterate through point definitions */
-		while ( pp.indexOf(pval) > 0) {
-			addline();
-			document.getElementById( "PName" + (pointindex+1) ).value = 
-				pp.substring(pp.indexOf("&p" + pointindex + "=")+4,
-				             pp.indexOf("&x" + pointindex +"="));
-			document.getElementById( "PX" + (pointindex+1) ).value = 
-				pp.substring(pp.indexOf("&x" + pointindex + "=")+4,
-				             pp.indexOf("&y" + pointindex +"="));
-			if ( pp.indexOf("&p" + (pointindex +1) + "=") >0) {            
-				document.getElementById( "PY" + (pointindex+1) ).value = 
-					pp.substring(pp.indexOf("&y" + pointindex + "=")+4,
-					             pp.indexOf("&p" + (pointindex+1) +"="));
-			} else {
-				document.getElementById( "PY" + (pointindex+1) ).value = 
-					pp.substring(pp.indexOf("&y" + pointindex + "=")+4,
-					             pp.indexOf("&z"));
-			}
-			pointindex++;
-			pval = "&p" + pointindex + "=";
-		}
+	document.getElementById( "selfcol7" ).value = (values["p"] == undefined ? "6080a0" : values["p"]);
+	
+	var pointindex = 0;
+	var pval = "&p" + pointindex + "=";
+	
+	
+	/* iterate through point definitions */
+	while ( pp.indexOf(pval) > 0) {
+		addline();
+		document.getElementById( "PName" + (pointindex+1) ).value = values["p"+pointindex];
+		document.getElementById( "PX" + (pointindex+1) ).value = values["x"+pointindex];
+		document.getElementById( "PY" + (pointindex+1) ).value = values["y"+pointindex];
+		pointindex++;
+		pval = "&p" + pointindex + "=";
 	}
 
 	getgraph();
@@ -308,8 +288,8 @@ function clrlog(a) {
  */
 function standard() {
 // TODO: colors!!
-	if ( confirm('Set to standard display values?') ) {
-		document.getElementById( "filetype").value = 0;
+	if ( confirm('Reset all options to standard values?') ) {
+		document.getElementById( "filetype").value = 2;
 		/* color inputs */
 		document.getElementById( "selfcol0").value = "ff8000";
 		document.getElementById( "selfcol1").value = "a0b0c0";
@@ -318,6 +298,9 @@ function standard() {
 		document.getElementById( "selfcol4").value = "141414";
 		document.getElementById( "selfcol5").value = "f2f2f2";
 		document.getElementById( "selfcol6").value = "ffffff";
+		document.getElementById( "term0").checked = true;
+		document.getElementById( "term1").checked = true;
+		document.getElementById( "term2").checked = true;
 		document.getElementById( "linex").value = 5;
 		document.getElementById( "liney").value = 5;
 		document.getElementById( "gridx").value = 20;		
@@ -351,8 +334,15 @@ function standard() {
 //		clrlog( "" );
 		document.getElementById( "logskix").value = "";
 		document.getElementById( "logski").value = "";
+		// class!!
+		for (var n=0; n<5; n++) {
+			document.getElementsByName("logskx")[n].checked = false;
+			document.getElementsByName("logsk")[n].checked = false;
+		}
+		/*
 		document.getElementById( "logskx").value= "0";
 		document.getElementById( "logsk").value= "0";
+		*/
 		getgraph();
 	}
 }
@@ -418,17 +408,22 @@ function changeselfcol(x) {
 	}
 }
 
-function copyURL() {
+/*
+ * copyURL( id ): copy text from an element with id="id" to the
+ * clipboard
+ */
+function copyURL( id ) {
 	if (typeof document.execCommand === "function") {
- 		var copyText = document.getElementById("shortpath");
+ 		var copyText = document.getElementById(id);
 		copyText.select();
 		copyText.setSelectionRange(0, 99999); /*For mobile devices*/
 
 		document.execCommand("copy");
 	} else {
-		console.log("Unable to copy text!");
+		alert("Unable to copy text! Bummer...");
 	}
 }
+
 
     
     /* 
@@ -447,7 +442,8 @@ function copyURL() {
 	el.insertAdjacentHTML('beforeend', html);
 	document.getElementById("delpoint").style.display = "inline";
 	if (nPt == 10) { document.getElementById("addpoint").style.display = "none"; }
-	accordion.resize(1);
+	/* call accordion.open to resize the first tab */
+	accordion.open(1);
     }
 
     /* 
@@ -465,10 +461,9 @@ function copyURL() {
         var el = document.getElementById( id );
         el.style.display = (el.style.display === "block" ? "none" : "block");
     }
-    
+
     
 document.addEventListener("DOMContentLoaded", function(event) {     
-//$(function() {
 	n = 0; // Count Points to display
 	getgraph();
 
@@ -489,16 +484,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	    openTab: 1,
  	   oneOpen: true
 	});
-/*
-	$( "#dialog" ).dialog({width:600,autoOpen: false,
-	        buttons: [{text: "OK",click: function(){$( this ).dialog( "close" );}}],
-	        title: "Plot options", modal: false
-	}).parent().appendTo($("#funcs")); 
-*/
-	/*
-	 *  that's a really ugly hack (append dialog to form, NOT to body, 
-	 * which is the default. If you don't, values inside the dialog will not be submitted!)
-	 */
 	
 	document.getElementById( "submit" ).addEventListener('click', function( event ) {
 		document.getElementById( "funcs" ).submit(); });
@@ -506,12 +491,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		standard() ;
 		event.preventDefault();
 	});
-/*
-	document.getElementById( "opendialog" ).addEventListener('click', function( event ) { 
-		$('#dialog').dialog('open');
-		event.preventDefault();
-	});
-*/
 
 	
 	/* switch between quadrants displayed */
@@ -532,13 +511,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		!function dummy(n){
 			var id = "sint" + n + "i";
 			document.getElementById( id ).addEventListener('click', 
-					function( event ) { intshow( n ); });
+					function( event ) { getgraph(); });
 			id = "sint" + n + "f";
 			document.getElementById( id ).addEventListener('click', 
-					function( event ) { intclose( n ); });
+					function( event ) { getgraph(); });
 			id = "sint" + n + "d";
 			document.getElementById( id ).addEventListener('click', 
-					function( event ) { intclose( n ); });
+					function( event ) { getgraph(); });
 		}(n)
 	}
 	/* replot graph when select value changes */
@@ -570,17 +549,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		document.getElementById( "qq" ).focus();
 	});
 	/* substitution term changes */
-	document.getElementById( "qq" ).addEventListener('change', function( event ) {
+	document.getElementById( "qq" ).addEventListener('change', function() {
 		document.getElementById( "qqsingle" ).value = document.getElementById( "qq").value;
 	});
 	
 	/* add/delete a line to the list of points */
-	document.getElementById( "addpoint" ).addEventListener('click', 
-		function( event ) { addline(); });
-	document.getElementById( "delpoint" ).addEventListener('click', 
-		function( event ) { delline(); });
+	document.getElementById( "addpoint" ).addEventListener('click', function() { addline(); });
+	document.getElementById( "delpoint" ).addEventListener('click', function() { delline(); });
 	
-	/* clear contents of the log textbox if a base is selected
+	/* 
+	 * clear contents of the log textbox if a base is selected
 	 * in one of the checkboxes
 	 */
 	var mylist = document.getElementsByName( "logskx" );
@@ -592,14 +570,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	});
 	var mylist = document.getElementsByName( "logsk" );
 	Array.prototype.forEach.call(mylist, function( el ) {
-		el.addEventListener("click", function( event ) { 
+		el.addEventListener("click", function() { 
 			document.getElementById( "logski" ).value = "";
 			getgraph();
 		});
 	});
 	
-	document.getElementById( "logskix").addEventListener('change', function( event ) { clrlog('x'); });
-	document.getElementById( "logski").addEventListener('change', function( event ) { clrlog(''); });
+	document.getElementById( "logskix").addEventListener('change', function() { clrlog('x'); });
+	document.getElementById( "logski").addEventListener('change', function() { clrlog(''); });
 	document.getElementById( "deci").addEventListener('change', function( event ) { 
 		/* set number of decimal places for value tables */
 		var tmpval = document.getElementById( "deci" ).value;
@@ -614,37 +592,35 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		var id = "calc" + n;
 		!function dummy(n){
 			if ( el = document.getElementById( id ))
-				el.addEventListener('click', function( event ) { 
+				el.addEventListener('click', function() { 
 					document.getElementById( "single1" ).value = document.getElementById( "formula" + n ).value;
 					document.getElementById( "inpval" ).focus();
 				});
 		}(n)
 	}
-	document.getElementById( "res" ).addEventListener('click', function( event ) {
+	document.getElementById( "res" ).addEventListener('click', function() {
 		 document.getElementById( "singleform" ).submit(); });
-	document.getElementById( "tbl" ).addEventListener('click', function( event ) {
+	document.getElementById( "tbl" ).addEventListener('click', function() {
 		 document.getElementById( "singleform" ).submit(); });
-	document.getElementById( "csv" ).addEventListener('click', function( event ) {
+	document.getElementById( "csv" ).addEventListener('click', function() {
 		 document.getElementById( "singleform" ).submit(); });
-	document.getElementById( "latex" ).addEventListener('click', function( event ) {
+	document.getElementById( "latex" ).addEventListener('click', function() {
 		 document.getElementById( "singleform" ).submit(); });
-	document.getElementById( "calcreset" ).addEventListener('click', function( event ) {
+	document.getElementById( "calcreset" ).addEventListener('click', function() {
 		 document.getElementById( "inpval" ).value = ""; });
-	document.getElementById( "posval" ).addEventListener('click', function( event ) { 
+	document.getElementById( "posval" ).addEventListener('click', function() { 
 		document.getElementById( "inpval").value = "1 2 3 4 5 6 7 8 9 10"; });
-	document.getElementById( "negval" ).addEventListener('click', function( event ) { 
+	document.getElementById( "negval" ).addEventListener('click', function() { 
 		document.getElementById( "inpval" ).value = "-1 -2 -3 -4 -5 -6 -7 -8 -9 -10"; });
-	document.getElementById( "urlclear" ).addEventListener('click', function( event ) { 
+	document.getElementById( "urlclear" ).addEventListener('click', function() { 
 		document.getElementById( "path").value = "";
 	if (document.getElementById( "shortpath" ))
 		document.getElementById( "shortpath" ).value = "";
 		document.getElementById( "path" ).focus();
 	});
-	document.getElementById( "urlselect" ).addEventListener('click', function( event ) {
-		document.getElementById( "path" ).focus();
-		document.getElementById( "path" ).select(); 
-	});
-//	document.getElementById( "urlcopy" ).addEventListener('click', function( event ) { copyURL(); });
+	document.getElementById( "graphcopy" ).addEventListener('click', function( event ) { copyURL("path"); });
+	if (document.getElementById("urlcopy") !== null)
+		document.getElementById( "urlcopy" ).addEventListener('click', function( event ) { copyURL("shortpath"); });
 	document.getElementById( "loadgraph").addEventListener('click', function( event ) { loadg(); });
 
 });
