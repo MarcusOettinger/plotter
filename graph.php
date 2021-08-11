@@ -4,7 +4,7 @@
  *     draws the function plot and displays it as png, gif or jpeg image.
  *
  * Modified by Marcus Oettinger for plot.oettinger-physics.de 
- * 07/2020:
+ * 08/2021:
  *  - minor cleanups
  *  - use TTF font set in config.inc for text output
  *  - added the ability to draw up to 10 additional points on the plot
@@ -42,12 +42,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 include_once("config.inc");
 include_once("modules/helpers.php");
 
-// a0 signals a querystring (set to 2 in the form on the mainpage
-// - this switches the language of error messages to english)
+/*
+ * a0 signals a querystring (set to 2 in the form on the mainpage
+ * - this switches the language of error messages to english)
+ */
 $c = $_GET['a0'];
 
 if (!$c) {
-	// set reasonable default values
+	/* set reasonable default values */
 	$func[0] = 'x^2'; // default value for formula 1 (f(x))
 	for ($i=0; $i<3; $i++) {
 		$term[$i] = 1;	// show term 1-3 in the legend
@@ -55,34 +57,24 @@ if (!$c) {
 				// of function 1-3
 		$con[$i] = 0;	// dot, connect, fill in or out
 	}
-	$width = 500;	// image width and height
-	$height = 500;
-	$rulex1 = -5;	// x min
-	$ruley1 = -5;	// y min
-	$rulex2 = 5;	// x max
-	$ruley2 = 5;	// y max
-	$intervalsx=10;	// number of x-intervals
-	$intervalsy=10;	// number of y-intervals
-	$gridx = 20;	// number of grid lines
-	$gridy = 20;	
-	$linex = 5;	// length x dashes
-	$liney = 5;	// length y dashes
+	$width = $height = 500;	// image width and height
+	$xlimit1 = $ylimit1 = -5;	// x/y min
+	$xlimit2 = $ylimit2 = 5;	// x/y max
+	$intervalsx = $intervalsy = 10;	// number of x/y-intervals
+	$gridx = $gridy = 20;	// number of grid lines
+	$linex = $liney = 5;	// length of dashes
 	$mid = 0;	// gap at origin
 	$deci = 3;	// decimal places
-	$lines = 1;	// axis lines on
-	$grid = 1;	// grid lines on
-	$numbers = 1;	// captions on
-	$dashes = 1;	// dashes on
-	$frame = 0;	// no Frame around the plot
-	$errors = 1;	// show errors in the 
-	$logsk = 0;	// no logarithmic scale in y
-	$logskx = 0;	// no logarithmic scale in x
-	$bg = "ffffff";		// white background
-	$gapc = "ffffff";	// white gap
-	$capt = "141414";	// dark gray captions
-	$linec = "f2f2f2";	// grey grid lines
-	$anti = 1;	// use antialiasing if available
-	$gamma = 1;	// no gamma correction
+	$lines = $grid = $numbers = $dashes = $errors = 1;	// axis lines, grid, captions, dashes and error display on
+	$frame = $logsk = $logskx = 0;	// no rame around the plot, no logscale
+	$colRGB[0] = "ff8000";	// colors for the curves
+	$colRGB[1] = "a0b0c0";
+	$colRGB[2] = "6080a0";
+	$colRGB[3] = "ffffff";	// white background
+	$colRGB[6] = "ffffff";	// white gap
+	$colRGB[4] = "141414";	// dark gray captions
+	$colRGB[5] = "f2f2f2";	// grey grid lines
+	$anti = $gamma = 1;	// use antialiasing if available, no gamma correction
 	$bri = 0;	// normal brightness
 	$cont = 0;	// normal contrast
 	$bf = 1;	// draw lines in the background
@@ -90,12 +82,10 @@ if (!$c) {
 	$rotate = 0;	// do not rotate the plot
 	$filetype=0;	// output as jpeg image
 	$Y="Y";		// plot function values - no hull function
-	$selfcol0 = "ff8000";	// colors for the curves
-	$selfcol1 = "a0b0c0";
-	$selfcol2 = "6080a0";
 	$thick = 1;	// line thickness
 	$varname = "x";	// variable name to display in legend
 	$transp = 1;
+	$prettyprint = 1;
 } 
 else	// Loading a graph: read values from querystring and
 	// store them in variables
@@ -110,10 +100,11 @@ else	// Loading a graph: read values from querystring and
 	}
 	$width = $_GET['b0'];
 	$height = $_GET['b1'];
-	$rulex1 = $_GET['b2'];
-	$rulex2 = $_GET['b3'];	
-	$ruley1 = $_GET['b4'];
-	$ruley2 = $_GET['b5'];
+	// replace named constants in ranges
+	$xlimit1 = isset($_GET['b2']) ? handleConstants($_GET['b2']) : -5;
+	$xlimit2 = isset($_GET['b3']) ? handleConstants($_GET['b3']) : 5;	
+	$ylimit1 = isset($_GET['b4']) ? handleConstants($_GET['b4']) : -5;
+	$ylimit2 = isset($_GET['b5']) ? handleConstants($_GET['b5']) : 5;
 	$intervalsx = $_GET['b6'];
 	$intervalsy = $_GET['b7'];
 	$linex = $_GET['b8'];
@@ -136,10 +127,10 @@ else	// Loading a graph: read values from querystring and
 	$tc1 = $_GET['d8'];
 	$tc2 = $_GET['d9'];
 	$qq = $_GET['e3'];
-	$bg = $_GET['e4'];
-	$gapc = $_GET['e5'];
-	$capt = $_GET['e6'];
-	$linec = $_GET['e7'];
+	$colRGB[3] = $_GET['e4'];
+	$colRGB[6] = $_GET['e5'];
+	$colRGB[4] = $_GET['e6'];
+	$colRGB[5] = $_GET['e7'];
 	$con[0] = $_GET['e8'];
 	$con[1] = $_GET['e9'];
 	$con[2] = $_GET['f0'];
@@ -159,25 +150,15 @@ else	// Loading a graph: read values from querystring and
 	$filetype = $_GET['g4'];
 	$logskx = $_GET['g5'];
 	$Y = $_GET['g6'];
-	$selfcol0 = $_GET['g7'];
-	$selfcol1 = $_GET['g8'];
-	$selfcol2 = $_GET['g9'];
+	$colRGB[0] = $_GET['g7'];
+	$colRGB[1] = $_GET['g8'];
+	$colRGB[2] = $_GET['g9'];
 	$thick = $_GET['h0'];
 	$varname = isset($_GET['h1']) ? $_GET['h1'] : "x";
 	$transp = isset($_GET['h2']) ? $_GET['h2'] : 1;
-	/*
-	if (isset($_GET['h1'])) {
-		$varname = $_GET['h1']; 
-	} else {
-		$varname = "x";
-	}
-	if (isset($_GET['h2'])) {
-		$transp = $_GET['h2']; 
-	} else {
-		$transp = 1;
-	}
-	*/
-	if (isset($_GET['p'])) $pointc = $_GET['p'];
+	$transp = isset($_GET['h2']) ? $_GET['h2'] : 1;
+	$prettyprint = isset($_GET['h3']) ? $_GET['h3'] : 1;
+	if (isset($_GET['p'])) $colRGB[7] = $_GET['p'];
 	for ($i=0; $i<10; $i++) {
 		if (isset($_GET["p$i"])) {
 			$pcount = $i+1;
@@ -190,48 +171,16 @@ else	// Loading a graph: read values from querystring and
 	}
 }
 
-//echo urldecode($_SERVER['QUERY_STRING']);
-
-
-// html header: set file type
+// http header: set file type
 $fth = array ("image/gif", "image/png", "image/jpeg");
 $filetype = ($filetype > 3 ? 3 : $filetype);
 Header ("Content-type: " . $fth[$filetype-1]);
 
-// replace named constants in ranges
-$rulex1 = handleConstants($rulex1);
-$ruley1 = handleConstants($ruley1);
-$rulex2 = handleConstants($rulex2);
-$ruley2 = handleConstants($ruley2);
+// global variables
+$overflow = 0;	//counter for overflow problems
+for ($i=0; $i<3; $i++) $asyval[$i] = '';	//asymptote values
 
-// global variables initiation
-$sum = 0;	//addition variable for phi
-$sums = 0;	//addition variable for integral in function
-$sums2 = 0;	//addition variable for second integral in function
-$sums3 = 0;	//addition variable for third integral in function
-$iter = '';	//current value for iteration
-$iter2 = '';	//previous value for iteration
-$istep = 0;	//counter for iteration steps
-$average = 0;	//memory for arithmetic mean
-$overflow = 0;	//counter for overflows
-$asyval[0] = '';	//values for asymptotes
-$asyval[1] = '';
-$asyval[2] = '';
-$derval=NULL;		//start value for the derivative within a function, e.g. D(x)
-$derval2=NULL;		//start value for the second derivative within a function, e.g. D2(x)
-$derval21=NULL;		//start value for the first derivative within the second derivative within a function
-$derval3=NULL;		//start value for the third derivative within a function, e.g. D3(x)
-$derval31=NULL;		//start value for the first derivative within the third derivative within a function
-$derval32=NULL;		//start value for the second derivative within the third derivative within a function
-$derval0=NULL;		//start value for the derivative within a function, alternative form, e.g. D0(x)
-$derval02=NULL;		//start value for the second derivative within a function, alternative form, e.g. D02(x)
-$derval021=NULL;	//start value for the first derivative within the second derivative within a function, alternative form
-$derval03=NULL;		//start value for the third derivative within a function, alternative form, e.g. D03(x)
-$derval031=NULL;	//start value for the first derivative within the third derivative within a function, alternative form
-$derval032=NULL;	//start value for the second derivative within the third derivative within a function, alternative form
-
-// read values into arrays and handle substitution of
-// Q and Y in expressions:
+// substitution: replace Q and Y in expressions:
 for ($i=0; $i<3; $i++) {
 	$form[$i]=$func[$i]; // terms to display in the legend
 	$form[$i]=str_replace('Q','('.$qq.')',$form[$i]);
@@ -240,65 +189,61 @@ for ($i=0; $i<3; $i++) {
 }
 
 // definition and result range
-$tdef1[0] = strlen(strval($ta1)) == 0 ? -999999 : $ta1;
-$tdef1[1] = strlen(strval($tb1)) == 0 ? -999999 : $tb1;
-$tdef1[2] = strlen(strval($tc1)) == 0 ? -999999 : $tc1;
-$tdef2[0] = strlen(strval($ta2)) == 0 ? 999999 : $ta2;
-$tdef2[1] = strlen(strval($tb2)) == 0 ? 999999 : $tb2;
-$tdef2[2] = strlen(strval($tc2)) == 0 ? 999999 : $tc2;
+$tdef1[0] = strlen(strval($ta1)) == 0 ? -PHP_INT_MAX : $ta1;
+$tdef1[1] = strlen(strval($tb1)) == 0 ? -PHP_INT_MAX : $tb1;
+$tdef1[2] = strlen(strval($tc1)) == 0 ? -PHP_INT_MAX : $tc1;
+$tdef2[0] = strlen(strval($ta2)) == 0 ? PHP_INT_MAX : $ta2;
+$tdef2[1] = strlen(strval($tb2)) == 0 ? PHP_INT_MAX : $tb2;
+$tdef2[2] = strlen(strval($tc2)) == 0 ? PHP_INT_MAX : $tc2;
 
-for($i=0; $i<3; $i++) { // handle named constants in ranges and integration constant
+for($i=0; $i<3; $i++) { // handle named constants in ranges and integration constants
 	$tdef1[$i] = handleConstants($tdef1[$i]);
 	$tdef2[$i] = handleConstants($tdef2[$i]);
 	$cint[$i] = handleConstants($cint[$i]);
 }
 
-// Everything should be set up by now -  
 // create an empty image and define colors
 //
 $img = imagecreatetruecolor($width, $height);
 // catch problems with missing antialias in PHP
 if (function_exists('imageantialias')) imageantialias($img, $anti);
-
 // color[0 - 2] - color for functions
-$color[0] = imagecolorallocate($img,hexdec(substr($selfcol0,0,2)),hexdec(substr($selfcol0,2,2)),hexdec(substr($selfcol0,4,2)));//self-defined color 1
-$color[1] = imagecolorallocate($img,hexdec(substr($selfcol1,0,2)),hexdec(substr($selfcol1,2,2)),hexdec(substr($selfcol1,4,2)));//self-defined color 2
-$color[2] = imagecolorallocate($img,hexdec(substr($selfcol2,0,2)),hexdec(substr($selfcol2,2,2)),hexdec(substr($selfcol2,4,2)));//self-defined color 3
 // color[3-6] - background, axis/captions, grid lines and gap color
-$color[3] = imagecolorallocate($img,hexdec(substr($bg,0,2)),hexdec(substr($bg,2,2)),hexdec(substr($bg,4,2)));//self-defined color 4
-$color[4] = imagecolorallocate($img,hexdec(substr($capt,0,2)),hexdec(substr($capt,2,2)),hexdec(substr($capt,4,2)));//self-defined color 5
-$color[5] = imagecolorallocate($img,hexdec(substr($linec,0,2)),hexdec(substr($linec,2,2)),hexdec(substr($linec,4,2)));//self-defined color 6
-$color[6] = imagecolorallocate($img,hexdec(substr($gapc,0,2)),hexdec(substr($gapc,2,2)),hexdec(substr($gapc,4,2)));//self-defined color 7
-// color[7] - additional points
-$color[7] = imagecolorallocate($img,hexdec(substr($pointc,0,2)),hexdec(substr($pointc,2,2)),hexdec(substr($pointc,4,2)));//Point color
+// color[7] - used for points
+for ($i=0; $i<8; $i++)
+	$color[$i] = imagecolorallocate($img,hexdec(substr($colRGB[$i],0,2)),
+	                                     hexdec(substr($colRGB[$i],2,2)),
+	                                     hexdec(substr($colRGB[$i],4,2)));
+
 
 // fill Image with background color
 imagefill($img, 0, 0, $color[3]);
 
-$single = 0; // we don't want to compute a single value, but the whole graph
+$single = 0; // compute the whole graph
 include 'modules/init.php';
 
 // start values for lines and captions
-$rulex = $rulex2-$rulex1;
-$ruley = $ruley2-$ruley1;
-$startx = round($height/$ruley*$ruley2);
-$starty = round($width/$rulex*(-$rulex1));
+
+$xrange = $xlimit2 - $xlimit1;
+$yrange = $ylimit2 - $ylimit1;
+$startx = round($height/$yrange*$ylimit2);
+$starty = round($width/$xrange*(-$xlimit1));
 if ($startx<0) $startx = 0;
 if ($startx >= $height) $startx  =$height-1;
 if ($starty < 0) $starty = 0;
 if ($starty >= $width) $starty = $width-1;
 
 //
-
+// the Font to use in the plot - if the TTF set
+// in config.inc is found, use it:
 //
-// the Font to use in the plot - if the TTF set in config.inc is found, use it:
-$nice = file_exists( $defaultTTFont );
+$Font = file_exists( $defaultTTFont );
 
 // plot text: draw string $text at position $x/$y in a given color.
-//            Boolean $nice: use ttf Font defined in config.inc
-function plotText($img, $size, $x, $y, $text, $color, $nice){
+//            Boolean $Font: use ttf Font defined in config.inc
+function plotText($img, $size, $x, $y, $text, $color, $Font){
 	global $defaultTTFont;
-	if ($nice) {
+	if ($Font) {
 		$ttfb = imagettfbbox ( $size*2+2 , 0 , $defaultTTFont, $text );
 		imagettftext ($img , $size*2+2 , 0, $x, $y + abs($ttfb[5] - $ttfb[1]), $color , $defaultTTFont, $text);
 	} else {
@@ -306,34 +251,53 @@ function plotText($img, $size, $x, $y, $text, $color, $nice){
 	}
 }
 
+// plotValue: plot a caption value at $x/$y.
+// if $prettyprint == 1 try to automagically format numbers into
+// exponential notation if they are getting too long in decimal
+function plotValue($img, $size, $x, $y, $value, $color, $Font){
+	global $defaultTTFont, $deci, $prettyprint;
+	
+	if ($Font) {
+		if (1 == $prettyprint) {
+			$prettyprint = 0;
+			if (abs($value) < 1/1000) $prettyprint = 1;
+			if (abs($value) >= 1E4) $prettyprint = 1;
+		}
+		if (1 == $prettyprint) {
+			$exp = floor(log10(abs($value)));
+			$mantissa = round($value/pow(10, $exp), $deci);
+			$ttfb = imagettfbbox ( $size*2+2 , 0 , $defaultTTFont, $mantissa . chr(183) . "10" );
+			plotText($img, $size, $x, $y, $mantissa . chr(183) . "10", $color, $defaultTTFont);
+			plotText($img , $size, $x+$ttfb[4]+2, $y - $size -2, $exp, $color , $defaultTTFont);
+		} else 
+			plotText($img, $size, $x, $y, $value, $color, $defaultTTFont);
+	} else {
+		imagestring ($img, $size, $x, $y, $value, $color);
+	}
+}
+
 
 
 // draw grid and axis lines, captions and dashes
-function drawlines() {
+function drawsystem() {
 	// good god - that's ugly...
 	global $width, $height, $gridx, $gridy,
 	       $startx, $starty, $color, $intervalsx, $intervalsy,
-	       $rulex, $rulex1, $ruley, $ruley2, $linex, $liney,
+	       $xrange, $xlimit1, $yrange, $ylimit2, $linex, $liney,
 	       $grid, $dashes, $deci, $numbers, $logsk, $logskx,
-	       $linec, $capt, $gapc, $lines, $img, $nice, $varname;
+	       $colRGB, $lines, $img, $Font, $varname;
 
 	// draw grid lines
-	if($grid) {
-		$stepx = floor($width/$gridx+.5);
+	if( $grid ) {
+		$stepx = floor( $width/$gridx+.5 );
 		for($i=0; $i<=$stepx*$gridx; $i+=$stepx) {
-			if($i>0) { // grid lines x
-				if ($i == $starty+1 || $i == $starty-1)
-					$i = $starty;
+			if($i>0)  // grid lines x
 				imageline ($img, $i, 0, $i, $height-1, $color[5]);
-			}
 		}
 		$stepy = floor($height/$gridy+.5);
 		for($i=0; $i<=$stepy*$gridy; $i+=$stepy) {
-			if ($i>0) { // grid lines y
-				if ($i == $startx+1 || $i == $startx-1)
-					$i = $startx;
+			if ($i>0)  // grid lines y
 				imageline ($img, 0, $i, $width-1, $i, $color[5]);
-			}
 		}
 	}
 	
@@ -343,69 +307,50 @@ function drawlines() {
 	for($i=0; $i<=$stepx*$intervalsx; $i+=$stepx) {
 		$gap = 0;
 		++$count;
-		if($dashes && $i>0) { // dashes x
-			if ($i == $starty+1 || $i == $starty-1)
-				$i = $starty;
+		if($dashes && $i>0) { // dashes x-axis
 			imageline ($img, $i, min($startx,$height)+$linex+1, 
 			           $i, min($startx,$height)-$linex, $color[4]);
 		}
-		$value=$rulex1+$count*$rulex/$intervalsx;
-		$value=round($value,$deci);
-		$gap+=strlen($value)*3;
-		if ($value && $count && $i!=$stepx*$intervalsx) { //labels x
-			if ($startx<$height/2)
-				$align=15;
-			else
-				$align=-15;
-
-			if(strval($logskx)=="M_E")
-				$logskx=2.718281828459;
-			if($logskx)
-				$value=pow($logskx,$value);
-			$value=round($value,$deci);
-			$value=str_replace('E+','*10^',$value);
-			if(substr($value,0,2)=="1*")
-				$value=str_replace('1*','',$value);
-
+		$value = $xlimit1+$count*$xrange/$intervalsx;
+		$gap += abs($value) > 0.01 ? strlen(round($value, $deci))*3 : strlen($value)*3;
+		if ($value && $count && $i != $stepx*$intervalsx) { //labels x
+			$xalign = $startx<$height/2 ? 15 : -15;
+			if(strval($logskx) == "M_E") $logskx = 2.718281828459;	
+			if($logskx) $value = pow($logskx, $value);
+			if (abs($value) > 0.01) $value = round($value, $deci);
 			if ($numbers)
-				plotText ($img,3,$i-$gap,min($startx,$height)+$align-$linex,$value,$color[4],$nice);
+				plotValue ($img, 3, $i-$gap, min($startx,$height)+$xalign-$linex,
+					$value, $color[4], $Font);
 		}
 	}
-	if($numbers)
-		plotText($img,4,$width-15,min($startx,$height)+$align-$linex,$varname,$color[4],$nice);
 	
-	// caption y-axis
-	$count=0;
-	$stepy=round($height/$intervalsy);
-	for($i=$stepy;$i<=$stepy*$intervalsy ;$i+=$stepy) {
+	
+	// captions y-axis
+	$count = 0;
+	$stepy = round($height/$intervalsy);
+	for($i=$stepy; $i<=$stepy*$intervalsy; $i+=$stepy) {
 		++$count;
 		if ($dashes && $i>0) { //dashes y
-			if ($i==$startx+1 || $i==$startx-1)
-				$i=$startx;
-			imageline ($img,max($starty,0)+$liney+1,$i,max($starty,0)-$liney,$i,$color[4]);
+			/* if ($i==$startx+1 || $i==$startx-1)
+				$i=$startx; */
+			imageline ($img, max($starty,0)+$liney+1, $i, max($starty,0)-$liney, $i, $color[4]);
 		}
-		$value=$ruley2-$count*$ruley/$intervalsy;
-		$gap+=strlen($value)*3;
+		$value = $ylimit2-$count*$yrange/$intervalsy;
+		$gap += abs($value) > 0.01 ? strlen(round($value, $deci))*3 : strlen($value)*3;
 		if ($value && $count && $i!=$stepy*$intervalsy) { //labels y
-			if ($starty<=$width/2)
-				$align=4;
-			else
-				$align=-30-strlen($value)*4;
-			if(strval($logsk)=="M_E")
-				$logsk=2.718281828459;
-			if($logsk)
-				$value=pow($logsk,$value);
-			$value=round($value,$deci);
-			$value=str_replace('E+','*10^',$value);
-			if(substr($value,0,2)=="1*")
-				$value=str_replace('1*','',$value);
+			$yalign = $starty<=$width/2 ? 4 : -30-strlen($value)*4;
+			if(strval($logsk)=="M_E") $logsk=2.718281828459;
+			if($logsk) $value=pow($logsk,$value);
+			if (abs($value) > 0.01)$value = round($value, $deci);
 			if ($numbers)
-				plotText($img,3,max($starty,0)+$align+$liney,$i-6,$value,$color[4],$nice);
+				plotValue($img, 3, max($starty,0)+$yalign+$liney, $i-6, $value, $color[4], $Font);
 
 		}
 	}
-	if($numbers)
-		plotText($img,4,max($starty,0)+$align+$liney,5,"y",$color[4],$nice);
+	if($numbers) {
+		plotText($img, 4 ,max($starty,0)+$yalign+$liney,5, "y", $color[4], $Font);
+		plotText($img, 4, $width-15 ,min($startx,$height)+$xalign-$linex, $varname, $color[4], $Font);	
+	}
 	
 	// draw axis lines
 	if ($lines) {
@@ -414,156 +359,155 @@ function drawlines() {
 	}
 }
 
-// draw lines in background
-if($bf == 1) drawlines();
 
-// draw a gap at origin
-if ($mid>0) {
-	$middlex = -$rulex1/$rulex*$width;
-	$middley = $ruley2/$ruley*$height;
-	imagerectangle($img, $middlex-$mid, $middley-$mid, $middlex+$mid, $middley+$mid, $color[4]);
-	--$mid;
-	if ($mid>0)
-		imagefilledrectangle($img, $middlex-$mid, $middley-$mid, 
-		                     $middlex+$mid, $middley+$mid, $color[6]);
+// draw a line with thickness $thick onto the plot
+function plotline($img, $x0, $y0, $x1, $y1, $thickdiff, $color) {
+	if ($y1 == $y0) 
+		imagefilledrectangle($img, $x1, $y1-$thickdiff, $x1,
+			$y1+$thickdiff+1, $color);
+	else { 
+		//all of these four are necessary to make a smooth line in every case
+		imagefilledrectangle($img, $x0-$thickdiff, $y0+$thickdiff,
+			$x1-$thickdiff, $y1+$thickdiff, $color);
+		imagefilledrectangle($img, $x0+$thickdiff, $y0-$thickdiff,
+			$x1+$thickdiff,$y1-$thickdiff, $color);
+		imagefilledrectangle($img, $x0-$thickdiff, $y0-$thickdiff,
+			$x1+$thickdiff, $y1+$thickdiff, $color);
+		imagefilledrectangle($img, $x0+$thickdiff, $y0+$thickdiff,
+			$x1-$thickdiff,$y1-$thickdiff, $color);
+	}
 }
 
-// draw the graph
-$derivative = '';			//remember value for derivative
-$valyold = '';				//remember value for derivative
+// draw lines in background
+if($bf == 1) drawsystem();
+
+// draw a gap around the origin
+if ($mid>0) {
+	$centerx = -$xlimit1/$xrange*$width;
+	$centery = $ylimit2/$yrange*$height;
+	imagerectangle($img, $centerx-$mid, $centery-$mid, $centerx+$mid, $centery+$mid, $color[4]);
+	if ($mid>1) {
+		--$mid;
+		imagefilledrectangle($img, $centerx-$mid, $centery-$mid, 
+		                     $centerx+$mid, $centery+$mid, $color[6]);
+	}
+}
+
+// draw curves
+$derivative = $valyold = '';		//remember values for derivative
 for ($j=0; $j<3; $j++) {
 	$count = 0;			//count results
-	$average = 0;			//reset value for mean
+	$average = 0;			//reset value for arithmetic mean
 	$isteps = 0;			//reset value for iteration steps
-	$thick1 = floor($thick/3);	//line thickness left
-	$thick2 = ceil($thick/3)-1;	//line thickness right
+	$thickdiff = floor($thick/3);	//used for line thickness
+
 	if($asyval[$j]) { 		//draw asymptotes
 		if ($thick<2)
 			imageline($img, $asyval[$j], 0, $asyval[$j], $height-1, $color[$j]);
-		else if ($con[$j] == 1) //make asymptote thicker if dots are chosen
-			imagefilledrectangle($img, $asyval[$j]-floor($thick/2), 0, 
-			                     $asyval[$j]+ceil($thick/2), $height-1,$color[$j]);
 		else
-			imagefilledrectangle($img, $asyval[$j]-$thick1, 0,
-			                     $asyval[$j]+$thick2+1, $height-1, $color[$j]);
+			imagefilledrectangle($img, $asyval[$j]-$thickdiff, 0,
+			                     $asyval[$j]+$thickdiff+1, $height-1, $color[$j]);
 	}
 	else if ($formula[$j] != '') { // don't try to draw a curve if there's no function term
 		$iter = '';
 		$iter2 = '';
 		$istep = 0;
 		if(!$sint[$j] || !$logsk) { //no integral or derivative at a log scale
-			$sum = 0;
-			$sums = 0;
-			$sums2 = 0;
-			$sums3 = 0;
-			$integral = 0;
-			$intplus = 0;	//+C integration constant
-			unset($x1);
-			unset($y1);
-			$startcalc = 0;
-			if($formula[$j] != str_replace("D","",$formula[$j]))
+			$sum = $sums = $sums2 = $sums3 = 0;
+			$integral = $intplus = $startcalc = 0;
+			unset($xprev);
+			unset($yprev);
+//			if($formula[$j] != str_replace("D","",$formula[$j]))
+			if (strpos($formula[$j], "D") !== false)
 				$startcalc = -2; 	// start calculation outside the plot
 							// to avoid artefacts at the left side 
 							// of a graph with D, D2, D3, ...
 			for ($i=$startcalc; $i<=$width; $i++) {
-				$valx = $rulex1 + $i*$rulex/$width;		// x value
+				$valx = $xlimit1 + $i*$xrange/$width;		// x value
 				
 				if($valx>=$tdef1[$j] && $valx<=$tdef2[$j]) { 	// don't draw outside definition range
 					$valy = graph($valx, $formula[$j]); 	// calculate function value at $valx
+					
 					if($sint[$j]==2 && is_numeric($valy)) { // integrate
-						$integral += $valy/$width*$rulex;
+						$integral += $valy/$width*$xrange;
 						$valy = $integral;
 						if($cint[$j])
-							$intplus = $cint[$j]*$width/$rulex;
+							$intplus = $cint[$j]*$width/$xrange;
 					}
 					else if($sint[$j]==1 && is_numeric($valy)) { // derivative
 						$valyold = $valy;
 						if(is_numeric($derivative)) {
 							$valy -= $derivative;	// $valy now is Delta y
-							$valy *= $width/$rulex; // $rulex/$width is Delta x
+							$valy *= $width/$xrange; // $xrange/$width is Delta x
 						}				// => $valy = Delta y/Delta x
 						if(!is_numeric($derivative))
 							$valy=NULL;
 						$derivative=$valyold;
 					}
-					if ($valy==999999 && $i>=0) {		// 999999: overflow in graph()
+					if ($valy == PHP_INT_MAX && $i>=0) {		// PHP_INT_MAX: overflow in graph()
 						++$overflow;			// (see init.php)
 						++$count;
-						if($overflow>9) {
+						if( $overflow > 9) {
 							if($errors) {
 								imagefilledrectangle($img, $height/2-85, 80+$j*40,
 								                    $height/2-85+9*strlen($text2)+15,
 								                    95+$j*40,$color[3]);
 								plotText($img, 5, $height/2-80, 80+$j*40, $text2.($j+1),
-								                    $color[$j],$nice);
-
+								                    $color[$j],$Font);
 							}
-							next;
+//							next;
 						}
 					}
 					
-					$set1 = $height-1-floor(($valy-$ruley1)/$ruley*$height-.5);
-					$set2 = $height-1-floor(($valy-$ruley1)/$ruley*$height+.5);
+					$set1 = $height-1-floor(($valy-$ylimit1)/$yrange*$height-.5);
+					$set2 = $height-1-floor(($valy-$ylimit1)/$yrange*$height+.5);
 					$set = round(($set1+$set2)/2);
+					
 					if(strlen($valy)) {
-						if (!isset($x1)) $x1 = $i;
-						if (!isset($y1)) $y1 = $set;
-						$from = $y1 - $intplus;	//start coordinate y-axis
+						if (!isset($xprev)) $xprev = $i;
+						if (!isset($yprev)) $yprev = $set;
+						$from = $yprev - $intplus;	//start coordinate y-axis
 						$to = $set - $intplus;	//target coordinate y-axis
-						if($from<-200) //don't draw too far outside the image
-							$from = -200;
-						else if($from > $height+200)
-							$from = $height+200;
-						if($to < -200)
-							$to = -200;
-						else if($to > $height+200)
-							$to = $height+200;
-						if (!(($y1>$height && $set<0) || ($y1<0 && $set>$height)) && $i>0 && ($from>-$thick1 || $to>-$thick2)) {
+						// do not try to draw too far outside the visible image
+						// but allow for an approximately correct slope when connecting
+						// points
+						$from = $from < -200 ? -200 : $from;
+						$from = $from > $height+200 ? $height+200 : $from;
+						$to = $to < -200 ? -200 : $to;
+						$to = $to > $height+200 ? $height+200 : $to;
+						
+						if (!(($yprev>$height && $set<0) || ($yprev<0 && $set>$height)) && $i>0 && ($from>-$thickdiff || $to>-$thickdiff)) {
 							// connect dots, but do not try to connect poles (a pole is defined
-							// here as two dots with a vertical distance of more than 1/3 of the
-							// image height.
-							// Of course this is a bit problematic, but I didn't find a better way
-							// so far.)
-							if($con[$j]==0 && (abs($y1-$set)<$height/3 || !$pol)) { 
+							// as two dots with a vertical distance of more than 1/3 of the image
+							// height.
+							// Of course this is a bit simple, but works for my needs
+							if($con[$j]==0 && (abs($yprev-$set)<$height/3 || !$pol)) { 
 								if ($thick < 2)
-									imageline($img, $x1, $from, $i, $to,
+									imageline($img, $xprev, $from, $i, $to,
 									          $color[$j]);
-								else { //lines with thickness
-									if ($from == $to)
-										imagefilledrectangle($img, $x1, $to-$thick1, $i,
-										                     $to+$thick2+1, $color[$j]);
-									else { //all of these four are necessary to make a smooth line in every case
-										imagefilledrectangle($img, $x1-$thick1, $from+$thick1,
-										                     $i-$thick2, $to+$thick2, $color[$j]);
-										imagefilledrectangle($img, $x1+$thick1, $from-$thick1,
-										                     $i+$thick2,$to-$thick2,$color[$j]);
-										imagefilledrectangle($img, $x1-$thick1, $from-$thick1,
-										                     $i+$thick2, $to+$thick2, $color[$j]);
-										imagefilledrectangle($img, $x1+$thick1, $from+$thick1,
-										                     $i-$thick2,$to-$thick2,$color[$j]);
-									}
-								}
+								else  // lines with a real thickness
+									plotline($img, $xprev, $from, $i, $to, $thickdiff, $color[$j]);
 							}
 							else if ($con[$j] == 1) { // draw dots, do not connect
 								if($thick<2)
-									imagesetpixel($img, $x1, $from, $color[$j]);
+									imagesetpixel($img, $i, $to, $color[$j]);
 								else 
-									imagefilledellipse($img, $x1, $from, $thick, $thick,
+									imagefilledellipse($img, $i, $to, $thick, $thick,
 									                   $color[$j]);
 							}
 							else if($con[$j]==2) //fill graph inside
-								imageline($img,$x1,$startx,$x1,$to,$color[$j]);
+								imageline($img, $xprev, $startx, $xprev, $to, $color[$j]);
 							else if($con[$j]==3) { //fill graph outside
-								imageline($img,$x1,0,$x1,min($startx,$to),$color[$j]);
-								imageline($img,$x1,$height,$x1,max($startx,$to),$color[$j]);
+								imageline($img, $xprev, 0, $xprev, min($startx,$to), $color[$j]);
+								imageline($img, $xprev, $height, $xprev, max($startx,$to), $color[$j]);
 							}
 						}
-						$x1 = $i;
-						$y1 = $set;
+						$xprev = $i;
+						$yprev = $set;
 						++$count;
-					} else { // don't connect definition gaps
-						unset($x1);
-						unset($y1);
+					} else { // don't connect inside definition gaps
+						unset($xprev);
+						unset($yprev);
 					}
 				}
 			}
@@ -572,86 +516,98 @@ for ($j=0; $j<3; $j++) {
 	} else if ($i>0)
 		++$count;
 		
-	// error message at result overflows or when no result found
+	// error message at result overflows or when no result were found
 	if(!$count && $errors && !$asyval[$j] && !$bracketerror[$j]){
 		imagefilledrectangle($img, $height/2-85, 80+$j*40, $height/2-85+9*max(strlen($text3),
 		                     strlen($text4))+10,115+$j*40,$color[3]);
-		plotText($img, 5, $height/2-80, 80+$j*40, $text3, $color[$j], $nice);
-		plotText($img, 5, $height/2-80, 100+$j*40, $text4.($j+1), $color[$j], $nice);
+		plotText($img, 5, $height/2-80, 80+$j*40, $text3, $color[$j], $Font);
+		plotText($img, 5, $height/2-80, 100+$j*40, $text4.($j+1), $color[$j], $Font);
 	}
-	// bracket errors
+	// bracket error(s) in one of the functions
 	if($bracketerror[$j] && $errors) {
 		imagefilledrectangle($img, $height/2-85, 80+$j*40, $height/2-85+9*strlen($text5)+15,
 		                     95+$j*40,$color[3]);
-		plotText($img, 5, $height/2-80,80+$j*40, $text5.($j+1), $color[$j], $nice);
+		plotText($img, 5, $height/2-80,80+$j*40, $text5.($j+1), $color[$j], $Font);
 	}
 }
 
 // draw lines in foreground
-if($bf == 2) drawlines();
+if($bf == 2) drawsystem();
 
 // If $varname ist set, replace all occurences of 'x' by $varname
-// and draw function terms into the image.
+// and draw terms into the image.
 for($i=0;$i<3;$i++) {
 	if ($form[$i]!='' && $term[$i]){
+		/* do not replace the 'x' in exp() and max() */
+		$form[$i] = str_replace('exp', 'eyp', $form[$i]);
+		$form[$i] = str_replace('max', 'may', $form[$i]);
 		$form[$i] = str_replace("x", $varname, $form[$i]);
+		$form[$i] = str_replace('eyp', 'exp', $form[$i]);
+		$form[$i] = str_replace('may', 'max', $form[$i]);
+		
 		$fname = chr(102+$i); // f, g or h
 		if ($sint[$i] == 2) { // integral
 			$form[$i] = strtoupper($fname).'('.$varname.')=S['.$form[$i].']';
-			if ($cint[$i] > 0)
-				$form[$i].='+';
-			if ($cint[$i])
-				$form[$i].=$cint[$i];
+			if ($cint[$i] > 0) $form[$i].='+';
+			if ($cint[$i]) $form[$i].=$cint[$i];
 		}
 		else if($sint[$i] == 1) // derivative
 			$form[$i] = $fname."'($varname)=[".$form[$i]."]'";
 		else                    // function
 			$form[$i]=$fname.'('.$varname.')='.$form[$i];
 			
-		if(strlen($form[$i])<$width/9) {
+		if(strlen($form[$i]) < $width/9) {
 			imagefilledrectangle($img, 0, 20*($i+1)-10, 9*strlen($form[$i])+5, 20*($i+1)+5, $color[3]);
-			plotText($img, 5, 5, 20*($i+1)-10, $form[$i], $color[$i], $nice);
+			plotText($img, 5, 5, 20*($i+1)-10, $form[$i], $color[$i], $Font);
 		} else {//reduce font size if term is too long
 			imagefilledrectangle($img, 0, 20*($i+1)-10, 5*strlen($form[$i])+5, 20*($i+1)+5, $color[3]);
-			plotText($img, 1, 5, 20*($i+1)-6, $form[$i], $color[$i], $nice);
-
+			plotText($img, 1, 5, 20*($i+1)-6, $form[$i], $color[$i], $Font);
 		}
 	}
 }
 
-// draw a frame if desired
-if ($frame)
-	imagerectangle( $img, 0, 0, $width-1, $height-1, $color[4]);
+// draw frame
+if ($frame) imagerectangle( $img, 0, 0, $width-1, $height-1, $color[4]);
 	
 // finally, draw additional named points
 for ($i=0; $i<$pcount; $i++) {
 	// calculate x/y:
-	$valx = ($px[$i] - $rulex1)/$rulex*$width;
-	$valy = ($ruley2 - $py[$i])/$ruley*$height;
+	$valx = ($px[$i] - $xlimit1)/$xrange*$width;
+	$valy = ($ylimit2 - $py[$i])/$yrange*$height;
 	imagefilledellipse($img , $valx, $valy , 6 , 6 , $color[7]);
-	plotText($img, 5, $valx-15, $valy-18, $pn[$i], $color[7], $nice);
+	plotText($img, 5, $valx-15, $valy-18, $pn[$i], $color[7], $Font);
 }
 
 // apply GD filters and/or rotate image if selected
 //
-if($gamma!=1) imagegammacorrect ($img,1,$gamma);
-if($bri) imagefilter($img,IMG_FILTER_BRIGHTNESS,$bri);
-if($cont) imagefilter($img,IMG_FILTER_CONTRAST,$cont);
-if($emb) imagefilter($img,IMG_FILTER_EMBOSS);
-if($blur) imagefilter($img,IMG_FILTER_GAUSSIAN_BLUR);
-if($neg) imagefilter($img,IMG_FILTER_NEGATE);
-if($gray) imagefilter($img,IMG_FILTER_GRAYSCALE);
-if($mean) imagefilter($img,IMG_FILTER_MEAN_REMOVAL);
-if($edge) imagefilter($img,IMG_FILTER_EDGEDETECT);
-if($rotate) $img=imagerotate($img,-$rotate,$color[3]);
+if($gamma != 1) imagegammacorrect ($img, 1, $gamma);
+if($bri) imagefilter($img, IMG_FILTER_BRIGHTNESS, $bri);
+if($cont) imagefilter($img, IMG_FILTER_CONTRAST, $cont);
+if($emb) imagefilter($img, IMG_FILTER_EMBOSS);
+if($blur) imagefilter($img, IMG_FILTER_GAUSSIAN_BLUR);
+if($neg) imagefilter($img, IMG_FILTER_NEGATE);
+if($gray) imagefilter($img, IMG_FILTER_GRAYSCALE);
+if($mean) imagefilter($img, IMG_FILTER_MEAN_REMOVAL);
+if($edge) imagefilter($img, IMG_FILTER_EDGEDETECT);
+if($rotate) $img=imagerotate($img, -$rotate, $color[3]);
 
-if ($transp == 1) imagecolortransparent( $img, $color[3] );
+if (1 == $transp) imagecolortransparent( $img, $color[3] );
 
 // That's it => stream the result in the desired format
-if( $filetype == 1 )
+streamImage($img, $filetype);
+/*
+if( 1 == $filetype ) {
+	header('Content-type: image/gif');
 	imagegif($img);
-else if( $filetype == 2 )
-	imagepng($img,NULL,1);
-else
+}
+else if( 2 == $filetype ) {
+	header('Content-type: image/png');
+	imagepng($img, NULL, 1);
+	}
+else {
+	header('Content-type: image/jpeg');
 	imagejpeg( $img, NULL, 90 );
+}
+imagedestroy($img);
+*/
 ?>
