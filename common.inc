@@ -6,7 +6,7 @@
 // ---------------------------------------------------
 // Marcus Oettinger (www.oettinger-physisc.de)
 // 06/2020
-//  * adding CSP headers, removeing library dependencies
+//  * adding CSP headers, removing library dependencies
 //  * removed onchange/onclick entries to allow for reasonable CSP-settings
 // 09/2018
 //  * polished UI (options in a jquery-ui dialog, colors and icons)
