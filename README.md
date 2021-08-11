@@ -8,6 +8,8 @@ The images can be drawn on the fly: after a plot is created and formatted in the
 
 Because the URL is long and ugly, the possibility to use an URL-shortener (using [tinyURL](https://tinyurl.com/) or [YOURLS](https://yourls.org/)) is built in - although this might need some fiddling to get it to work.
 
+The plotter itself is free of cookies or any analytical stuff and uses reasonable CSP ([Content-Security-Policy](https://content-security-policy.com/)) headers to enhance the security of the page in modern browsers.
+
 ### Prerequisites
 To run a plotter, a standard installation of a webserver capable of interpreting PHP (>=4.3 - that is untested) with an enabled GD extension (at least version 2) is needed.
 
