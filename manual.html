@@ -74,7 +74,7 @@ each curve can be filled with the selected color.</p>
   $H(f(x)) = \sin(h(x))$.
   Consider using <b>2*exp(-.5*Y)</b> as hull function, <b>x</b>
   as <b>f(x)</b> and <b>x^2</b> as <b>g(x)</b> - you will get
-  <a href="graph.php?a0=2&a1=x&a2=x%5E2&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=2%2Aexp%28-.5%2AY%29&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">this plot</a>
+  <a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=x&a2=x%5E2&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=2%2Aexp%28-.5%2AY%29&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">this plot</a>
   of <b>2*exp(-.5*x)</b> and <b>2*exp(-.5*x^2)</b>.
 </td></tr>
 <tr><td><b>Q</b></td><td>is a simple substitution mechanism, an
@@ -119,12 +119,12 @@ symbols:</p>
   of brackets can be used pairwise.</td></tr>
 <tr><td><b>;</b></td><td> is used as separator for functions accepting
   multiple input values, for example <b>scir(x;2)</b> will plot
-  <a href="graph.php?a0=2&a1=scir%28x%232%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&z">a semicircle</a>
+  <a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=scir%28x%232%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&z">a semicircle</a>
   with a radius of 2. For historical reasons (read: backward compatibility),
   <b>#</b> is allowed, too: <b>scir(x#2)</b> is identical to <b>scir(x;2)</b>.
   </td></tr>
 <tr><td><b>asy</b></td><td>show a vertical asymptote at a fixed value x, e.g.
-  <b><a href="graph.php?a0=2&a1=asy%281%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&z">asy(1)</a></b> or <b>asy(e)</b></td></tr>
+  <b><a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=asy%281%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&z">asy(1)</a></b> or <b>asy(e)</b></td></tr>
 </table>
 <p>As a rule of thumb, every expression that can be evaluated
 by a PHP-interpreter can be calculated (so you can use the usual
@@ -170,9 +170,9 @@ $\delta$: 4.6692016091030</td></tr>
 
 <a id="2"></a><h3>predefined Functions</h3>
 <p>Plotter knows many interesting functions, nested
-ones like <b><a href="graph.php?a0=2&a1=sin%28pow%28x%232%2F3%29%29+&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-1&b5=2&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">sin(pow(x;2/3))</a></b>
+ones like <b><a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=sin%28pow%28x%232%2F3%29%29+&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-1&b5=2&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">sin(pow(x;2/3))</a></b>
 all kinds of polynomials like
-<b><a href="graph.php?a0=2&a1=2%2Ax%5E3-4%2Ax%5E2%2Bx%2B1&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-1&b3=3&b4=-1&b5=2&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">2*x^3-4*x^2+x+1</a></b>
+<b><a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=2%2Ax%5E3-4%2Ax%5E2%2Bx%2B1&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-1&b3=3&b4=-1&b5=2&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z">2*x^3-4*x^2+x+1</a></b>
 and rational functions will work out of the box. Many known
 functions expect multiple values or variables which should
 be separated by colons (<b>;</b> as in <b>norm(2;1;x)</b>, hashes
@@ -382,14 +382,14 @@ To calculate negative x-values for an odd numerator and a denominator
     $f(x) = \frac {1}{\sqrt {2\pi \sigma ^{2}}}e^{-{\frac{(x-\mu )^{2}}{2\sigma^{2}}}}$,
     the first value is
     the mean $\mu$, the second is the standard deviation $\sigma$. See 
-    <a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=norm%282%231%23x%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=0&b5=0.5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z"><b>norm(2;1;x)</b></a> 
+    <a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=norm%282%231%23x%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=0&b5=0.5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z"><b>norm(2;1;x)</b></a> 
     for a standard normal distribution shifted two units to the right.
     </td></tr>
 <tr><td><b>phi</b></td><td>$\Phi$, cumulative Gaussian distribution function with
     arguments mean $\mu$ and standard deviation $\sigma$ as above.
     This is an approximation based on the interval displayed. It could be used
     if the normal distribution starts at values close to 0.
-    See <a href="https://plot.oettinger-physics.de/graph.php?a0=2&a1=phi%280%3B1%3Bx%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z">
+    See <a href="<?php echo $fqdn;?>/graph.php?a0=2&a1=phi%280%3B1%3Bx%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z">
     <b>phi(0;1;x)</b></a> for a reasonable example.</td></tr>
 <tr><td><b>chi2</b></td><td>chi-square distribution, e.g. <b>chi2(3;x)</b> The first value is the number of the degrees of freedom.</td></tr>
 <tr><td><b>ichi2</b></td><td>inverse-chi-square distribution, e.g. <b>ichi2(3;x)</b> The first value is the number of the degrees of freedom.</td></tr>
@@ -582,7 +582,7 @@ To calculate negative x-values for an odd numerator and a denominator
 <tr><td><b>con</b></td><td> Condition function, e.g. 
     <b>con(l;x;u)</b> will return 1 if $x \in [l, u]$, 0 else. The first
     and third argument are the lower and upper limit of the interval.
-    See <a href="https://plot.oettinger-physics.de/graph.php?a0=2&a1=con%280%3Bsin%28x%29%3B1%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>con(0;sin(x);1)</b></a>
+    See <a href="<?php echo $fqdn;?>/graph.php?a0=2&a1=con%280%3Bsin%28x%29%3B1%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>con(0;sin(x);1)</b></a>
     for an example.
     </td></tr>
 <tr><td><b>rcon</b></td><td> Reverse condition function, the logical
@@ -631,7 +631,7 @@ To calculate negative x-values for an odd numerator and a denominator
     on the unit interval $[0;1]$ and its periodic continuation.
     The second value is the number of steps done ($n-1$), 
     maximum is 1000. An example is
-    <a href="https://plot.oettinger-physics.de/graph.php?a0=2&a1=blanc%28x%3B10%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>blanc(x;10)</b></a>.</td></tr>
+    <a href="<?php echo $fqdn;?>/graph.php?a0=2&a1=blanc%28x%3B10%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>blanc(x;10)</b></a>.</td></tr>
 <tr><td><b>tak</b></td><td> Takagi-Landsberg curve, approximated as 
     \[ T_w(x) = \sum_{k=0}^n w^k s(2^{k}x)\] with the triangle wave
     $s(x)=\min _{n\in {\mathbf {Z} }}|x-n|$ on the unit interval
@@ -639,7 +639,7 @@ To calculate negative x-values for an odd numerator and a denominator
     The second value is the parameter $w;\; 0 \leq w \leq 1$, the
     third one sets the number of steps done ($n-1$, the maximum is
     1000). See 
-    <a href="https://plot.oettinger-physics.de/graph.php?a0=2&a1=+tak%28x%3B0.7%3B10%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>tak(x;0.7;10)</b></a>
+    <a href="<?php echo $fqdn;?>/graph.php?a0=2&a1=+tak%28x%3B0.7%3B10%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>tak(x;0.7;10)</b></a>
     for an example.
     </td></tr>
 </table>
