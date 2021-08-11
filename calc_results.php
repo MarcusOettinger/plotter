@@ -2,7 +2,7 @@
 <?php
 /*
 calc_results.php - calculate distinct function values.
-part of plotter, M. Oettinger 06/2020.
+part of plotter, M. Oettinger 08/2021.
 Changes:
  * eliminated inline styles (CSP capable)
  * reworked the code to get it more readable (maybe shorter)
@@ -29,12 +29,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /*
  * This file calculates distinct values using a given function
- * and a space-separated list of variable values and writes the
- * result into an iframe on the main page.
+ * and a space-separated list of variable values. Results are
+ * written into an iframe on the main page.
  */
 
 include_once("config.inc");
 include_once("modules/helpers.php");
+include_once("modules/defs.php");
 
 ?>
 <head><title></title>
@@ -45,10 +46,15 @@ include_once("modules/helpers.php");
 </head><body class="calcpage">
 <?php
 
-// header and footer for html table
+/*
+ * a header and a footer for the html table
+ */
 define('HD_table', '<table class="calctable" cellspacing="0" cellpadding="1"><tr><th>x </th>');
 define('FT_table', '</tr></table>');
-// header and footer for Latex table
+
+/*
+ * a header and a footer for the laTex table
+ */
 define('HD_latex', '\begin{tabular}{c|c}<br />');
 define('FT_latex', '<br />\end{tabular}');
 
@@ -58,20 +64,21 @@ $format = 0;			// Format is one of
 				// 2: csv lines
 				// 3: a latex-formatted table
 				
-// get variables from querystring
-//
+/* 
+ * get variables from querystring
+ */
 if (isset($_POST['single1']) && $_POST['single1'] <> "") {
 	$single1 = $_POST['single1'];
 } else {
 	// no function to calculate
-	echo '</body></html>';
+	echo '<p>Sorry, there&apos;s nothing to calculate - a pity!</p></body></html>';
 	return;
 }
 if (isset($_POST['c'])) $c = $_POST['c'];
 if (isset($_POST['qqsingle'])) $qqsingle = $_POST['qqsingle'];
-if  (isset($_POST['inpval'])) $inpval = $_POST['inpval'];
-if  (isset($_POST['decis'])) $decis = $_POST['decis'];
-if  (isset($_POST['format'])) $format = $_POST['format'];
+if (isset($_POST['inpval'])) $inpval = $_POST['inpval'];
+if (isset($_POST['decis'])) $decis = $_POST['decis'];
+if (isset($_POST['format'])) $format = $_POST['format'];
 
 
 // called for each pair of (value/result)				
@@ -90,17 +97,19 @@ if ($single1!=str_replace('D','',$single1) || $single1!=str_replace('S','',$sing
 	return;
 }
 
-$formula1=$single1;
-
 // rectify string of variable values
-$inpval=trim($inpval);
-while($inpval!=str_replace("  "," ",$inpval))
-	$inpval=str_replace("  "," ",$inpval);
-$inpvals=explode(" ",$inpval);
+$inpval = trim($inpval);
+while($inpval != str_replace("  "," ",$inpval))
+	$inpval = str_replace("  "," ",$inpval);
+$inpvals = explode(" ",$inpval);
 
-$qq=$qqsingle;//substituted formulas should be calculable too
-$single=1; //we don't want to compute the whole graph, only a single value
-include 'modules/init.php';
+$qq = $qqsingle;//substituted formulas should be calculable too
+$single = 1; //we don't want to compute the whole graph, only a single value
+
+// remove all whitespace in math terms
+$fn = rawurldecode(preg_replace('/\s/', '', $single1));
+$fnum = 0;
+include("modules/parse.php");
 
 switch ($format){
 	case 0:	$tk = array("", "", "&nbsp;");
@@ -129,19 +138,20 @@ switch ($format){
 	break;	
 }
 	
-// execute calculation via function graph() (see init.php)
-// and print the results
-//
+/*
+ * execute calculation via function graph() (see modules/defs.php)
+ * and print the results
+ */
 foreach($inpvals as $val) {
-	$erg = graph(handleConstants($val),$formula[0]);
-	if ($erg==999999) 		$erg = $text2;	// illegal range
+	$erg = graph(handleConstants($val),$fn);
+	if ($erg == 999999) 		$erg = $text2;	// illegal range
 	else if($bracketerror[0]) 	$erg = $text5;	// bracket error
-	else if(is_numeric($erg))	$erg=round($erg,$decis);
+	else if(is_numeric($erg))	$erg = round($erg,$decis);
 	else $erg = "undef";
 
 	printValue($val, $erg, $format, $tk);
 }
 
-echo $ft;	// echo footer
+echo $ft;
 ?>
 </body></html>
