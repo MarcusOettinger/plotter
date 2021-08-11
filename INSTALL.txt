@@ -4,6 +4,7 @@ is a function plotter (mostly) to display curves of mathematical expressions (mo
 loosely based on openPlaG (see http://rechneronline.de/openPlaG/) by Juergen Kummer
 (which is GPLed).
 
+
 0. Requirements
 ---------------
 The bare minimum to run a plotter is a webserver with PHP>=4.3 (that is
@@ -64,6 +65,10 @@ Currently, two such services can be used:
 There is the possibility to set a piece of text that will be displayed in one
 of the info boxes by changing the string
    $short_msg = "Alternatively, use the short link provided below";
+   
+And finally, if you would like to show your nifty shortening possibility
+in the manual, just create a file called manual_ex.html - the contents will
+be added to the manual below the shortening information (see manual.html).
 
 3. License
 ----------
@@ -71,4 +76,4 @@ of the info boxes by changing the string
 The plotter is released by M. Oettinger under a GNU General Public License V.2
 (see https://www.gnu.org/licenses/gpl-2.0.html or the file LICENSE).
 
-(c) Marcus Oettinger 2015-2020
+(c) Marcus Oettinger 2015-2021
