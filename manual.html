@@ -83,13 +83,15 @@ each curve can be filled with the selected color.</p>
   </i> calculation of Q, so <b>f(x) = 2 - Q</b> with <b>Q = 1+x</b>
   really means <b>f(x) = 2 - (1+x)</b>.
 </td></tr>
-<tr><td><b>df/dx (first derivative)</b></td><td> shows the (numerical,
-of course) derivative of the given function. In a legend, this will be
-the first derivative will be shown as <b>f'(x)=[...]'</b>.</td></tr>
+<tr><td><b>df/dx (first derivative)</b></td><td> shows the (numerical)
+derivative of the given function. In a legend, this 
+first derivative of <b>f(x)</b> will be shown as <b>f'(x)=[...]'</b>.</td></tr>
 <tr><td><b>&int;f(x)dx (integral)</b></td><td> shows the cumulative
 function in the drawn interval (integrate over ...). Calculated function
-values are cumulated one after another and the constant value C is added
-(if set). The integrated term will be called <b>F(x)=S[...]</b>.
+values will be multiplied  with the difference in variable values for
+each step, added together and a constant value - the
+integration constant <b>C</b> is added (if set). This numeric
+integral of the function $f$ will be called <b>F(x)=S[...]</b>.
 </td></tr></table>
 
 <a id="0"></a><h2>syntax</h2>
@@ -98,17 +100,17 @@ containing function names, constant names and combinations of the following
 symbols:</p>
 <br /><table><tr><td>
 <b>x</b></td><td> is treated as variable name in functions $f(x)$</td></tr>
-<tr><td><b>0-9</b></td><td>Numbers like <b>123.45</b>, input values
+<tr><td><b>0-9</b></td><td>numbers like <b>123.45</b>, input values
   are hardly restricted (as long as you don&apos;t plan to use more than
   some hundred digits). The output value (result) in a non-logarithmic
-  scale is restricted to +/-100000 which is also the maximum value for both
-  axes.<br />
+  scale is restricted to +/-<?php echo PHP_INT_MAX;?> which is also the
+  maximum value for both axes.<br />
   Large or small numbers may be written in 
   <a href="https://en.wikipedia.org/wiki/Scientific_notation">scientific Notation</a>
-  (the standard index form like <b>2.5E20</b> for $2.5\cdot 10^{20}$),
-  decimal digits are exact up to a number of 12.</td></tr> 
-<tr><td><b>. ,</b></td><td>use a point point or comma as decimal
-  separators: <b>1.5</b> is the same as <b>1,5</b></td></tr>
+  (the standard index form like <b>2.5E20</b> for $2.5\cdot 10^{20}$), with a a mantissa
+  using up to 12 decimal places.</td></tr> 
+<tr><td><b>. ,</b></td><td>you can use a point or a comma as decimal
+  separator: <b>1.5</b> is the same as <b>1,5</b></td></tr>
 <tr><td><b>+-*/</b></td><td>the basic arithmetic operations<br>
   (as usual when multiplying numbers and variable names, the operator 
   '*' can be omitted, i.e. <b>2x = 2*x</b>)</td></tr>
@@ -118,26 +120,29 @@ symbols:</p>
 <tr><td><b>;</b></td><td> is used as separator for functions accepting
   multiple input values, for example <b>scir(x;2)</b> will plot
   <a href="graph.php?a0=2&a1=scir%28x%232%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&z">a semicircle</a>
-  with a radius of 2. For historical reasons, <b>#</b> is allowed, too:
-  <b>scir(x#2)</b> is identical to <b>scir(x;2)</b>.
+  with a radius of 2. For historical reasons (read: backward compatibility),
+  <b>#</b> is allowed, too: <b>scir(x#2)</b> is identical to <b>scir(x;2)</b>.
   </td></tr>
-<tr><td><b>asy</b></td><td>show a vertical asymptote at a fixed value x, e.g. <b><a href="graph.php?a0=2&a1=asy%281%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&z">asy(1)</a></b> or <b>asy(e)</b></td></tr>
+<tr><td><b>asy</b></td><td>show a vertical asymptote at a fixed value x, e.g.
+  <b><a href="graph.php?a0=2&a1=asy%281%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&z">asy(1)</a></b> or <b>asy(e)</b></td></tr>
 </table>
 <p>As a rule of thumb, every expression that can be evaluated
 by a PHP-interpreter can be calculated (so you can use the usual
-functions like <b>sqrt(x)</b> for the square root or <b>x^2</b> for
-the square) - although there are many additional functions defined.</p>
+functions like <b>sqrt(x)</b> for the square root or <b>sin(x)</b> for
+a sine) - although there are many optimizations and additional
+functions defined.</p>
 
 
 <a href="#top" class="uplink">top</a><br /><br />
 
 <a id="1"></a><h3>constants</h3>
 <p>Plotter is aware of some common constants that may be used in
-formulas, expressions and all numerical input. So <b>e^x</b> is the same
-as <b>exp(x)</b> and a plot can easily be drawn from
+function terms, expressions and all numerical input. For example, 
+<b>e^x</b> with Euler's constant $e$ means the same as <b>exp(x)</b>
+and a plot can easily be drawn in an interval from
 $-\pi$ to $\pi$ by setting the plotting range from <b>-pi</b>
 to <b>pi</b>.</p>
-<p>The named constants are</p>
+<p>The named constants known by plotter are</p>
 <table>
 <tr><td><b>e</b></td><td>Euler&apos;s number: 2.718281828459</td></tr>
 <tr><td><b>pi / PI</b></td><td>$\pi$, Pi: 3.1415926535898</td></tr>
@@ -146,7 +151,21 @@ to <b>pi</b>.</p>
 <tr><td><b>go</b></td><td>relation of the golden ratio: 1.6180339887499</td></tr>
 <tr><td><b>d</b></td><td><a href="https://en.wikipedia.org/wiki/Feigenbaum_constants">Feigenbaum constant</a>
 $\delta$: 4.6692016091030</td></tr>
+<tr><td><b>g_acc</b></td><td>the gravitational acceleration on
+  earth's surface, commonly approximated
+  by $9,81 \frac{\text{m}}{\text{s}^2}$</td></tr>
+<tr><td><b>h</b></td><td>the Planck constant (the quantum of electromagnetic
+  action that relates a photon's energy to its frequency), defined as
+  $h = 6.62607015\cdot 10^{−34} \text{J}\cdot\text{s}$</td></tr>
+<tr><td><b>hbar</b></td><td>the Planck constant measured in radians
+  $\hbar = 1.054571817\cdot 10^{−34} \text{J}\cdot\text{s}$</td></tr>
+<tr><td><b>c</b></td><td>the speed of light in empty space,
+  $c = 299792458 \frac{\text{m}}{\text{s}}$</td></tr>
+<tr><td><b>Na</b></td><td>Avogadro's constant (the number
+  of particles in one mole of substance),
+  $N_A = 6.02214076\cdot 10^{23} \text{mol}^{-1}$</td></tr>
 </table>
+
 <a href="#top" class="uplink">top</a><br /><br />
 
 <a id="2"></a><h3>predefined Functions</h3>
@@ -167,139 +186,211 @@ e.g. <b>x^2</b> or <b>pow(x;2)</b> for $x^2$. A root can be
 written using a fraction as exponent, so <b>x^(1/2)</b> or <b>x^.5</b>
 means the square root of $x$, an exponential function $e^x$ can
 be written as <b>e^x</b> or <b>pow(e;x)</b>.<br>
-<i class="red">Caution: roots of negative values can only be calculated if the 
-numerator is 1 and the denominator is odd (e.g. <b>x^(1/3)</b> ).
+<i class="red">Caution: real (complex numbers cannot be plotted in
+cartesian coordinates) roots of negative values can only be calculated
+if the numerator is 1 and the denominator is odd (e.g. <b>x^(1/3)</b> ).
 To calculate negative x-values for an odd numerator and a denominator
-&lt; 1, the expression can be transformed - to calculate
-<b>x^(2/3)</b>, one could use <b>(x^(1/3))^2</b>.</i></td></tr>
-<tr><td><b>sqrt</b> </td><td>square root, e.g. <b>sqrt(x)</b> is
+&lt; 1, the expression can be transformed - it is common to read
+<b>(x^(1/3))^2</b> as the result of <b>x^(2/3)</b>.</i></td></tr>
+<tr><td><b>sqrt</b> </td><td> the square root as a function
+   (positive values), <b>sqrt(x)</b> is
    equivalent to $\sqrt{x} = x^{1/2};\quad x \gt 0$.</td></tr>
 <tr><td><b>sqr</b> </td><td>alternative expression for the square root,
    the same as above.</td></tr>
 <tr><td><b>exp</b></td><td> exponential function, Euler-function,
    <b>exp(x)</b> is equivalent to <b>e^x</b>.</td></tr>
-<tr><td><b>log</b> </td><td>natural logarithm (logarithm to base e) , e.g. <b>log(x)</b></td></tr>
-<tr><td><b>log10</b> </td><td>decadic logarithm, e.g. <b>log10(x)</b></td></tr>
-<tr><td><b>logn</b></td><td> logarithm to base n, e.g. <b>logn(2;x)</b> as the binary (base 2) logarithm.</td></tr>
+<tr><td><b>log</b> </td><td>natural logarithm (logarithm to base e) , <b>log(x)</b> = $\log_{e} x$.</td></tr>
+<tr><td><b>ln</b> </td><td>natural logarithm, the same as above, <b>ln(x)</b> = <b>log(x)</b></td></tr>
+<tr><td><b>log10</b> </td><td>decadic logarithm, <b>log10(x)</b> = $\log_{10} x$.</td></tr>
+<tr><td><b>logn</b></td><td> logarithm to base n, the first argument is the base, e.g. <b>logn(2;x)</b> as the binary (base 2) logarithm.</td></tr>
 </table><a href="#top" class="uplink">top</a><br /><br />
 
 <a id="4"></a><h4>- trigonometric and hyperbolic functions</h4>
 <div>
 <table>
-<tr><td><b>sin</b></td><td> Sine, sinus, e.g. <b>sin(x)</b></td></tr>
-<tr><td><b>cos</b></td><td> Cosine, cosinus, e.g. <b>cos(x)</b></td></tr>
-<tr><td><b>tan</b></td><td> Tangent, e.g. <b>tan(x)</b></td></tr>
-<tr><td><b>cot</b></td><td> Cotangent, e.g. <b>cot(x)</b></td></tr>
-<tr><td><b>sin2</b></td><td> Sine square, e.g. <b>sin2(x)</b></td></tr>
-<tr><td><b>cos2</b></td><td> Cosine square, e.g. <b>cos2(x)</b></td></tr>
-<tr><td><b>tan2</b></td><td> Tangent square, e.g. <b>tan2(x)</b></td></tr>
-<tr><td><b>cot2</b></td><td> Cotangent square, e.g. <b>cot2(x)</b></td></tr>
-<tr><td><b>arcsin</b></td><td> Arcsine, e.g. <b>arcsin(x)</b></td></tr>
-<tr><td><b>arccos</b></td><td> Arccosine, e.g. <b>arccos(x)</b></td></tr>
-<tr><td><b>arctan</b></td><td> Arctangent, e.g. <b>arctan(x)</b></td></tr>
-<tr><td><b>arccot</b></td><td> Arccotangent, e.g. <b>arccot(x)</b></td></tr>
-<tr><td><b>sinh</b></td><td> Hyperbolic Sine, e.g. <b>sinh(x)</b></td></tr>
-<tr><td><b>cosh</b></td><td> Hyperbolic Cosine, e.g. <b>cosh(x)</b></td></tr>
+<tr><td><b>sin</b></td><td> Sine, sinus, usage is <b>sin(x)</b></td></tr>
+<tr><td><b>cos</b></td><td> Cosine, cosinus, usage is <b>cos(x)</b></td></tr>
+<tr><td><b>tan</b></td><td> Tangent, usage is <b>tan(x)</b></td></tr>
+<tr><td><b>cot</b></td><td> Cotangent, usage is <b>cot(x)</b></td></tr>
+<tr><td><b>sin2</b></td><td> Sine square, usage is <b>sin2(x)</b></td></tr>
+<tr><td><b>cos2</b></td><td> Cosine square, usage is <b>cos2(x)</b></td></tr>
+<tr><td><b>tan2</b></td><td> Tangent square, usage is <b>tan2(x)</b></td></tr>
+<tr><td><b>cot2</b></td><td> Cotangent square, usage is <b>cot2(x)</b></td></tr>
+<tr><td><b>arcsin</b></td><td> Arcsine, usage is <b>arcsin(x)</b></td></tr>
+<tr><td><b>arccos</b></td><td> Arccosine, usage is <b>arccos(x)</b></td></tr>
+<tr><td><b>arctan</b></td><td> Arctangent, usage is <b>arctan(x)</b></td></tr>
+<tr><td><b>arccot</b></td><td> Arccotangent, usage is <b>arccot(x)</b></td></tr>
+<tr><td><b>sinh</b></td><td> Hyperbolic Sine, usage is <b>sinh(x)</b></td></tr>
+<tr><td><b>cosh</b></td><td> Hyperbolic Cosine, usage is <b>cosh(x)</b></td></tr>
 </table>
 </div>
 <div>
 <table>
-<tr><td><b>tanh</b></td><td> Hyperbolic Tangent, e.g. <b>tanh(x)</b></td></tr>
-<tr><td><b>coth</b></td><td> Hyperbolic Cotangent, e.g. <b>coth(x)</b></td></tr>
-<tr><td><b>arsinh</b></td><td> Area Hyperbolic Sine, e.g. <b>arsinh(x)</b></td></tr>
-<tr><td><b>arcosh</b></td><td> Area Hyperbolic Cosine, e.g. <b>arcosh(x)</b></td></tr>
-<tr><td><b>artanh</b></td><td> Area Hyperbolic Tangent, e.g. <b>artanh(x)</b></td></tr>
-<tr><td><b>arcoth</b></td><td> Area Hyperbolic Cotangent, e.g. <b>arcoth(x)</b></td></tr>
-<tr><td><b>sec</b></td><td> Secant, e.g. <b>sec(x)</b></td></tr>
-<tr><td><b>cosec</b></td><td> Cosecant, e.g. <b>cosec(x)</b></td></tr>
-<tr><td><b>arcsec</b></td><td> Arcsecant, e.g. <b>arcsec(x)</b></td></tr>
-<tr><td><b>arccosec</b> </td><td>Arccosecant, e.g. <b>arccosec(x)</b></td></tr>
-<tr><td><b>sech</b></td><td> Hyperbolic Secant, e.g. <b>sech(x)</b></td></tr>
-<tr><td><b>cosech</b></td><td> Hyperbolic Cosecant, e.g. <b>cosech(x)</b></td></tr>
-<tr><td><b>arsech</b></td><td> Area Hyperbolic Secant, e.g. <b>arsech(x)</b></td></tr>
-<tr><td><b>arcosech</b></td><td> Area Hyperbolic Cosecant, e.g. <b>arcosech(x)</b></td></tr>
+<tr><td><b>tanh</b></td><td> Hyperbolic Tangent, usage is <b>tanh(x)</b></td></tr>
+<tr><td><b>coth</b></td><td> Hyperbolic Cotangent, usage is <b>coth(x)</b></td></tr>
+<tr><td><b>arsinh</b></td><td> Area Hyperbolic Sine, usage is <b>arsinh(x)</b></td></tr>
+<tr><td><b>arcosh</b></td><td> Area Hyperbolic Cosine, usage is <b>arcosh(x)</b></td></tr>
+<tr><td><b>artanh</b></td><td> Area Hyperbolic Tangent, usage is <b>artanh(x)</b></td></tr>
+<tr><td><b>arcoth</b></td><td> Area Hyperbolic Cotangent, usage is <b>arcoth(x)</b></td></tr>
+<tr><td><b>sec</b></td><td> Secant, usage is <b>sec(x)</b></td></tr>
+<tr><td><b>cosec</b></td><td> Cosecant, usage is <b>cosec(x)</b></td></tr>
+<tr><td><b>arcsec</b></td><td> Arcsecant, usage is <b>arcsec(x)</b></td></tr>
+<tr><td><b>arccosec</b> </td><td>Arccosecant, usage is <b>arccosec(x)</b></td></tr>
+<tr><td><b>sech</b></td><td> Hyperbolic Secant, usage is <b>sech(x)</b></td></tr>
+<tr><td><b>cosech</b></td><td> Hyperbolic Cosecant, usage is <b>cosech(x)</b></td></tr>
+<tr><td><b>arsech</b></td><td> Area Hyperbolic Secant, usage is <b>arsech(x)</b></td></tr>
+<tr><td><b>arcosech</b></td><td> Area Hyperbolic Cosecant, usage is <b>arcosech(x)</b></td></tr>
 </table>
 </div>
 <br />
 <table>
-<tr><td><b>cat</b> </td><td>Catenary, e.g. <b>cat(2;x)</b> for the catenary function $2\cdot \cosh(x/2)$. The first value is the constant $a$ in $f = a\cdot \cosh(x/a)$.</td></tr>
-<tr><td><b>gd</b>  </td><td>Gudermannian function, e.g. <b>gd(x)</b> for $\arctan(\sinh(x))$.</td></tr>
-<tr><td><b>siv</b> </td><td> Semiversus, e.g. <b>siv(x)</b> for $\sin^2(x/2)$.</td></tr>
-<tr><td><b>sinc</b> </td><td> Sine cardinalis, e.g. <b>sinc(x)</b> for $\dfrac{\sin(x)}{x}$.</td></tr>
-<tr><td><b>tanc</b> </td><td> Tanc function or tangent cardinalis, e.g. <b>tanc(x)</b> for $\dfrac{\tan(x)}{x}$.
-<tr><td><b>hubb</b> </td><td> Hubbert curve, e.g. <b>hubb(x)</b> for $\dfrac{1}{2+2\cdot \cosh(x)}$.</td></tr>
+<tr><td><b>cat</b> </td><td>Catenary, <b>cat(2;x)</b> is the 
+  catenary function $2\cdot \cosh(x/2)$. The first value is
+  used as the constant $a$ in $f = a\cdot \cosh(x/a)$.</td></tr>
+<tr><td><b>gd</b>  </td><td>Gudermannian function, <b>gd(x)</b> 
+  is defined as $\arctan(\sinh(x))$.</td></tr>
+<tr><td><b>siv</b> </td><td> Semiversus, e.g. <b>siv(x)</b> for 
+  $\sin^2(x/2)$.</td></tr>
+<tr><td><b>sinc</b> </td><td> Sine cardinalis, <b>sinc(x)</b> is 
+  $\dfrac{\sin(x)}{x}$.</td></tr>
+<tr><td><b>tanc</b> </td><td> Tanc function or tangent cardinalis,
+  <b>tanc(x)</b> is defined as $\dfrac{\tan(x)}{x}$.
+<tr><td><b>hubb</b> </td><td> Hubbert curve, e.g. <b>hubb(x)</b>
+  for $\dfrac{1}{2+2\cdot \cosh(x)}$.</td></tr>
 <tr><td><b>L</b> </td><td> <a href="http://scienceworld.wolfram.com/physics/LangevinFunction.html">Langevin function</a>, e.g. <b>L(x)</b> for $\coth(x)-\dfrac{1}{x}$.</td></tr>
-<tr><td><b>deg</b> </td><td> converts a radian number to the equivalent number in degrees, e.g. <b>deg(pi)</b> = 180.</td></tr>
-<tr><td><b>rad</b> </td><td> converts a number in degrees to the radian equivalent, e.g. <b>rad(180)</b> = $\pi$.</td></tr>
+<tr><td><b>deg</b> </td><td> converts a radian number into the 
+  equivalent in degrees. <b>deg(pi)</b> $= \pi\cdot \frac{180^\circ}{\pi} = 180 (^\circ)$.</td></tr>
+<tr><td><b>rad</b> </td><td> converts a number in degrees into 
+  its radian equivalent. <b>rad(180)</b> = $180^\circ \cdot \frac{\pi}{180^\circ} = \pi$.</td></tr>
 </table>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="5"></a><h3>- non-differentiable functions</h3>
 <table>
-<tr><td><b>abs</b></td><td> absolute value, e.g. <b>abs(x)</b> = $|x|$</td></tr>
-<tr><td><b>min</b></td><td> minimum of several values, e.g. <b>min(1;x;x^(1/3))</b> is the minimum of $1, x$ and $\sqrt[3]{x}$.</td></tr>
-<tr><td><b>max</b></td><td> maximum of several values, e.g. <b>max(abs(x);x*x)</b> as maximum of the absolute value of $x$ and $x^2$.</td></tr>
-<tr><td><b>%</b></td><td> modulo division, whole-numbered remainder, e.g. <b>10%x</b></td></tr>
-<tr><td><b>fmod</b></td><td> modulo division, floating point remainder, e.g. <b>fmod(x;1)</b> displays only the position after the decimal point of the input value.</td></tr>
-<tr><td><b>R</b></td><td> round, e.g. <b>R(x;2)</b> rounds x to two decimal places, <b>R(x)</b> rounds to an integer.</td></tr>
-<tr><td><b>R0</b></td><td> floor (rounding down), e.g. <b>R0(x)</b>. This is equivalent to Gaussian brackets <b>[x]</b>.</td></tr>
-<tr><td><b>R1</b></td><td> ceil (rounding up), e.g. <b>R1(x)</b></td></tr>
-<tr><td><b>dist</b></td><td> distance function, e.g. <b>dist(x)</b> yields the distance to the nearest integer.</td></tr>
-<tr><td><b>prime</b></td><td> prime number function, e.g. <b>prime(x)</b>
+<tr><td><b>abs</b></td><td> the absolute value of the variable,
+  <b>abs(x)</b> = $|x| = \begin{cases} x; \; & x \geq 0 \\ (-1)\cdot x ; \; & x<0 \end{cases}$</td></tr>
+<tr><td><b>min</b></td><td> minimum of several values, e.g. 
+  <b>min(1;x;x^(1/3))</b> is the minimum of $1, x$ and $\sqrt[3]{x}$.</td></tr>
+<tr><td><b>max</b></td><td> maximum of several values, <b>max(abs(x);x*x)</b>
+  is the maximum of the absolute value of $x$ and $x^2$.</td></tr>
+<tr><td><b>%</b></td><td> modulo division, the whole-numbered remainder,
+  e.g. <b>10%x</b></td></tr>
+<tr><td><b>fmod</b></td><td> modulo division, floating point remainder,
+  so <b>fmod(x;1)</b> displays everything after the decimal point of
+  the input value.</td></tr>
+<tr><td><b>round</b> or <b>R</b></td><td> round, the optional second argument sets the number
+  of decimals. For example, <b>R(x;2)</b> rounds x to two
+  decimal places, <b>R(x)</b> rounds to an integer.</td></tr>
+<tr><td><b>floor</b> or <b>R0</b></td><td> floor (round down to an integer).
+    For example, <b>floor(x)</b> is equivalent to Gauss brackets $[x]$
+    (the integer part of $x$).</td></tr>
+<tr><td><b>ceil</b> or <b>R1</b></td><td> ceil (round up), <b>ceil(x)</b>
+    is equivalent to $[x] + 1$.</td></tr>
+<tr><td><b>dist</b></td><td> distance function, <b>dist(x)</b> yields the
+    distance to the nearest integer.</td></tr>
+<tr><td><b>prime</b></td><td> prime number function, <b>prime(x)</b>
     returns the next lower prime number (or $x$ itself, if prime) 
-    for all $x\geq 2$ and $x \leq 100000$.
-    In all four prime functions, non-integers are rounded.</td></tr>
+    for $x\geq 2$ and $x \leq 100000$. In all prime functions,
+    non-integers are rounded.</td></tr>
 <tr><td><b>prime1</b></td><td> prime number detecting function, 
-    <b>prime1(x)</b> returns $x$ only if $x$ is prime, 0 otherwise.
+    <b>prime1(x)</b> returns $x$ if $x$ is prime, 0 otherwise.
     </td></tr>
 <tr><td><b>prime2</b></td><td> distinct prime factor counting function,
-    <b>prime2(x)</b> returns the amount of different prime factors for
-    an integer.</td></tr>
+    <b>prime2(x)</b> returns the number of <em>different</em> prime factors
+    for an integer.</td></tr>
 <tr><td><b>prime3</b> </td><td>prime factor counting function, 
-    <b>prime3(x)</b> returns the amount of prime factors for an integer,
-    including multiples. E.g. prime2(4) = 1, whereas prime3(4) = 2.
-    If prime3(x) = 1, then $x$ is prime.</td></tr>
+    <b>prime3(x)</b> returns the number of prime factors for an integer,
+    including repetitions. So <b>prime2(4)</b> is 1 (the two prime factors
+    are the same), whereas <b>prime3(4)</b> is 2. For a prime number,
+    <b>prime3(x)</b> is 1</td></tr>
 <tr><td><b>div</b></td><td> divisor function, <b>div(x)</b> returns
     the number of divisors of an integer. Non-integers are rounded.</td></tr>
-<tr><td><b>dig</b></td><td> digit sum, e.g. <b>dig(x)</b> returns the sum
-    of all digits of an integer. Non-integers are rounded, negative variable
-    values are treated as positive.</td></tr>
+<tr><td><b>dig</b></td><td> the digit sum, <b>dig(x)</b> returns the sum
+    of all digits of an integer (in decimal representation). Non-integers will
+    be rounded and negative values will be treated as positive.</td></tr>
 <tr><td><b>dig2</b></td><td> iterated (one-digit) digit sum, e.g. <b>dig2(x)</b>
     returns the iterated digit sum of an integer.</td></tr>
 <tr><td><b>adig</b> </td><td>alternating digit sum, e.g. <b>adig(x)</b>.
     Non-integers are rounded, negative variable values are treated as 
     positive.</td></tr>
-<tr><td><b>fac</b> </td><td>factorial, e.g. <b>fac(x)</b>  Non-integers are rounded.</td></tr>
-<tr><td><b>H</b></td><td>Heaviside step function, e.g. <b>H(x)</b> 0, if x&;8804;0, else 1.</td></tr>
-<tr><td><b>Hm</b></td><td>multivariate Heaviside step function, e.g. <b>Hm(x*x-1;sin(x))</b> is 0 if at least one value is &;8804;0, else 1. Accepts any number of arguments.</td></tr>
-<tr><td><b>sig</b> </td><td>signum function (sign function), e.g. <b>sig(x)</b></td></tr>
+<tr><td><b>fac</b> </td><td>factorial defined as $x! = \prod\limits_{k=1}^x k
+    ;\; x \in \mathbb{N}$ and $0! := 1$. For negative numbers, a factorial
+    does not make sense. Non-integers will be rounded.</td></tr>
+<tr><td><b>H</b></td><td>Heaviside step function, used to model switching.
+    <b>H(x)</b> is defined as $0$ for $x < 0$, $1$ else.</td></tr>
+<tr><td><b>Hm</b></td><td>multivariate Heaviside step function.
+    <b>Hm(arg1;arg2)</b> is $0$ if at least one argument is 
+    $ < 0$, else $1$. Hm accepts any number of arguments.</td></tr>
+<tr><td><b>sig</b> </td><td>signum function (sign function), <b>sig(x)</b>
+    is $-1$ if $x < 0$, $1$ if $x > 0$ or $0$ if $x = 0$.</td></tr>
 <tr><td><b>haar</b></td><td>Haar wavelet, e.g. <b>haar(x)</b></td></tr>
-<tr><td><b>gcf</b></td><td>greatest common factor (or greatest common divisor, gcd), e.g. <b>gcf(8;x)</b> returns the greatest common factor between two integers. Non-integers are rounded.</td></tr>
-<tr><td><b>lcm</b></td><td>least common multiple, e.g. <b>lcm(8;x)</b> returns the least common multiple between two integers. Non-integers are rounded.</td></tr>
-<tr><td><b>mo</b></td><td>M&ouml;bius function, e.g. <b>mo(x)</b> returns for all positive integers 0, if divisible by a square>1, -1 if it has an odd number of distinct prime factors and 1 if it has an even number of distinct prime factors. Non-integers are rounded. Values are allowed up to 100000.</td></tr>
-<tr><td><b>toti</b></td><td>Euler&apos;s totient function, e.g. <b>toti(x)</b> counts all positive integers less than x that are comprime to $x$. Non-integers are rounded.</td></tr>
-<tr><td><b>odd</b></td><td>find odd numbers, e.g. <b>odd(x)</b> returns numbers only when odd. Non-integers are rounded.</td></tr>
-<tr><td><b>even</b></td><td>find even numbers, e.g. <b>even(x)</b> returns numbers only when even. Non-integers are rounded.</td></tr>
-<tr><td><b>bin</b></td><td>binomial coefficient, e.g. <b>bin(4;x)</b> The two values are n and k. Non-integers are rounded.</td></tr>
-<tr><td><b>tri</b></td><td>triangle curve, e.g. <b>tri(1;2;x)</b> The first value is the period, the second is the amplitude.</td></tr>
-<tr><td><b>rect</b></td><td>rectangle curve, e.g. <b>rect(1;-1;2;x)</b> The first value is the upper limit, the second is the lower and the third is the period.</td></tr>
-<tr><td><b>saw</b></td><td>sawtooth wave, e.g. <b>saw(2;1;x)</b> The first value is the period, the second is the amplitude.</td></tr>
-<tr><td><b>saw2</b></td><td>reverse sawtooth wave, e.g. <b>saw2(2;1;x)</b> The first value is the period, the second is the amplitude.</td></tr>
-<tr><td><b>ramp</b></td><td>ramp function, e.g. <b>ramp(1;2;1;x)</b> The first value is the start value, the second is the end value and the third is the height.</td></tr>
-<tr><td><b>ramp2</b></td><td>reverse ramp function, e.g. <b>ramp2(1;2;1;x)</b> The first value is the start value, the second is the end value and the third is the height.</td></tr>
+<tr><td><b>gcf</b></td><td>greatest common factor (or greatest common
+    divisor, gcd), e.g. <b>gcf(8;x)</b> returns the greatest common
+    factor between two integers. Non-integers will be rounded.</td></tr>
+<tr><td><b>lcm</b></td><td>least common multiple, e.g. <b>lcm(8;x)</b>
+    returns the least common multiple between two integers. Non-integers
+    will be rounded.</td></tr>
+<tr><td><b>mo</b></td><td>M&ouml;bius function $\mu(x)$.
+    For a positive integer $x$, <b>mo(x)</b> returns 0 if $x$ has a squared prime factor,
+    -1 if $x$ has an odd number of distinct prime factors and 1 if $x$ has an even number
+    of distinct prime factors. The argument will be rounded to an integer and the maximum
+    value is 100000.</td></tr>
+<tr><td><b>toti</b></td><td>Euler&apos;s totient function, e.g. <b>toti(x)</b>
+    counts all positive integers less than $x$ that are comprime to $x$. 
+    Non-integers will be rounded.</td></tr>
+<tr><td><b>odd</b></td><td>find odd numbers. <b>odd(x)</b> returns only odd
+    numbers. Non-integers will be rounded.</td></tr>
+<tr><td><b>even</b></td><td>find even numbers. <b>even(x)</b> returns even
+    numbers . Non-integers will be rounded.</td></tr>
+<tr><td><b>bin</b></td><td>binomial coefficient with two arguments $n$ and $k$ in 
+    \[ \binom{n}{k} = \frac{n!}{k!(n-k)!}\]
+    For example, <b>bin(4;x)</b> yields $\binom{4}{x}$, non-integer values
+    will be rounded.</td></tr>
+<tr><td><b>tri</b></td><td>periodic triangle curve, e.g. <b>tri(1;2;x)</b>.
+    The first value is the period, the second the amplitude.</td></tr>
+<tr><td><b>rect</b></td><td>periodic rectangle curve, e.g. <b>rect(1;-1;2;x)</b>.
+    The first argument is the upper limit, the second the lower limit and the
+    third is the period.</td></tr>
+<tr><td><b>saw</b></td><td>sawtooth wave function, e.g. <b>saw(2;1;x)</b>.
+    The first value is the period, the second the amplitude.</td></tr>
+<tr><td><b>saw2</b></td><td>reverse sawtooth wave, e.g. <b>saw2(2;1;x)</b>.
+    Arguments as above.</td></tr>
+<tr><td><b>ramp</b></td><td>ramp function, e.g. <b>ramp(1;2;1;x)</b> 
+    The first two arguments are the start and end value, the third one sets
+    the final height.</td></tr>
+<tr><td><b>ramp2</b></td><td>reverse ramp function, e.g. <b>ramp2(1;2;1;x)</b>
+    with arguments start value, end value and height.</td></tr>
 <tr><td><b>trap</b></td><td>trapezium (trapezoid) function, e.g. <b>trap(-4;-1;3;2;3;x)</b> The first value is the start value of the climb, the second is the end value of the climb, the third is the height, the fourth is the start value of the descent and the fifth is the end value of the descent.</td></tr>
-<tr><td><b>poly</b></td><td>polygon or chart line, e.g. <b>poly(-4;2;-3;4;-2;1;-1;0;0;3;1;2;2;-1;3;3;4;1;x)</b> gives a chart, respectively a half polygon. Here, (-4,2) is connected to (-3,4), this to (-2,1) and so on. The first value of each pair is the x-value, the second one is the y-value. The x-values must increase with each step. To get a full polygon, enter a second term with the same start and end points, like <b>poly(-4;2;0.5;-4;4;1;x)</b></td></tr>
-<tr><td><b>rand</b></td><td>integer random number between two integers, e.g. <b>rand(0;2)</b> returns 0, 1 or 2 (Mersenne twister is used for generating).</td></tr>
-<tr><td><b>rand2</b></td><td>random number between two numbers with decimal places (maximal 9), e.g. <b>rand2(0;1;3)</b> returns a number with three decimal places between 0 and 1 (Mersenne twister, too).</td></tr>
+<tr><td><b>poly</b></td><td>polyline or chart line, each pair of arguments
+    is read as a point and connected to the previous one with a line.
+    <b>poly(-4;2;-3;4;-2;1;-1;0;0;3;1;2;2;-1;3;3;4;1;x)</b> plots a chart
+    where (-4,2) is connected to (-3,4) which is connected to (-2,1) etc.
+    The polyline must be connected from left to right (i.e. the $x$-values must
+    increase with each step). </td></tr>
+<tr><td><b>rand</b></td><td>integer (pseudo-)random number between two limits,
+    <b>rand(0;2)</b> returns 0, 1 or 2 (numbers are generated by PHP using
+    a Mersenne twister).</td></tr>
+<tr><td><b>rand2</b></td><td>floating-point (pseudo-)random number between
+    two limits. The third argument allows to adjust the precision (number of
+    decimals, maximum is 9).
+    For example, <b>rand2(0;1;3)</b> returns a number between $0$ and $1$ with
+    three decimal places.</td></tr>
 </table>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="6"></a><h3>- probability functions and statistics</h3>
 <table>
-<tr><td><b>norm</b></td><td>normal or Gaussian distribution, e.g. <a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=norm%282%231%23x%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=0&b5=0.5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z"><b>norm(2;1;x)</b></a> 
-    for a standard normal Distribution shifted two Units to the right.
-    The first value is the mean $\mu$, the second is the standard 
-    deviation $\sigma$.
+<tr><td><b>norm</b></td><td>normal or Gaussian distribution
+    $f(x) = \frac {1}{\sqrt {2\pi \sigma ^{2}}}e^{-{\frac{(x-\mu )^{2}}{2\sigma^{2}}}}$,
+    the first value is
+    the mean $\mu$, the second is the standard deviation $\sigma$. See 
+    <a href="<?php echo $fqdn; ?>/graph.php?a0=2&a1=norm%282%231%23x%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=0&b5=0.5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=0&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&z"><b>norm(2;1;x)</b></a> 
+    for a standard normal distribution shifted two units to the right.
     </td></tr>
-<tr><td><b>phi</b></td><td>$\Phi$, cumulative Gaussian distribution function, e.g. <b>phi(0;1;x)</b> This is an approximation based on the displayed interval. It delivers reasonable values, if the normal distribution in the chosen interval starts at very low values near 0. A common display of both functions is advisable.</td></tr>
+<tr><td><b>phi</b></td><td>$\Phi$, cumulative Gaussian distribution function with
+    arguments mean $\mu$ and standard deviation $\sigma$ as above.
+    This is an approximation based on the interval displayed. It could be used
+    if the normal distribution starts at values close to 0.
+    See <a href="https://plot.oettinger-physics.de/graph.php?a0=2&a1=phi%280%3B1%3Bx%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z">
+    <b>phi(0;1;x)</b></a> for a reasonable example.</td></tr>
 <tr><td><b>chi2</b></td><td>chi-square distribution, e.g. <b>chi2(3;x)</b> The first value is the number of the degrees of freedom.</td></tr>
 <tr><td><b>ichi2</b></td><td>inverse-chi-square distribution, e.g. <b>ichi2(3;x)</b> The first value is the number of the degrees of freedom.</td></tr>
 <tr><td><b>sichi2</b></td><td>scale-inverse-chi-square distribution, e.g. <b>sichi2(3;1;x)</b> The first value is the number of the degrees of freedom, the second is the scale parameter, both must be >0.</td></tr>
@@ -313,11 +404,14 @@ To calculate negative x-values for an odd numerator and a denominator
 <tr><td><b>logd</b></td><td> logistic distribution, e.g. <b>logd(1;2;x)</b> The first value is the location parameter, the second is the scale parameter.</td></tr>
 <tr><td><b>hlogd</b></td><td> half-logistic distribution, e.g. <b>hlogd(x)</b></td></tr>
 <tr><td><b>rlng</b></td><td> Erlang distribution, e.g. <b>rlng(5;1;x)</b> The first value is the shape parameter, the second is the rate parameter. The first parameter must be a natural number.</td></tr>
-<tr><td><b>pon</b></td><td> exponential distribution, e.g. <b>pon(1;x)</b> The first value is the rate parameter.</td></tr>
+<tr><td><b>pon</b></td><td> exponential distribution, e.g. <b>pon(1;x)</b>.
+    The first parameter is the rate parameter $\lambda$ in
+    \[ f(x;\lambda) = \begin{cases}\lambda e^{-\lambda x} & x \ge 0, \\0 & x < 0.\end{cases}\]
+    </td></tr>
 <tr><td><b>cosd</b></td><td> raised cosine distribution, e.g. <b>cosd(0;1;x)</b> The first value is the location parameter, the second is the scale parameter. cosd is defined in the interval [location-scale;location+scale].</td></tr>
 <tr><td><b>sechd</b></td><td> hyperbolic secant distribution, e.g. <b>sechd(x)</b></td></tr>
 <tr><td><b>kum</b></td><td> Kumaraswamy distribution, e.g. <b>kum(2;3;x)</b> The first two values are the shape parameters a and b.</td></tr>
-<tr><td><b>levy</b></td><td> L&;233;vy distribution, e.g. <b>levy(1;x)</b> The first value is the scale parameter.</td></tr>
+<tr><td><b>levy</b></td><td> L&#233;vy distribution, e.g. <b>levy(1;x)</b> The first value is the scale parameter.</td></tr>
 <tr><td><b>rlgh</b></td><td> Rayleigh distribution, e.g. <b>rlgh(1;x)</b> The first value is the scale parameter.</td></tr>
 <tr><td><b>wb</b></td><td> Weibull distribution, e.g. <b>wb(2;1;x)</b> The first value is the shape parameter, the second is the scale parameter.</td></tr>
 <tr><td><b>wig</b></td><td> Wigner semicircle distribution, e.g. <b>wig(1;x)</b> The first value gives the radius.</td></tr>
@@ -361,52 +455,117 @@ To calculate negative x-values for an odd numerator and a denominator
     the second one the speed $v$ (e.g. in meters per second). The third value
     is the gravitational acceleration $g$ (e.g. in m/s&sup2;), the average
     value on earth is $g$ = 9.81 m/s&sup2;.</td></tr>
-<tr><td><b>pll</b></td><td> Parallel operator, as used, among others, for the calculation of parallel circuits and resistances, e.g. <b>pll(20;30;x)</b> Accepts any number of arguments.</td></tr>
-<tr><td><b>M1</b></td><td> Arithmetic mean, e.g. <b>M1(2;3;x)</b> Accepts any number of arguments.</td></tr>
-<tr><td><b>M2</b></td><td> Geometric mean, e.g. <b>M2(2;3;x)</b> Enter as many arguments as you want, only positive values are allowed.</td></tr>
-<tr><td><b>M3</b></td><td> Harmonic mean, e.g. <b>M3(2;3;x)</b> Enter as many arguments as you want, only positive values are allowed.</td></tr>
-<tr><td><b>M4</b></td><td> Root mean square, e.g. <b>M4(2;3;x)</b> Accepts any number of arguments.</td></tr>
-<tr><td><b>M5</b></td><td> Median, e.g. <b>M5(2;3;x)</b> Accepts any number of arguments.</td></tr>
+<tr><td><b>pll</b></td><td> Parallel operator, the reciprocal value of the sum
+    of all reciprocal arguments. For example, <b>pll(20;30;x)</b> is equivalent to
+    \[ f(x) = \frac{1}{\frac{1}{20} + \frac{1}{30} + \frac{1}{x}} \]
+    Accepts any number of arguments.</td></tr>
+<tr><td><b>M1</b></td><td> Arithmetic mean 
+    \[ \bar{x} = \frac{1}{n}\sum_{k=1}^n x_k. \]
+    Accepts an arbitrary  number of arguments $x_k$. For example, <b>M1(2;3;x)</b>
+    will return the mean of $x_1=2$, $x_2=3$ and the current value $x$, i.e.
+    $\frac{1}{3}(2+3+x)$</td></tr>
+<tr><td><b>M2</b></td><td> Geometric mean
+    \[ \bar{x}_g = \left(\prod_{i=1}^{n}x_{i}\right)^{\frac {1}{n}}
+       ={\sqrt[{n}]{x_{1}x_{2}\cdots x_{n}}}, \]
+    <b>M2(2;3;x)</b> is equvalent to $\sqrt[3]{2\cdot 3\cdot x}$.
+    Accepts any number of arguments, only positive values are
+    allowed.</td></tr>
+<tr><td><b>M3</b></td><td> Harmonic mean
+    \[ \bar{x}_\text{harm} 
+       = \frac{n}{\frac{1}{x_{1}}+\dotsb +\frac{1}{x_{n}}}, \]
+    accepts any number of arguments $n$, only positive values
+    are allowed.</td></tr>
+<tr><td><b>M4</b></td><td> Root mean square
+    \[  \mathrm {RMS} = \sqrt{{\frac {1}{n}}\sum_{i=1}^{n}{x_{i}^{2}}}
+            = \sqrt{\frac {x_{1}^{2}+x_{2}^{2}+\cdots +x_{n}^{2}}{n}} \]
+ <b>M4(2;3;x)</b> Accepts any number of arguments.</td></tr>
+<tr><td><b>M5</b></td><td> Median, the value separating the higher
+    half from the lower half in an ordered set of values (or the mean of
+    the two values in the center if the number of members is even).
+    For example, <b>M5(2;3;x)</b> is 3 for $x =$ 4 and 2 for $x =$ 1.
+    Accepts any number of arguments.</td></tr>
 <tr><td><b>scir</b></td><td> Semicircle curve, for example <b>scir(x;1)</b>
-  for a semicircle with radius 1. The curve is calculated as 
-  $y = \sqrt{r^2-x^2};\quad y\leq 0$.</td></tr>
+    for a semicircle with radius 1. The curve is calculated as 
+    $y = \sqrt{r^2-x^2};\quad y\leq 0$.</td></tr>
 <tr><td><b>ell</b></td><td> Semielliptic curve, e.g. <b>ell(2;1;x)</b> for a
-  semiellipse with a horizontal radius of 2 and vertical radius 
-  1. Calculated as $y = \sqrt{b^2(1-\dfrac{x^2}{a^2})}; \quad y\leq 0$.
-  </td></tr>
+    semiellipse with a horizontal radius of 2 and vertical radius 
+    1. Calculated as $y = \sqrt{b^2(1-\dfrac{x^2}{a^2})}; \quad y\leq 0$.
+    </td></tr>
 <tr><td><b>ell2</b></td><td> Semi-<a href="https://en.wikipedia.org/wiki/Superellipse">superellipse</a>
-  or semi-hyperellipse, 
-  $\left|{\frac {x}{a}}\right|^{n}\!+\left|{\frac {y}{b}}\right|^{n}=1; \quad y\leq 0$
-  arguments are <b>ell2(a;b;n;x)</b>, so <b>ell2(2;3;4;x)</b> will draw
-  a semiellipse with horizontal radius 2, vertical radius 3 and $n$=4.</td></tr>
-<tr><td><b>lmn</b></td><td> Lemniscate of Bernoulli, e.g. <b>lmn(1;x)</b> This returns a half lemniscate. For the other half, use <b>-lmn(1;x)</b></td></tr>
-<tr><td><b>lmn2</b></td><td> Lemniscate of Gerono, e.g. <b>lmn2(x)</b> This returns a half lemniscate. For the other half, use <b>-lmn2(x)</b></td></tr>
-<tr><td><b>lmn3</b></td><td> Lemniscate of Booth, e.g. <b>lmn3(1;x)</b> This returns a half lemniscate. For the other half, use <b>-lmn3(1;x)</b></td></tr>
-<tr><td><b>pyth</b></td><td> Pythagorean theorem, e.g. <b>pyth(x;1)</b> The formula is c=sqr(a*a+b*b).</td></tr>
-<tr><td><b>thr</b></td><td> Rule of three, e.g. <b>thr(x;1;2)</b> The formula for thr(a;b;c) is f(x)=b*c/a.</td></tr>
-<tr><td><b>fib</b></td><td> Fibonacci numbers, e.g. <b>fib(x)</b> or <b>fib(x;1)</b> If the second value is 1, a continuous graph is shown, else a discrete.</td></tr>
-<tr><td><b>dc</b></td><td> Exponential decay, e.g. <b>dc(5;1;x)</b> The first value is the initial quantity, the second is the decay constant.</td></tr>
-<tr><td><b>erf</b></td><td> Gaussian error function, e.g. <b>erf(x)</b> For the computation its Taylor series is used.</td></tr>
-<tr><td><b>HY4</b></td><td> Hyper4, also known as tetration or super-exponentiation, e.g. <b>HY4(x;3)</b> for x to the power of (x to the power of x). Here the maximum value can be excessed very quickly!</td></tr>
-<tr><td><b>lambda</b></td><td> Lambda function, e.g. <b>lambda(x;3)</b> for x to the power of (x to the power of (3-1)).</td></tr>
-<tr><td><b>sgm</b></td><td> Sigmoid function, e.g. <b>sgm(x)</b> for
-    $\dfrac{1}{1+e^{-x}}$.</td></tr>
-<tr><td><b>gom(a;b;c;x)</b></td><td> Gompertz curve $y = ae^{-be^{-cx}}$, e.g. <b>gom(2;-5;-3;x)</b> The first value is the upper asymptote, the second is the parameter b and the third is the growth rate. Second and third value must be negative.</td></tr>
-<tr><td><b>zeta</b></td><td> Riemann zeta function for values >1, e.g. <b>zeta(x)</b></td></tr>
-<tr><td><b>eta</b></td><td> Dirichlet eta function, e.g. <b>eta(x)</b></td></tr>
-<tr><td><b>stir</b></td><td> Stirling&apos;s approximation for large factorials, e.g. <b>stir(x)</b> The formula is (2*pi*x)^(1/2)*(x/e)^x.</td></tr>
-<tr><td><b>gamma</b></td><td> Gamma function (Euler and Weierstrass definition, approximation), e.g. <b>gamma(x)</b> as extension of the factorial function and for many statistical distributions.</td></tr>
-<tr><td><b>beta</b></td><td> Euler beta function, e.g. <b>beta(2;x)</b></td></tr>
-<tr><td><b>digamma</b></td><td> Digamma function, e.g. <b>digamma(x)</b> for D(gamma(x))/gamma(x).</td></tr>
+    or semi-hyperellipse, 
+    \[ \left|{\frac {x}{a}}\right|^{n}\!+\left|{\frac {y}{b}}\right|^{n}=1; \quad y\leq 0.\]
+    arguments are <b>ell2(a;b;n;x)</b>, so <b>ell2(2;3;4;x)</b> will draw
+    a semiellipse with horizontal radius 2, vertical radius 3 and $n$=4.</td></tr>
+<tr><td><b>lmn</b></td><td> Lemniscate of Bernoulli, constructed as
+    $\left(x^{2}+y^{2}\right)^{2}-2a^{2}\left(x^{2}-y^{2}\right)\,=\,0$ with
+    parameter $a$. <b>lmn(1;x)</b> returns the upper half of the lemniscate with
+    $a = 1$. For the lower half, you can use <b>-lmn(1;x)</b></td></tr>
+<tr><td><b>lmn2</b></td><td> Lemniscate of Gerono,
+    $x^{4}-x^{2}+y^{2}=0$. <b>lmn2(x)</b> returns the upper half of the
+    lemniscate.</b></td></tr>
+<tr><td><b>lmn3</b></td><td> Lemniscate of Booth,
+    $(x^{2}+y^{2})^{2}=cx^{2}+dy^{2};\; c>0>d$ with parameters $c, d$. For $c=1$ and
+    $d=-1$, the upper half of the lemniscate is calculated by <b>lmn3(1;-1;x)</b>.</td></tr>
+<tr><td><b>pyth</b></td><td> Pythagorean theorem, returns the root
+    of the squared arguments. <b>pyth(x;1)</b> $= \sqrt{x^2 + 1^2}$.</td></tr>
+<tr><td><b>thr</b></td><td> Rule of three, <b>thr(x;1;2)</b> is $f(x)=1\cdot \frac{2}{x}$.</td></tr>
+<tr><td><b>fib</b></td><td><a href="https://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci numbers</a>,
+    e.g. <b>fib(x)</b> or <b>fib(x;1)</b>. The numbers are calculated as natural ones
+    unless the second parameter is set to 1 - in this case, a continuous value
+    will be calculated (the un-rounded value of the approximation of the Fibonacci
+    numbers).</td></tr>
+<tr><td><b>dc</b></td><td> Exponential decay $f(x) = f_0\cdot e^{-\lambda\cdot x}$,
+    the first argument is the start value $f_0$, the second the decay constant 
+    $\lambda$, so <b>dc(5;1;x)</b> = $1\cdot e^{-5 x}$. </td></tr>
+<tr><td><b>erf</b></td><td> Gaussian error function, <b>erf(x)</b>
+    $ ={\frac {2}{\sqrt {\pi }}}\int _{0}^{x}e^{-\tau ^{2}}\,\mathrm {d} \tau$.
+    The function is approximated using a Taylor series.</td></tr>
+<tr><td><b>HY4</b></td><td> Hyper4, also known as tetration or super-exponentiation
+    and usually written as $^na$, iterated exponentiation af a value
+    ${\displaystyle {a^{a^{\cdot ^{\cdot ^{a}}}}}}$. The second parameter
+    defines the number of iterations, hence <b>HY4(x;1)</b> is $x$ and
+    <b>HY4(x;3)</b> means $x^{x^x}$. Caution - function values can grow
+    rapidly!</td></tr>
+<tr><td><b>lambda</b></td><td> Lambda function $x^{x^{n-1}}$ with parameter $n$,
+    so <b>lambda(x;3)</b> is x to the power of (x to the power of (3-1)).</td></tr>
+<tr><td><b>sgm</b></td><td> Sigmoid function or logistic function,
+    <b>sgm(x)</b> $= \dfrac{1}{1+e^{-x}}$.</td></tr>
+<tr><td><b>gom(a;b;c;x)</b></td><td> Gompertz curve $y = ae^{-be^{-cx}}$,
+    e.g. <b>gom(2;-5;-3;x)</b>. The first value is the upper asymptote,
+    the second is the parameter b and the third is the growth rate.
+    Second and third value must be negative.</td></tr>
+<tr><td><b>zeta</b></td><td> Riemann zeta function for values >1,
+    e.g. <b>zeta(x)</b>. Approximated by the finite series
+    \[ \zeta (x) = \sum _{n=1}^{1000 }n^{-x} \approx \sum _{n=1}^{\infty }n^{-x};\; \Re(x)>1\,.\]</td></tr>
+<tr><td><b>eta</b></td><td> Dirichlet eta function, e.g. <b>eta(x)</b>.
+    Calculated using the approximation of the Riemann zeta function
+    $\eta (s)=(1-2^{{1-s}})\cdot \zeta (s)$.</td></tr>
+<tr><td><b>stir</b></td><td> Stirling&apos;s asymptotic approximation for
+    large factorials, <b>stir(x)</b> = $
+    \sqrt{2\pi\cdot x}\left(\frac{x}{e}\right)^x \approx x!$.</td></tr>
+<tr><td><b>gamma</b></td><td> Gamma function (Euler and Weierstrass
+    definition, an approximation), e.g. <b>gamma(x)</b> as extension of
+    the factorial function and for many statistical distributions.
+    </td></tr>
+<tr><td><b>beta</b></td><td> Euler beta function, e.g. <b>beta(2;x)</b>.
+    The function is calculated using the (approximated) gamma function:
+    \[ \mathrm{B} (x,y) = \frac{\Gamma(x)\cdot \Gamma(y)}{\Gamma (x+y)}\]</td></tr>
+<tr><td><b>digamma</b></td><td> Digamma function, <b>digamma(x)</b>
+    is  the logarithmic derivative of the gamma function 
+    \[ \psi (x)=\frac{d}{dx}\ln\big(\Gamma(x)\big)=\frac{\Gamma^\prime(x)}{\Gamma(x)} \]
+    </td></tr>
 <tr><td><b>omega</b></td><td> Lambert-W function or Omega function or product log (approximation), e.g. <b>omega(x)</b></td></tr>
 <tr><td><b>theta</b></td><td> Ramanujan theta function, e.g. <b>theta(x;0.3)</b> The two values are a and b. abs(a*b) must be <1.</td></tr>
 <tr><td><b>bump</b></td><td> Bump function $\Psi$, e.g. <b>bump(x)</b> for $\exp(-1/(1-x^2))$ between -1 and 1, else 0.</td></tr>
 <tr><td><b>srp</b></td><td> Serpentine curve,
     calculated as $\dfrac{abx}{x^2 + a^2}$. The first two values are 
-    the constants $a$ and $b$, e.g. <b>srp(2;1;x)</b>.</td></tr>
+    the constants $a$ and $b$, <b>srp(2;1;x)</b> $ = \dfrac{2\cdot 1\cdot x}{x^2 + 2^2}$.</td></tr>
 <tr><td><b>bsc</b></td><td> Gaussian bell-shaped curve, $\exp(-(ax)^2)$.
-    The first value is the shape parameter a, e.g. <b>bsc(1;x)</b>.</td></tr>
-<tr><td><b>gbsc</b></td><td> Generalized Gaussian bell-shaped curve, e.g. <b>gbsc(1;2;-1;x)</b> for 1*exp(2*x-1*x*x).</td></tr>
+    The first value is the shape parameter $a$, so <b>bsc(1;x)</b> is the
+    curve of $f(x) = e^{(-x)^2}$.</td></tr>
+<tr><td><b>gbsc</b></td><td> Generalized Gaussian bell-shaped curve
+    $a\cdot e^{b\cdot x + c\cdot x^2}$ with arguments $a$, $b$ and $c$, 
+    for example <b>gbsc(1;2;-1;x)</b> for $f(x) = 1\cdot e^{2\cdot x-1\cdot x^2}$.</td></tr>
 </table>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="8"></a><h3>- logic functions</h3>
@@ -420,12 +579,17 @@ To calculate negative x-values for an odd numerator and a denominator
 <tr><td><b>bool1</b></td><td> Undefined boolean function, e.g.
   <b>bool1(prime1(x))</b> Returns nothing, if the input value is 0 or
   not defined, else 1.</td></tr>
-<tr><td><b>con</b></td><td> Condition function, e.g. <b>con(0;sin(x);1)</b>
-  The first and third values are the lower and upper limit, if the second
-  value is between these two, the result is 1. Otherwise the result is
-  0.</td></tr>
-<tr><td><b>rcon</b></td><td> Reverse condition function, e.g. <b>rcon(0;sin(x);1)</b> The first value is the lower limit, the third is the upper limit. If the second value is between these two, the result is 0, else 1.</td></tr>
-<tr><td><b>wcon</b></td><td> Weighted condition function, e.g. <b>wcon(0;sin(x);1)</b> Only returns the second value, if this lies between the first and the third value.</td></tr>
+<tr><td><b>con</b></td><td> Condition function, e.g. 
+    <b>con(l;x;u)</b> will return 1 if $x \in [l, u]$, 0 else. The first
+    and third argument are the lower and upper limit of the interval.
+    See <a href="https://plot.oettinger-physics.de/graph.php?a0=2&a1=con%280%3Bsin%28x%29%3B1%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>con(0;sin(x);1)</b></a>
+    for an example.
+    </td></tr>
+<tr><td><b>rcon</b></td><td> Reverse condition function, the logical
+    negation of the function above. <b>rcon(0;sin(x);1)</b> 
+    <b>con(l;x;u)</b> will return 1 if $x \not\in [l, u]$, 0 else.</td></tr>
+<tr><td><b>wcon</b></td><td> Weighted condition function, 
+    e.g. <b>wcon(0;sin(x);1)</b> Only returns the second value, if this lies between the first and the third value.</td></tr>
 <tr><td><b>rwcon</b></td><td> Reverse weighted condition function, e.g. <b>rwcon(0;sin(x);1)</b> Only returns the second value, if it&apos;s not located between the first and the third value.</td></tr>
 <tr><td><i>&amp;&amp; (and)</i></td><td><i> can be simulated with the minimum function, e.g. </i><b>min{ con[0;sin(x);1] ; con[0;cos(x);1] }</b></td><td></td></tr>
 <tr><td><i>|| (or)</i></td><td><i> can be simulated with the maximum function, e.g. </i><b>max{ con[0;sin(x);1] ; con[0;cos(x);1] }</b></td></tr>
@@ -451,13 +615,33 @@ To calculate negative x-values for an odd numerator and a denominator
   y(a)+0.008*rand(0;1)*rand(0;1)*(b-a), from a (first value) to b 
   (second value) at 500px width. The first value is the start point
   on the y-axis, the second is the average end value.</td></tr>
-<tr><td><b>wf</b></td><td> Weierstrass function, e.g. <b>wf(x;0.5;17;10)</b>
+<tr><td><b>wf</b></td><td> Weierstrass function, approximated using
+    \[ f(x) := \sum_{k=0}^n a^k\cos(b^k\pi x) \]
+    The second parameter is $a; \; 0<a<1$, the third one $b$ is an
+    odd and positive integer and $a\cdot b > 1+\frac{3}{2} \pi$. 
+
+ e.g. <b>wf(x;0.5;17;10)</b>
   The second value is a parameter between 0 and 1, the third value is an
   odd and positive integer. The second multiplied with the third must be 
   larger than $1+3/2\pi$. The fourth value is the number of steps done.
   In theory this is infinite, but here the maximum is 100.</td></tr>
-<tr><td><b>blanc</b></td><td> Blancmange curve, e.g. <b>blanc(x;10)</b> The second value is the number of steps done, maximum is 1000.</td></tr>
-<tr><td><b>tak</b></td><td> Takagi-Landsberg curve, e.g. <b>tak(x;0.7;10)</b> The second value is a parameter, which should be between 0 and 1. The third is the number of steps done, maximum is 1000.</td></tr>
+<tr><td><b>blanc</b></td><td> Blancmange curve, approximated as
+    \[ \operatorname{blanc}(x) = \sum_{k=0}^n \frac{s(2^{k}x)}{2^k}\] 
+    with the triangle wave $s(x)=\min _{n\in {\mathbf {Z} }}|x-n|$
+    on the unit interval $[0;1]$ and its periodic continuation.
+    The second value is the number of steps done ($n-1$), 
+    maximum is 1000. An example is
+    <a href="https://plot.oettinger-physics.de/graph.php?a0=2&a1=blanc%28x%3B10%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>blanc(x;10)</b></a>.</td></tr>
+<tr><td><b>tak</b></td><td> Takagi-Landsberg curve, approximated as 
+    \[ T_w(x) = \sum_{k=0}^n w^k s(2^{k}x)\] with the triangle wave
+    $s(x)=\min _{n\in {\mathbf {Z} }}|x-n|$ on the unit interval
+    $[0;1]$ and its periodic continuation.
+    The second value is the parameter $w;\; 0 \leq w \leq 1$, the
+    third one sets the number of steps done ($n-1$, the maximum is
+    1000). See 
+    <a href="https://plot.oettinger-physics.de/graph.php?a0=2&a1=+tak%28x%3B0.7%3B10%29&a2=&a3=&a7=1&a8=1&a9=1&b0=500&b1=500&b2=-5&b3=5&b4=-5&b5=5&b6=10&b7=10&b8=5&b9=5&c0=3&c1=0&c2=1&c3=1&c4=1&c5=&c6=1&c7=0&c8=0&c9=0&d0=1&d1=20&d2=20&d3=0&d4=&d5=&d6=&d7=&d8=&d9=&e0=&e1=&e2=&e3=&e4=ffffff&e5=ffffff&e6=141414&e7=f2f2f2&e8=0&e9=0&f0=0&f1=1&f2=1&f3=0&f4=0&f5=&f6=&f7=&f8=&f9=&g0=&g1=1&g2=1&g3=0&g4=2&g5=0&g6=Y&g7=ff8000&g8=a0b0c0&g9=6080a0&h0=2&h1=x&h2=1&h3=1&z"><b>tak(x;0.7;10)</b></a>
+    for an example.
+    </td></tr>
 </table>
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="10"></a><h3>differential and integral equations</h3>
@@ -486,15 +670,17 @@ An integral of fourth order over a function can be generated by using S3(...) wi
 <a href="#top" class="uplink">top</a><br /><br />
 <a id="11"></a><h1>adjusting plot appearance</h1>
 <h3>display options:</h3>
-The appearance of the curves created can be changed using
-a set of options in a dialog. If applicable, the resulting image
-can be transformed with GD&apos;s image filters (the list of filters 
-depends onthe GD version used).
+The appearance of the curves created can be changed by a set
+of options in a dialog. If desired (and if the GD library supports
+the underlying filters), the resulting image can be transformed with
+GD&apos;s image filters (the list of filters depends onthe GD version
+used).
 <table>
 <tr><td><b>image type</b>:</td><td>plotter knows three quite
   common image formats: png (compression level 1), gif (GIF87a)
-  and jpeg (with 90 percent quality level). The jpeg image format
-  does not Support transparency.</td></tr>
+  and jpeg (with 90 percent quality level). In gif and png format
+  the background can be set to be transparent, the jpeg image format
+  does not support transparency.</td></tr>
 <tr><td><b>width / height</b></td><td> set the size of the image
  in pixels. For practical reasons, the minimum size is 200,
  maximum is 500.</td></tr>
