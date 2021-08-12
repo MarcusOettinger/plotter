@@ -5,6 +5,7 @@
 // the most common controls and a a list of named points to plot on the right.
 // This one should degrade nicely (BUT ugly, of course...)
 // M. Oettinger
+// 08/2021: added a close button to info div
 // 06/2020: conversion of tooltips/accordion to get rid of jquery-ui
 // 09/2019: removed inline scripts and styles
 // 12/2015: added an option to change variable Name (e.g. for use of t instead of x in time domain)
@@ -112,8 +113,10 @@
   </div>
 
   <fieldset class="function"><legend id="pl"><img class="bt" id="infobutton2" src="images/iconInfo.png"> points</legend>
-    <div class="info" id="info2">Define named points to be plotted
-    into the graph:<br>add or remove points with +/-.
+    <div class="info" id="info2">
+    <img class="bt" id="closeinfo2" src="images/iconClose.png">
+    Define named points to be plotted into the curve:<br>
+    add or remove points with +/-.
     </div>
   <div class="ralign">
     color #<input id="selfcol7" name="selfcol7" class="w60" value="335555">
