@@ -1,11 +1,13 @@
   <div id="calculate">
   <p class="noprinting">Enter an expression and some variable values
-  (space-separated) and press calculate to produce sample points</p>
+  (comma or space-separated) and press calculate to produce sample points.</p>
   <div class="info" id="info3">
+    <img class="bt" id="closeinfo3" src="images/iconClose.png">
     <p>Enter some variable values and a function term to be calculated,
     the functions used in the plot above can be copied using one of the 
     buttons labeled f(x), g(x) or h(x). Variables will usually be 
-    simple numbers, separate multiple input values (x) by spaces.</p>
+    simple numbers, separate multiple input values (x) by commas or
+    spaces.</p>
     <p>Select one of the checkboxes to chose a format for output:</p>
     <ul class="lalign">
       <li>results - a vector-like string of function values, separated
@@ -60,8 +62,9 @@
     <p class="noprinting">In case you want to link to the graph or cannot use
     one of the image formats provided, the graph in the plotter can be reproduced
     any time by the following URL</p>
-    <div class="info"  id="info4"><p>
-      Every image drawn by plotter can be dynamically reproduced by a simple
+    <div class="info"  id="info4">
+   <img class="bt" id="closeinfo4" src="images/iconClose.png">
+   <p>Every image drawn by plotter can be dynamically reproduced by a simple
       call to plotter's image creating part (called graph.php). All the information
       needed is placed in the query string appended to its URL. So, wehenever you
       call this URL (including the querystring), an image file of the plot above
