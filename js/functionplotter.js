@@ -137,10 +137,10 @@ function loadg() {
 	
 	document.getElementById( "width" ).value = values["b0"];
 	document.getElementById( "height" ).value = values["b1"];
-	document.getElementById( "rulex1" ).value = values["b2"];
-	document.getElementById( "rulex2").value = values["b3"];
-	document.getElementById( "ruley1" ).value = values["b4"];
-	document.getElementById( "ruley2" ).value = values["b5"];
+	document.getElementById( "xlimit1" ).value = values["b2"];
+	document.getElementById( "xlimit2").value = values["b3"];
+	document.getElementById( "ylimit1" ).value = values["b4"];
+	document.getElementById( "ylimit2" ).value = values["b5"];
 	document.getElementById( "intervalsx" ).value = values["b6"];
 	document.getElementById( "intervalsy" ).value = values["b7"];
 	document.getElementById( "linex" ).value = values["b8"];
@@ -245,9 +245,10 @@ function loadg() {
 	
 	/* varname (h1) and further options are optional (for backward compatibility) */
 	document.getElementById( "varname" ).value = (values["h1"] == undefined ? "x" : values["h1"]);
-	document.getElementById( "transp" ).checked = 1;
 	if (values["h2"] == undefined) document.getElementById( "transp" ).checked = true;
 	else document.getElementById( "transp" ).checked = (values["h2"] == 1);
+	if (values["h3"] == undefined) document.getElementById( "prettyprint" ).checked = true;
+	else document.getElementById( "prettyprint" ).checked = (values["h3"] == 1);
 
 	/* points, color is 'p', name 'p'#, x/y are 'x'# and 'y'# */
 	/* delete pointlines!! */
@@ -339,6 +340,8 @@ function standard() {
 		document.getElementById( "logskx").value= "0";
 		document.getElementById( "logsk").value= "0";
 		*/
+		document.getElementById( "transp").checked = true;
+		document.getElementById( "prettyprint").checked = true;
 		getgraph();
 	}
 }
@@ -348,42 +351,42 @@ function standard() {
  */
 function getalign(x) {
 	var v = document.getElementById( "qsize" ).value.replace(",","." );
-	document.getElementById( "rulex1" ).value = -v;
-	document.getElementById( "rulex2" ).value = v;
-	document.getElementById( "ruley1" ).value = -v;
-	document.getElementById( "ruley2" ).value = v;
+	document.getElementById( "xlimit1" ).value = -v;
+	document.getElementById( "xlimit2" ).value = v;
+	document.getElementById( "ylimit1" ).value = -v;
+	document.getElementById( "ylimit2" ).value = v;
 	if(x=="a0" ) {
-		document.getElementById( "rulex1" ).value = 0;
-		document.getElementById( "rulex2" ).value = 0;
-		document.getElementById( "ruley1" ).value = 0;
-		document.getElementById( "ruley2" ).value = 2*v;
+		document.getElementById( "xlimit1" ).value = 0;
+		document.getElementById( "xlimit2" ).value = 2*v;
+		document.getElementById( "ylimit1" ).value = 0;
+		document.getElementById( "ylimit2" ).value = 2*v;
 	} else if(x=="a1" ) {
-		document.getElementById( "rulex1" ).value =- 2*v;
-		document.getElementById( "rulex2" ).value = 0;
-		document.getElementById( "ruley1" ).value = 0;
-		document.getElementById( "ruley2" ).value = 2*v;
+		document.getElementById( "xlimit1" ).value =- 2*v;
+		document.getElementById( "xlimit2" ).value = 0;
+		document.getElementById( "ylimit1" ).value = 0;
+		document.getElementById( "ylimit2" ).value = 2*v;
 	} else if(x=="a2" ) {
-		document.getElementById( "rulex1" ).value =- 2*v;
-		document.getElementById( "rulex2" ).value = 0;
-		document.getElementById( "ruley1" ).value =- 2*v;
-		document.getElementById( "ruley2" ).value = 0;
+		document.getElementById( "xlimit1" ).value =- 2*v;
+		document.getElementById( "xlimit2" ).value = 0;
+		document.getElementById( "ylimit1" ).value =- 2*v;
+		document.getElementById( "ylimit2" ).value = 0;
 	} else if(x=="a3" ) {
-		document.getElementById( "rulex1" ).value = 0;
-		document.getElementById( "rulex2" ).value = 2*v;
-		document.getElementById( "ruley1" ).value =- 2*v;
-		document.getElementById( "ruley2" ).value = 0;
+		document.getElementById( "xlimit1" ).value = 0;
+		document.getElementById( "xlimit2" ).value = 2*v;
+		document.getElementById( "ylimit1" ).value =- 2*v;
+		document.getElementById( "ylimit2" ).value = 0;
 	} else if(x=="b0" ) {
-		document.getElementById( "ruley1" ).value = 0;
-		document.getElementById( "ruley2" ).value = 2*v;
+		document.getElementById( "ylimit1" ).value = 0;
+		document.getElementById( "ylimit2" ).value = 2*v;
 	} else if(x=="b1" ) {
-		document.getElementById( "rulex1" ).value =- 2*v;
-		document.getElementById( "rulex2" ).value = 0;
+		document.getElementById( "xlimit1" ).value =- 2*v;
+		document.getElementById( "xlimit2" ).value = 0;
 	} else if(x=="b2" ) {
-		document.getElementById( "ruley1" ).value =- 2*v;
-		document.getElementById( "ruley2" ).value = 0;
+		document.getElementById( "ylimit1" ).value =- 2*v;
+		document.getElementById( "ylimit2" ).value = 0;
 	} else if(x=="b3" ) {
-		document.getElementById( "rulex1" ).value = 0;
-		document.getElementById( "rulex2" ).value = 2*v;
+		document.getElementById( "xlimit1" ).value = 0;
+		document.getElementById( "xlimit2" ).value = 2*v;
 	}
 	getgraph();
 }
@@ -423,7 +426,8 @@ function copyURL( id ) {
 
     
     /* 
-     * add a new point to the list - set name and Position
+     * add a new point to the list of named points:
+     *  - add a line to set name and position
      */
     var nPt = 0;
     function addline(){
@@ -443,14 +447,14 @@ function copyURL( id ) {
     }
 
     /* 
-     * remove the last point (bottom of the list)
+     * remove the last point (at the bottom of the list)
      */
     function delline() {
 	var el = document.getElementById("Pdiv" + nPt);
         el.parentNode.removeChild(el);
 	nPt--;
 	document.getElementById("addpoint").style.display = "inline";
-	if (nPt == 0) { document.getElementById("delpoint").style.display = "none"; }
+	if (nPt == 0) document.getElementById("delpoint").style.display = "none";
     }
     
     function togglediv( id ) {
@@ -478,14 +482,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	accordion = new Accordion({
 	    element: 'accordion',
 	    openTab: 1,
- 	   oneOpen: true
+	    oneOpen: true
 	});
 	
 	document.getElementById( "submit" ).addEventListener('click', function( event ) {
 		document.getElementById( "funcs" ).submit(); });
 	document.getElementById( "inputReset" ).addEventListener('click', function( event ) {
 		standard() ;
-		event.preventDefault();
+//		event.preventDefault();
 	});
 
 	
@@ -500,8 +504,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	document.getElementById( 'a3' ).addEventListener('click', function( event ) { getalign( 'a3' ); });
 	document.getElementById( 'b3' ).addEventListener('click', function( event ) { getalign( 'b3' ); });
 	
-	/* handle input for an integration constant - hide the input if f(x) or
-	 * derivative selected */
+	/* 
+	 * handle input for an integration constant - hide the input if f(x) or
+	 * derivative selected
+	 */
 	for (var n = 1; n<4; n++) {
 		var id = "sint" + n + "i";
 		!function dummy(n){
