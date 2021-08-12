@@ -1,5 +1,5 @@
 /*
-modified by Marcus Oettinger 07/2020
+modified by Marcus Oettinger 08/2021
  - added an option to switch transparency in png/gif
  - better parsing of query options
  - removed jquery/jquery-ui dependencies
@@ -472,12 +472,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	document.getElementById( "infobutton1" ).addEventListener('click', function() {  
 		togglediv( "info1" ); });
+	document.getElementById( "closeinfo1" ).addEventListener('click', function() {  
+		togglediv( "info1" ); });
 	document.getElementById( "infobutton2" ).addEventListener('click', function() {  
+		togglediv( "info2" ); });
+	document.getElementById( "closeinfo2" ).addEventListener('click', function() {  
 		togglediv( "info2" ); });
 	document.getElementById( "infobutton3" ).addEventListener('click', function() {  
 		togglediv( "info3" ); });
+	document.getElementById( "closeinfo3" ).addEventListener('click', function() {  
+		togglediv( "info3" ); });
 	document.getElementById( "infobutton4" ).addEventListener('click', function() {  
 		togglediv( "info4" ); });
+	document.getElementById( "closeinfo4" ).addEventListener('click', function() {  
+		togglediv( "info4" ); });
+
 	
 	accordion = new Accordion({
 	    element: 'accordion',
