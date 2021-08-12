@@ -4,7 +4,7 @@
 // openPlaG (http://rechneronline.de/openPlaG/) by
 // Juergen Kummer (GPL)
 // ---------------------------------------------------
-// Marcus Oettinger (www.oettinger-physisc.de)
+// Marcus Oettinger (www.oettinger-physics.de)
 // 08/2021
 //  * adding a close button to info divs
 //  * adding CSP headers, removing library dependencies
@@ -27,19 +27,19 @@
   <meta name="content-language" content="en">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="description" lang="en" content="Plotter: a function plotter running at oettinger-physics.de. Create curves of mathematical functions on the fly.">
-  <meta name="keywords" lang="en" content="oettinger-physics, plotter, function, curves, mathematics">
-  <meta name="description" lang="de" content="Plotter: Kurven von Funktionen bei oettinger-physics.de. Erstellung mathematischer Kurven.">
-  <meta name="keywords" lang="de"  content="oettinger-physics, plotter, Funktionen, Kurven, Mathematik">
+  <meta name="description" lang="en" content="Plotter: a function plotter running at <?php echo $mainsite_name; ?>. Create curves of mathematical functions on the fly.">
+  <meta name="keywords" lang="en" content="<?php echo $mainsite_name; ?>, plotter, function, curves, mathematics">
+  <meta name="description" lang="de" content="Plotter: Kurven von Funktionen bei <?php echo $mainsite_name; ?>. Erstellung mathematischer Kurven.">
+  <meta name="keywords" lang="de"  content="<?php echo $mainsite_name; ?>, plotter, Funktionen, Kurven, Mathematik">
   <?php echo $extopts; ?>
-  <link rel="stylesheet" href="include/plotstyle.css" type="text/css">
-  <link rel="stylesheet" href="include/plotterui.css" type="text/css">
-  <script src="js/functionplotter.js" type="text/javascript"></script>
-  <script src="js/plotterui.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="include/plotstyle.min.css" type="text/css">
+  <link rel="stylesheet" href="include/plotterui.min.css" type="text/css">
+  <script src="js/functionplotter.min.js" type="text/javascript"></script>
+  <script src="js/plotterui.min.js" type="text/javascript"></script>
 </head>
 <body><div id="header"><?php echo $pagetitle; ?></div>
 <div id="plotpage"><div id="menubar">
-    <a href="https://www.oettinger-physics.de/index.html">[home]</a> &nbsp;
+    <a href="<?php echo $mainsite; ?>">[home]</a> &nbsp;
     <a href="manual.html">[manual]</a> &nbsp;
     <a href="examples.html">[examples]</a>
   </div><!-- menubar -->
@@ -58,23 +58,27 @@
 <button class="acccordionbutton">draw</button>
 <div><!-- accordion content -->
 <?php
-// ------------ begin of accordion ------------
-// This is the first accordion tab displaying the plot and the most common controls.
-//
-// main page: simple plot controls and point interface
+/* ------------ begin of accordion ------------
+ * This is the first accordion tab displaying the plot and the most common controls.
+ *
+ * main page: simple plot controls and point interface
+ */
   include("modules/mainplot.inc");
-//
-// jquery-ui dialog to set further options 
+/*
+ * a modal dialog to set all those funky options 
+ */
   include("modules/options.inc");
-//
 ?>
 </div><!-- accordion tab 1 -->
 <button class="acccordionbutton">Calculate, Link &amp; Save</button>
 <div>
 <?php
-// lower accordion tab: calculate, load, save 
+/*
+ * lower accordion tab: calculate, load, save 
+ */
   include("modules/calculate.inc"); 
-// ------------ end of accordion ------------ ?>
+/* ------------ end of accordion ------------ 
+ */?>
 </div><!-- accordion tab2 -->
 </div><!-- accordion -->
 </div><!-- #plotpage -->
