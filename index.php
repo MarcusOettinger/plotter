@@ -49,5 +49,5 @@ if (!chkgd2()) {
 // set silent true to suppress creation of short link and QRCode
 // (no need if testing/Debugging)
 $silent = false;
-include("common.inc");
+include("modules/common.inc");
 ?>
