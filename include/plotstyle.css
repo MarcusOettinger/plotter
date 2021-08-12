@@ -2,7 +2,7 @@
  * plotstyle.css: part of plotter, a php/GD2
  * function plotter (https://github.com/MarcusOettinger/plotter)
  *
- * M. Oettinger 07/2020
+ * M. Oettinger 08/2021
  *
  */
 body {
@@ -222,6 +222,7 @@ input[type='image'] {
 	cursor:pointer;
 	margin-bottom:-4px
 }
+
 /* 
  * info - popups 
  */
@@ -234,6 +235,12 @@ input[type='image'] {
 	font-weight:normal;
 	font-size:13px;
 	line-height:1.3em;
+	position: relative;
+}
+.info img {
+	position:absolute;
+	top: 5px;
+	right: 5px;
 }
 
 /* 
