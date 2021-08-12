@@ -5,7 +5,8 @@
 // Juergen Kummer (GPL)
 // ---------------------------------------------------
 // Marcus Oettinger (www.oettinger-physisc.de)
-// 06/2020
+// 08/2021
+//  * adding a close button to info divs
 //  * adding CSP headers, removing library dependencies
 //  * removed onchange/onclick entries to allow for reasonable CSP-settings
 // 09/2018
@@ -43,7 +44,9 @@
     <a href="examples.html">[examples]</a>
   </div><!-- menubar -->
   <h1 class="noprinting">The function plotter...&nbsp;<img class="bt" id="infobutton1" src="images/iconInfo.png"></h1>
-  <div class="info" id="info1"><p>... is a simple tool to plot curves of functions
+  <div class="info" id="info1">
+    <img class="bt" id="closeinfo1" src="images/iconClose.png">
+    <p>... is a simple tool to plot curves of functions
     (rsp. their derivatives or integrals) in cartesian coordinates. Use it to to display
     common mathematical functions or expressions as jpeg, png or gif image.</p>
     <p>The lower tab allows to calculate tables of function values (in csv, text or laTeX
