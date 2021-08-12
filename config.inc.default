@@ -56,7 +56,7 @@ include_once("modules/CSP.inc");
 // * set a favicon 
 //
 
-$extopts = '  <meta name="author" content="John Doe">
+$extopts = '<meta name="author" content="John Doe">
   <link rel="shortcut icon" type="image/x-icon" href="plotter.ico">';
 
 //
