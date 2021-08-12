@@ -1,23 +1,24 @@
 <?php
-//
-// function.php: handle query Options and call
-// graph.php.
-// (This file is the content of the iframe, where the image
-// of the graph is displayed. It is called by the main page
-// hosting the iframe and only contains the image plus some
-// js code to interoperate with the calling page)
-//
-// Marcus Oettinger 06/2020
-// - conversion to SSL-encrypted pages: QR-code inline to avoid
-//   mixed content
-// 06/2015:
-// - converted query string used to load plot into the main page
-//     to an URL (usable for Hyperlinks).
-// - reworked code for smoother color handling
-// - added short link via oeshort.de (oettinger-physics special)
-// - added a QRCode containing URL to plot Image (via oeshort.de/TCPDF) (oettinger-physics special)
-//
-// --------------------------------------------------------------------
+/*
+ * function.php: handle query Options and call graph.php.
+ * (This file is the content of the iframe displaying the
+ * produced image. It is called by the main page hosting
+ * the iframe and only contains the image plus some js
+ * code to interoperate with the calling page)
+ *
+ * Marcus Oettinger 
+ * 06/2020
+ * - conversion to SSL-encrypted pages: QR-code inline to avoid
+ *   mixed content
+ * 06/2015:
+ * - converted query string used to load plot into the main page
+ *     to an URL (usable for Hyperlinks).
+ * - reworked code for smoother color handling
+ * - added short link via oeshort.de (oettinger-physics special)
+ * - added a QRCode containing URL to plot Image (via oeshort.de/TCPDF) (oettinger-physics special)
+ *
+ * --------------------------------------------------------------------
+ */
 /*
 Original source: http://rechneronline.de/function-graphs/ (GPL)
 Copyright (C) 2011 Juergen Kummer
